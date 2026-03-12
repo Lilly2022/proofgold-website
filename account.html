@@ -95,11 +95,25 @@ a{color:var(--gold);text-decoration:none;}
 .upgrade-bar p{font-size:14px;}
 .upgrade-bar strong{color:var(--gold);}
 
+/* SUCCESS SCREEN */
+.success-card{background:var(--surface);border:1px solid var(--green);border-radius:12px;padding:56px 40px;max-width:520px;margin:60px auto;text-align:center;display:none;}
+.success-card.visible{display:block;}
+.success-icon{font-size:56px;margin-bottom:24px;}
+.success-card h1{font-size:28px;font-weight:700;margin-bottom:8px;color:var(--text);}
+.success-card .sub{color:var(--text2);font-size:16px;line-height:1.7;margin-bottom:32px;}
+.success-steps{text-align:left;background:var(--bg);border-radius:10px;padding:24px 28px;margin-bottom:32px;}
+.success-steps h3{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gold);margin-bottom:16px;}
+.success-step{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:15px;color:var(--text2);line-height:1.6;}
+.success-step:last-child{border-bottom:none;}
+.success-step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:rgba(212,175,55,0.1);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+.success-note{font-size:14px;color:var(--text2);line-height:1.7;margin-top:8px;}
+
 /* RESPONSIVE */
 @media(max-width:600px){
   .nav{padding:12px 16px;}
   .container{padding:24px 16px;}
   .login-card{padding:32px 24px;margin:40px auto;}
+  .success-card{padding:40px 24px;margin:40px auto;}
   .license-header{flex-direction:column;align-items:flex-start;gap:8px;}
   .license-grid{grid-template-columns:1fr 1fr;}
   .upgrade-bar{flex-direction:column;gap:12px;text-align:center;}
@@ -122,8 +136,30 @@ a{color:var(--gold);text-decoration:none;}
   </div>
 </nav>
 
-<!-- LOGIN SCREEN -->
+<!-- SUCCESS SCREEN (shown after Stripe payment) -->
 <div class="container">
+<div id="successScreen" class="success-card">
+  <div class="success-icon">🎉</div>
+  <h1>Welcome to Proof Gold.</h1>
+  <p class="sub">Your purchase was successful. Your license key and setup instructions are being sent to your email right now. Check your inbox (and spam folder).</p>
+  
+  <div class="success-steps">
+    <h3>What happens next</h3>
+    <div class="success-step"><div class="success-step-num">1</div><div>Check your email for your <strong style="color:var(--text);">license key</strong> (PG-XXXX-XXXX-XXXX-XXXX) and download link.</div></div>
+    <div class="success-step"><div class="success-step-num">2</div><div>Follow our <a href="setup.html" style="color:var(--gold);">step-by-step setup guide</a> — it takes about 5 minutes, no experience needed.</div></div>
+    <div class="success-step"><div class="success-step-num">3</div><div>Once attached to your chart, click AutoTrading and you're done. <strong style="color:var(--gold);">Proof Gold takes over from here.</strong></div></div>
+  </div>
+
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <a href="setup.html" class="btn btn-gold" style="padding:14px 32px;font-size:15px;border-radius:8px;text-decoration:none;">📖 Setup Guide</a>
+    <button class="btn-outline" style="padding:14px 32px;font-size:15px;border-radius:8px;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--text);font-family:inherit;" onclick="document.getElementById('successScreen').parentElement.style.display='none';document.getElementById('loginContainer').style.display='block';">View My License</button>
+  </div>
+  <p class="success-note">Need help? Email <a href="mailto:support@proof.trading">support@proof.trading</a> — we usually respond within a few hours.</p>
+</div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div class="container" id="loginContainer">
 <div id="loginScreen" class="login-card">
   <h1>My Account</h1>
   <p>Enter your purchase email and license key to manage your EA.</p>
@@ -177,7 +213,22 @@ a{color:var(--gold);text-decoration:none;}
 </div>
 
 <script>
-const API = "https://api.proof.trading";
+const API = "https://proofgold.vercel.app";
+
+// Detect success redirect from Stripe
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('success') === 'true') {
+    document.getElementById('successScreen').classList.add('visible');
+    document.getElementById('loginContainer').style.display = 'none';
+    
+    // Pre-fill email if we can get it from the session
+    const sessionId = params.get('session_id');
+    if (sessionId) {
+      // Could fetch session details here in the future
+    }
+  }
+})();
 let currentEmail = "";
 let currentKey = "";
 
