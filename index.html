@@ -578,21 +578,21 @@ footer a:hover { color: var(--text); }
         <div class="price-amount">$499 <span>one-time</span></div>
         <div class="price-note">Asian session (overnight trades)</div>
         <ul class="price-features"><li>Asian session trading strategy</li><li>Up to 3 trades at once</li><li>Use on 2 trading accounts</li><li>Live trading dashboard</li><li>Server crash protection</li><li>Lifetime updates</li></ul>
-        <a href="#" class="price-btn price-btn-outline">Get Started</a>
+        <a href="#" onclick="checkout('starter')" class="price-btn price-btn-outline">Get Started</a>
       </div>
       <div class="price-card featured reveal reveal-delay-1">
         <div class="price-name">Professional</div>
         <div class="price-amount">$699 <span>one-time</span></div>
         <div class="price-note">London + New York sessions (daytime trades)</div>
         <ul class="price-features"><li>London + New York trading strategies</li><li>Up to 5 trades at once</li><li>Use on 3 trading accounts</li><li>Live trading dashboard</li><li>Server crash protection</li><li>Lifetime updates</li><li>Priority email support</li></ul>
-        <a href="#" class="price-btn price-btn-gold">Get Professional</a>
+        <a href="#" onclick="checkout('professional')" class="price-btn price-btn-gold">Get Professional</a>
       </div>
       <div class="price-card reveal reveal-delay-2">
         <div class="price-name">Institutional</div>
         <div class="price-amount">$1,299 <span>one-time</span></div>
         <div class="price-note">All 3 sessions — Asian + London + New York</div>
         <ul class="price-features"><li>All 3 sessions — trades around the clock</li><li>Up to 10 trades at once</li><li>Use on 5 trading accounts</li><li>Live trading dashboard</li><li>Server crash protection</li><li>Lifetime updates</li><li>Priority support + personal setup call</li><li>Prop firm account protection</li></ul>
-        <a href="#" class="price-btn price-btn-outline">Get Institutional</a>
+        <a href="#" onclick="checkout('institutional')" class="price-btn price-btn-outline">Get Institutional</a>
       </div>
     </div>
     <p class="reveal" style="color:var(--text-secondary);font-size: var(--text-base);margin-top:36px;">All purchases can be canceled within 7 days if the EA has not been activated.</p>
@@ -743,6 +743,36 @@ setInterval(() => {
   setTimeout(() => { updateTicker(); tickerEl.style.opacity = '1'; }, 400);
 }, 5000);
 tickerEl.style.transition = 'opacity 0.4s';
+
+// ── STRIPE CHECKOUT ────────────────────────────────────────
+async function checkout(tier) {
+  event.preventDefault();
+  const btn = event.target;
+  const originalText = btn.textContent;
+  btn.textContent = 'Loading...';
+  btn.style.pointerEvents = 'none';
+  
+  try {
+    const res = await fetch('https://proofgold.vercel.app/v1/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tier })
+    });
+    const data = await res.json();
+    
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert('Something went wrong. Please try again or email support@proof.trading');
+      btn.textContent = originalText;
+      btn.style.pointerEvents = 'auto';
+    }
+  } catch (err) {
+    alert('Connection error. Please try again.');
+    btn.textContent = originalText;
+    btn.style.pointerEvents = 'auto';
+  }
+}
 </script>
 
 <script>
