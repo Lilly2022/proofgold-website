@@ -1,6 +1,6 @@
 <!--
   Proof Gold Support Chat Widget
-  Add this before </body> on prooftrading.com
+  Add this before </body> on proof.trading
   
   Update SUPPORT_API_URL to your Vercel deployment URL.
 -->
@@ -110,11 +110,11 @@
       typing.remove();
 
       conversationId = data.conversation_id;
-      addMessage(data.reply || "Sorry, I couldn't process that. Please email support@prooftrading.com", false);
+      addMessage(data.reply || "Sorry, I couldn't process that. Please email support@proof.trading", false);
 
     } catch (err) {
       typing.remove();
-      addMessage("Connection error. Please email support@prooftrading.com", false);
+      addMessage("Connection error. Please email support@proof.trading", false);
     }
 
     sendBtn.disabled = false;
