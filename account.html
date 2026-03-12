@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account — Proof Gold EA</title>
+<style>
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a25;--border:#252535;--text:#e8e8ed;--text2:#8888a0;--gold:#d4a54a;--gold2:#b8912e;--blue:#4a7fd4;--green:#3ab06a;--red:#d44a4a;--orange:#d48a3a;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'SF Pro Text',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
+a{color:var(--gold);text-decoration:none;}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid var(--border);background:var(--surface);}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:0.5px;color:var(--gold);}
+.nav-logo svg{width:28px;height:28px;}
+.nav-links{display:flex;gap:20px;font-size:13px;}
+.nav-links a{color:var(--text2);transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+
+/* LAYOUT */
+.container{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+
+/* LOGIN */
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:48px 40px;max-width:440px;margin:80px auto;}
+.login-card h1{font-size:22px;font-weight:600;margin-bottom:6px;}
+.login-card p{color:var(--text2);font-size:14px;margin-bottom:28px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);margin-bottom:6px;}
+.field input{width:100%;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color 0.2s;}
+.field input:focus{border-color:var(--gold);}
+.field input::placeholder{color:#555;}
+.btn{display:inline-block;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;border:none;transition:all 0.2s;}
+.btn-gold{background:var(--gold);color:#0a0a0f;width:100%;}
+.btn-gold:hover{background:var(--gold2);}
+.btn-sm{padding:8px 16px;font-size:12px;border-radius:6px;}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2);}
+.btn-outline:hover{border-color:var(--text2);color:var(--text);}
+.btn-red{background:var(--red);color:#fff;}
+.btn-red:hover{opacity:0.85;}
+.btn-blue{background:var(--blue);color:#fff;}
+.btn-blue:hover{opacity:0.85;}
+.error-msg{color:var(--red);font-size:13px;margin-top:12px;display:none;}
+
+/* DASHBOARD */
+.dash{display:none;}
+.dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
+.dash-header h1{font-size:22px;font-weight:600;}
+.dash-email{color:var(--text2);font-size:13px;}
+.logout-btn{font-size:12px;color:var(--text2);cursor:pointer;border:none;background:none;font-family:inherit;}
+.logout-btn:hover{color:var(--text);}
+
+/* LICENSE CARD */
+.license-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px;}
+.license-header{padding:20px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.license-key{font-family:'SF Mono',monospace;font-size:14px;font-weight:600;letter-spacing:1px;}
+.tier-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.tier-starter{background:rgba(136,136,160,0.15);color:var(--text2);}
+.tier-professional{background:rgba(74,127,212,0.15);color:var(--blue);}
+.tier-institutional{background:rgba(212,165,74,0.15);color:var(--gold);}
+.status-active{color:var(--green);}
+.status-cancelled{color:var(--red);}
+.status-suspended{color:var(--orange);}
+.license-body{padding:20px 24px;}
+.license-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:20px;}
+.license-stat{display:flex;flex-direction:column;gap:2px;}
+.stat-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);}
+.stat-value{font-size:15px;font-weight:500;}
+
+/* ACTIVATIONS TABLE */
+.activations-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.act-table{width:100%;border-collapse:collapse;}
+.act-table th{text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);padding:8px 12px;border-bottom:1px solid var(--border);}
+.act-table td{padding:10px 12px;font-size:13px;border-bottom:1px solid rgba(37,37,53,0.5);}
+.act-table tr:last-child td{border-bottom:none;}
+.act-account{font-family:'SF Mono',monospace;font-weight:500;}
+.act-empty{text-align:center;padding:24px;color:var(--text2);font-size:13px;}
+
+/* DOWNLOAD SECTION */
+.download-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px;}
+.download-section h3{font-size:15px;font-weight:600;margin-bottom:16px;}
+.download-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
+.dl-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--text);transition:all 0.2s;cursor:pointer;text-decoration:none;}
+.dl-btn:hover{border-color:var(--gold);color:var(--gold);}
+.dl-btn svg{width:16px;height:16px;opacity:0.6;}
+
+/* INFO BOXES */
+.info-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:24px;}
+.info-box h3{font-size:15px;font-weight:600;margin-bottom:8px;}
+.info-box p{font-size:13px;color:var(--text2);line-height:1.7;}
+.info-box a{color:var(--gold);}
+
+/* UPGRADE */
+.upgrade-bar{background:linear-gradient(135deg,rgba(212,165,74,0.08),rgba(74,127,212,0.08));border:1px solid var(--border);border-radius:12px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.upgrade-bar p{font-size:14px;}
+.upgrade-bar strong{color:var(--gold);}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .nav{padding:12px 16px;}
+  .container{padding:24px 16px;}
+  .login-card{padding:32px 24px;margin:40px auto;}
+  .license-header{flex-direction:column;align-items:flex-start;gap:8px;}
+  .license-grid{grid-template-columns:1fr 1fr;}
+  .upgrade-bar{flex-direction:column;gap:12px;text-align:center;}
+  .act-table{font-size:12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#d4a54a"/><text x="16" y="22" text-anchor="middle" font-size="18" font-weight="700" fill="#0a0a0f">P</text></svg>
+    Proof Trading
+  </div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/affiliates">Affiliates</a>
+    <a href="https://prooftrading.com" target="_blank">Support</a>
+  </div>
+</nav>
+
+<!-- LOGIN SCREEN -->
+<div class="container">
+<div id="loginScreen" class="login-card">
+  <h1>My Account</h1>
+  <p>Enter your purchase email and license key to manage your EA.</p>
+  <div class="field">
+    <label>Email</label>
+    <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
+  </div>
+  <div class="field">
+    <label>License Key</label>
+    <input type="text" id="loginKey" placeholder="PG-XXXX-XXXX-XXXX-XXXX" autocomplete="off" style="font-family:'SF Mono',monospace;letter-spacing:1px;">
+  </div>
+  <button class="btn btn-gold" id="loginBtn" onclick="login()">View My Account</button>
+  <div class="error-msg" id="loginError"></div>
+</div>
+
+<!-- DASHBOARD (hidden until login) -->
+<div id="dashboard" class="dash">
+  <div class="dash-header">
+    <div>
+      <h1>My Account</h1>
+      <div class="dash-email" id="dashEmail"></div>
+    </div>
+    <button class="logout-btn" onclick="logout()">Sign Out</button>
+  </div>
+
+  <!-- UPGRADE BAR (shown for starter/professional) -->
+  <div class="upgrade-bar" id="upgradeBar" style="display:none">
+    <p>Unlock <strong>all sessions</strong> and <strong>more positions</strong> with an upgrade.</p>
+    <a href="/#pricing" class="btn btn-sm btn-blue">View Plans →</a>
+  </div>
+
+  <!-- LICENSES -->
+  <div id="licensesContainer"></div>
+
+  <!-- DOWNLOADS -->
+  <div class="download-section" id="downloadSection" style="display:none">
+    <h3>Downloads</h3>
+    <div class="download-grid" id="downloadGrid"></div>
+  </div>
+
+  <!-- INFO -->
+  <div class="info-box">
+    <h3>How Activations Work</h3>
+    <p>
+      Each activation = one MT4 account number. You can install the EA on <strong>unlimited computers</strong> (home PC, laptop, VPS) — it only counts as one activation per MT4 account.<br><br>
+      Need to move to a new broker? Click "Remove" on the old account, then start the EA on your new MT4 account. The activation transfers instantly.<br><br>
+      Need help? Email <a href="mailto:support@prooftrading.com">support@prooftrading.com</a> with your license key.
+    </p>
+  </div>
+</div>
+</div>
+
+<script>
+const API = "https://api.prooftrading.com";
+let currentEmail = "";
+let currentKey = "";
+
+async function login() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const key = document.getElementById("loginKey").value.trim().toUpperCase();
+  const errEl = document.getElementById("loginError");
+  const btn = document.getElementById("loginBtn");
+  
+  errEl.style.display = "none";
+  if (!email || !key) { errEl.textContent = "Please enter both email and license key."; errEl.style.display = "block"; return; }
+  
+  btn.textContent = "Loading...";
+  btn.disabled = true;
+  
+  try {
+    const res = await fetch(API + "/v1/account", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, license_key: key })
+    });
+    const data = await res.json();
+    
+    if (!res.ok) {
+      errEl.textContent = data.error || "Invalid credentials. Check your email and license key.";
+      errEl.style.display = "block";
+      btn.textContent = "View My Account";
+      btn.disabled = false;
+      return;
+    }
+    
+    currentEmail = email;
+    currentKey = key;
+    renderDashboard(data);
+  } catch (e) {
+    errEl.textContent = "Connection error. Please try again.";
+    errEl.style.display = "block";
+    btn.textContent = "View My Account";
+    btn.disabled = false;
+  }
+}
+
+function renderDashboard(data) {
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("dashEmail").textContent = data.email;
+  
+  const container = document.getElementById("licensesContainer");
+  container.innerHTML = "";
+  
+  let hasStarter = false;
+  let hasPro = false;
+  
+  data.licenses.forEach(lic => {
+    if (lic.tier === "starter") hasStarter = true;
+    if (lic.tier === "professional") hasPro = true;
+    
+    const tierClass = "tier-" + lic.tier;
+    const statusClass = "status-" + lic.status;
+    const expiry = lic.expiry ? new Date(lic.expiry).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) : "Lifetime";
+    const created = new Date(lic.created_at).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+    
+    let actRows = "";
+    if (lic.activations.length === 0) {
+      actRows = '<tr><td colspan="4" class="act-empty">No activations yet. Start the EA on an MT4 account to activate.</td></tr>';
+    } else {
+      lic.activations.forEach(a => {
+        const lastSeen = a.last_seen ? timeAgo(new Date(a.last_seen)) : "Never";
+        actRows += `<tr>
+          <td class="act-account">${a.account_number}</td>
+          <td>${a.broker}</td>
+          <td>${lastSeen}</td>
+          <td><button class="btn btn-sm btn-outline" onclick="deactivate('${lic.license_key}','${a.account_number}')">Remove</button></td>
+        </tr>`;
+      });
+    }
+    
+    const sessions = lic.all_sessions 
+      ? "Asian, London, NY" 
+      : (lic.asian_allowed ? "Asian only — <a href='/#pricing' style='color:var(--gold)'>Add London/NY sessions</a>" 
+         : "London + NY — <a href='/#pricing' style='color:var(--gold)'>Add Asian rebate mode</a>");
+    
+    const card = document.createElement("div");
+    card.className = "license-card";
+    card.innerHTML = `
+      <div class="license-header">
+        <span class="license-key">${lic.license_key}</span>
+        <span class="tier-badge ${tierClass}">${lic.tier}</span>
+      </div>
+      <div class="license-body">
+        <div class="license-grid">
+          <div class="license-stat"><span class="stat-label">Status</span><span class="stat-value ${statusClass}">${lic.status.toUpperCase()}</span></div>
+          <div class="license-stat"><span class="stat-label">Max Positions</span><span class="stat-value">${lic.max_positions}</span></div>
+          <div class="license-stat"><span class="stat-label">Sessions</span><span class="stat-value">${lic.sessions_label || (lic.all_sessions ? "All 4" : "Asian")}</span></div>
+          <div class="license-stat"><span class="stat-label">Activations</span><span class="stat-value">${lic.activations.length} / ${lic.max_activations}</span></div>
+          <div class="license-stat"><span class="stat-label">Expires</span><span class="stat-value">${expiry}</span></div>
+          <div class="license-stat"><span class="stat-label">Purchased</span><span class="stat-value">${created}</span></div>
+        </div>
+        <div class="activations-title">
+          <span>Active Installations</span>
+          <span style="font-weight:400;font-size:11px;color:var(--text2)">${lic.activations.length}/${lic.max_activations} slots used</span>
+        </div>
+        <table class="act-table">
+          <thead><tr><th>MT4 Account</th><th>Broker</th><th>Last Seen</th><th></th></tr></thead>
+          <tbody>${actRows}</tbody>
+        </table>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+  
+  // Upgrade bar for non-institutional
+  if (hasStarter || hasPro) {
+    const upgradeEl = document.getElementById("upgradeBar");
+    upgradeEl.style.display = "flex";
+    if (hasStarter && !hasPro) {
+      upgradeEl.querySelector("p").innerHTML = "Unlock <strong>London & NY sessions</strong> with Professional, or get <strong>everything</strong> with Institutional.";
+    } else if (hasPro && !hasStarter) {
+      upgradeEl.querySelector("p").innerHTML = "Add the <strong>Asian rebate engine</strong> with Institutional — 10 concurrent slots for maximum volume.";
+    }
+  }
+  
+  // Downloads
+  const dlGrid = document.getElementById("downloadGrid");
+  dlGrid.innerHTML = "";
+  const dlSection = document.getElementById("downloadSection");
+  
+  const svgDL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+  
+  if (data.download_url) {
+    dlGrid.innerHTML += `<a href="${data.download_url}" class="dl-btn" download>${svgDL} Proof Gold EA (.ex4)</a>`;
+    dlSection.style.display = "block";
+  }
+  if (data.preset_urls) {
+    const presets = data.preset_urls;
+    if (presets.conservative) dlGrid.innerHTML += `<a href="${presets.conservative}" class="dl-btn" download>${svgDL} Conservative Preset</a>`;
+    if (presets.balanced) dlGrid.innerHTML += `<a href="${presets.balanced}" class="dl-btn" download>${svgDL} Balanced Preset</a>`;
+    if (presets.aggressive) dlGrid.innerHTML += `<a href="${presets.aggressive}" class="dl-btn" download>${svgDL} Aggressive Preset</a>`;
+    if (presets.propfirm) dlGrid.innerHTML += `<a href="${presets.propfirm}" class="dl-btn" download>${svgDL} PropFirm Preset</a>`;
+    if (Object.values(presets).some(v => v)) dlSection.style.display = "block";
+  }
+}
+
+async function deactivate(licKey, accountNum) {
+  if (!confirm(`Remove MT4 account ${accountNum}?\n\nThis frees up an activation slot. You can re-activate on a different account anytime.`)) return;
+  
+  try {
+    const res = await fetch(API + "/v1/account", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: currentEmail, license_key: currentKey, action: "deactivate", account_number: accountNum })
+    });
+    
+    if (res.ok) {
+      login(); // Refresh dashboard
+    } else {
+      const data = await res.json();
+      alert(data.error || "Failed to deactivate. Please try again.");
+    }
+  } catch (e) {
+    alert("Connection error. Please try again.");
+  }
+}
+
+function logout() {
+  currentEmail = "";
+  currentKey = "";
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("loginScreen").style.display = "block";
+  document.getElementById("loginBtn").textContent = "View My Account";
+  document.getElementById("loginBtn").disabled = false;
+}
+
+function timeAgo(date) {
+  const s = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (s < 60) return "Just now";
+  if (s < 3600) return Math.floor(s/60) + "m ago";
+  if (s < 86400) return Math.floor(s/3600) + "h ago";
+  if (s < 604800) return Math.floor(s/86400) + "d ago";
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+// Allow Enter key to login
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && document.getElementById("loginScreen").style.display !== "none") login();
+});
+</script>
+</body>
+</html>

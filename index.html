@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proof Gold — Automated Gold Trading EA</title>
+
+<!-- PostHog Analytics -->
+<script>
+!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+posthog.init('phc_Wc1qkx7bX5dhX6OuurLxzjyedAlBAPh9xBNDzQrQsoB', {api_host: 'https://us.i.posthog.com'});
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Bebas+Neue&family=Libre+Bodoni:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: #000; color: #f5f5f7; font-family: 'Outfit', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+::selection { background: #D4AF37; color: #000; }
+
+:root {
+  --gold: #D4AF37; --gold-lt: #F0D060; --navy: #0A1628; --navy-mid: #0F1D32;
+  --navy-lt: #14253E; --blue: #2A6BCC; --green: #34C759; --red: #FF453A;
+  --txt: #f5f5f7; --txt-dim: rgba(245,245,247,0.5); --txt-mute: rgba(245,245,247,0.3);
+  --border: rgba(42,107,204,0.10);
+}
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(24px) } to { opacity:1; transform:translateY(0) } }
+
+/* NAV */
+.nav { position:fixed; top:0; left:0; right:0; z-index:200; height:48px; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(16px,4vw,48px); background:rgba(0,0,0,0.75); backdrop-filter:saturate(180%) blur(20px); border-bottom:1px solid rgba(255,255,255,0.06); }
+.nav-left { display:flex; align-items:center; gap:10px; }
+.nav-word { display:flex; align-items:baseline; gap:5px; }
+.nav-word-proof { font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:20px; letter-spacing:0.14em; color:var(--gold); text-transform:uppercase; line-height:1; }
+.nav-word-gold { font-family:'Outfit',sans-serif; font-weight:300; font-size:11px; letter-spacing:0.18em; color:rgba(245,245,247,0.45); text-transform:uppercase; line-height:1; padding-bottom:1px; }
+.nav-links { display:flex; align-items:center; gap:24px; }
+.nav-links a { font-size:12px; font-weight:400; color:rgba(245,245,247,0.6); text-decoration:none; transition:color 0.25s; }
+.nav-links a:hover { color:var(--txt); }
+.nav-cta { font-size:12px!important; font-weight:600!important; color:#000!important; background:var(--gold); padding:7px 18px; border-radius:980px; transition:background 0.25s; }
+.nav-cta:hover { background:var(--gold-lt); }
+
+/* HERO */
+.hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:120px 24px 60px; background:radial-gradient(ellipse 70% 50% at 50% 100%, var(--navy) 0%, #000 100%); }
+.hero h1 { font-weight:700; font-size:clamp(44px,7.5vw,88px); line-height:1.06; letter-spacing:-0.025em; max-width:820px; animation:fadeUp 0.8s ease both; }
+.hero h1 em { font-style:normal; color:var(--gold); }
+.hero-sub { margin-top:18px; font-weight:400; font-size:clamp(16px,2vw,20px); line-height:1.5; color:var(--txt-dim); max-width:500px; animation:fadeUp 0.8s 0.12s ease both; }
+.hero-actions { margin-top:36px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center; animation:fadeUp 0.8s 0.24s ease both; }
+.hero-proof { margin-top:28px; font-size:12px; color:var(--txt-mute); display:flex; align-items:center; gap:6px; animation:fadeUp 0.8s 0.34s ease both; }
+
+/* BUTTONS */
+.btn { display:inline-flex; align-items:center; justify-content:center; font-family:inherit; font-weight:600; font-size:16px; border-radius:980px; padding:14px 32px; border:none; cursor:pointer; transition:all 0.25s; text-decoration:none; }
+.btn-gold { background:var(--gold); color:#000; }
+.btn-gold:hover { background:var(--gold-lt); }
+.btn-outline { background:transparent; color:var(--txt); border:1px solid rgba(255,255,255,0.15); }
+.btn-outline:hover { border-color:rgba(255,255,255,0.3); }
+.btn-sm { font-size:14px; padding:11px 24px; }
+
+/* TRUST BAR */
+.trust { display:flex; align-items:center; justify-content:center; gap:clamp(16px,3.5vw,48px); flex-wrap:wrap; padding:36px 24px; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--navy); }
+.trust-item { font-weight:500; font-size:12px; color:rgba(245,245,247,0.4); display:flex; align-items:center; gap:7px; }
+.trust-dot { width:5px; height:5px; border-radius:50%; background:var(--green); }
+
+/* SECTIONS */
+.section { padding:clamp(60px,10vw,100px) clamp(16px,4vw,48px); max-width:1080px; margin:0 auto; }
+.label { font-weight:600; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--blue); margin-bottom:12px; }
+.title { font-weight:700; font-size:clamp(28px,4.5vw,48px); line-height:1.1; letter-spacing:-0.02em; margin-bottom:16px; }
+.subtitle { font-weight:400; font-size:16px; line-height:1.55; color:var(--txt-dim); max-width:520px; }
+
+/* EQUITY */
+.equity-wrap { background:var(--navy); border:1px solid var(--border); border-radius:16px; padding:32px 24px 16px; margin-top:36px; }
+.equity-header { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:12px; margin-bottom:16px; }
+.equity-bal { font-weight:700; font-size:36px; letter-spacing:-0.02em; }
+.equity-gain { font-weight:600; font-size:14px; color:var(--green); }
+.equity-period { font-size:12px; color:var(--txt-mute); }
+.equity-chart { width:100%; height:180px; }
+.equity-labels { display:flex; justify-content:space-between; font-size:10px; color:rgba(245,245,247,0.2); margin-top:6px; padding:0 4px; }
+
+/* STATS */
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1px; background:var(--border); border-radius:12px; overflow:hidden; margin-top:32px; }
+.stat { background:var(--navy-mid); padding:24px 20px; }
+.stat-val { font-weight:700; font-size:22px; margin-bottom:2px; }
+.stat-lbl { font-size:11px; color:var(--txt-mute); letter-spacing:0.04em; text-transform:uppercase; }
+
+/* TRADES TABLE */
+.trades-wrap { background:var(--navy); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-top:36px; }
+.trades-header { padding:20px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); }
+.trades-title { font-weight:600; font-size:15px; }
+.trades-link { font-size:12px; color:var(--blue); text-decoration:none; }
+table { width:100%; border-collapse:collapse; }
+table th { font-size:10px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--txt-mute); text-align:left; padding:12px 14px; border-bottom:1px solid rgba(42,107,204,0.06); }
+table td { font-size:13px; color:rgba(245,245,247,0.7); padding:13px 14px; border-bottom:1px solid rgba(255,255,255,0.03); }
+table tr:last-child td { border-bottom:none; }
+.win { color:var(--green); font-weight:600; }
+.loss { color:var(--red); font-weight:600; }
+.type { font-weight:600; font-size:11px; }
+
+/* HOW */
+.how { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border-radius:16px; overflow:hidden; margin-top:36px; }
+.how-step { background:var(--navy-mid); padding:36px 24px; transition:background 0.3s; }
+.how-step:hover { background:var(--navy-lt); }
+.how-num { font-weight:800; font-size:40px; color:rgba(42,107,204,0.15); margin-bottom:14px; line-height:1; }
+.how-step h4 { font-weight:600; font-size:16px; margin-bottom:6px; }
+.how-step p { font-size:13px; line-height:1.5; color:rgba(245,245,247,0.4); }
+
+/* FEATURES */
+.features { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin-top:36px; }
+.feat-card { background:var(--navy-mid); border:1px solid var(--border); border-radius:12px; padding:28px 24px; transition:background 0.3s; }
+.feat-card:hover { background:var(--navy-lt); }
+.feat-icon { font-size:24px; margin-bottom:14px; }
+.feat-card h4 { font-weight:600; font-size:15px; margin-bottom:6px; }
+.feat-card p { font-size:13px; line-height:1.55; color:rgba(245,245,247,0.4); }
+
+/* COMPARISON */
+.compare-wrap { background:var(--navy); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-top:36px; }
+.compare-wrap table th:first-child, .compare-wrap table td:first-child { color:rgba(245,245,247,0.5); }
+.compare-wrap table th:nth-child(2), .compare-wrap table td:nth-child(2) { color:var(--green); font-weight:500; }
+.compare-wrap table th:nth-child(3), .compare-wrap table td:nth-child(3) { color:var(--red); font-weight:400; opacity:0.7; }
+.compare-wrap table th { background:var(--navy-mid); }
+
+/* TESTIMONIALS */
+.testimonials { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-top:36px; }
+.test-card { background:var(--navy-mid); border:1px solid var(--border); border-radius:12px; padding:28px 24px; }
+.test-stars { color:var(--gold); font-size:14px; letter-spacing:2px; margin-bottom:12px; }
+.test-text { font-size:14px; line-height:1.6; color:rgba(245,245,247,0.6); margin-bottom:16px; }
+.test-author { font-size:12px; color:var(--txt-mute); }
+
+/* PRICING */
+.pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:40px; align-items:start; }
+.pricing-card { background:var(--navy-mid); border:1px solid var(--border); border-radius:16px; padding:36px 28px; position:relative; overflow:hidden; transition:border-color 0.3s; }
+.pricing-card:hover { border-color:rgba(42,107,204,0.2); }
+.pricing-card.popular { border-color:rgba(212,175,55,0.3); transform:scale(1.02); }
+.pricing-card.popular::before { content:''; position:absolute; top:-1px; left:15%; right:15%; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.pricing-badge { position:absolute; top:12px; right:12px; font-size:10px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); background:rgba(212,175,55,0.1); padding:4px 10px; border-radius:980px; }
+.pricing-tier { font-weight:600; font-size:18px; margin-bottom:4px; }
+.pricing-price { font-weight:700; font-size:44px; letter-spacing:-0.03em; margin:8px 0 2px; }
+.pricing-price span { font-size:15px; font-weight:400; color:var(--txt-dim); }
+.pricing-note { font-size:13px; color:var(--txt-mute); margin-bottom:24px; }
+.pricing-features { margin-bottom:28px; }
+.pricing-feat { display:flex; align-items:center; gap:9px; padding:8px 0; font-size:13px; color:rgba(245,245,247,0.65); border-bottom:1px solid rgba(255,255,255,0.03); }
+.pricing-feat:last-child { border-bottom:none; }
+.pricing-check { color:var(--green); font-size:13px; flex-shrink:0; }
+
+/* FAQ */
+.faq { margin-top:36px; max-width:680px; margin-left:auto; margin-right:auto; }
+.faq-item { border-bottom:1px solid rgba(255,255,255,0.06); }
+.faq-q { width:100%; background:none; border:none; color:var(--txt); font-family:inherit; font-size:15px; font-weight:500; padding:20px 0; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+.faq-q:hover { color:var(--gold); }
+.faq-arrow { font-size:18px; color:var(--txt-mute); transition:transform 0.3s; }
+.faq-a { font-size:14px; line-height:1.65; color:rgba(245,245,247,0.45); max-height:0; overflow:hidden; transition:max-height 0.35s ease, padding 0.35s ease; padding-bottom:0; }
+.faq-item.open .faq-a { max-height:400px; padding-bottom:20px; }
+.faq-item.open .faq-arrow { transform:rotate(45deg); }
+
+/* CTA */
+.cta { text-align:center; padding:clamp(80px,12vw,120px) 24px; background:radial-gradient(ellipse 50% 40% at 50% 60%,rgba(212,175,55,0.04) 0%,#000 100%); }
+.cta h2 { font-weight:700; font-size:clamp(36px,5.5vw,64px); line-height:1.08; letter-spacing:-0.025em; }
+.cta h2 em { font-style:normal; color:var(--gold); }
+
+.disclaimer { max-width:600px; margin:0 auto; padding:0 24px 48px; font-size:11px; line-height:1.6; color:rgba(245,245,247,0.14); text-align:center; }
+footer { padding:20px clamp(16px,4vw,48px); display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.04); font-size:12px; color:rgba(245,245,247,0.25); }
+.footer-left { display:flex; align-items:center; gap:8px; }
+.footer-links { display:flex; gap:20px; }
+.footer-links a { color:rgba(245,245,247,0.25); text-decoration:none; }
+.footer-links a:hover { color:rgba(245,245,247,0.5); }
+
+.navy-bg { background:var(--navy); }
+
+@media(max-width:768px) {
+  .nav-links a:not(.nav-cta) { display:none; }
+  .how { grid-template-columns:1fr 1fr; }
+  .pricing-grid { grid-template-columns:1fr; max-width:400px; margin-left:auto; margin-right:auto; }
+  .pricing-card.popular { transform:none; }
+  table th:nth-child(4), table td:nth-child(4), table th:nth-child(5), table td:nth-child(5) { display:none; }
+  footer { flex-direction:column; gap:10px; text-align:center; }
+}
+@media(max-width:500px) { .how { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<svg style="display:none">
+  <symbol id="proof-mark" viewBox="0 0 100 100">
+    <path d="M8 38 C8 35,10 33,13 33 L41 33 C43 33,44 35,44 38 L44 60 L50 46 L44 60 L44 92 C44 95,43 96,40 96 L12 96 C9 96,8 95,8 92 Z"/>
+    <path d="M56 92 L56 60 L50 46 L56 60 L56 12 C56 9,58 8,60 8 L88 8 C91 8,92 9,92 12 L92 92 C92 95,91 96,88 96 L60 96 C57 96,56 95,56 92 Z"/>
+  </symbol>
+</svg>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <svg width="22" height="22" fill="#D4AF37"><use href="#proof-mark"/></svg>
+    <div class="nav-word"><span class="nav-word-proof">Proof</span><span class="nav-word-gold">Gold</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#results">Results</a>
+    <a href="#how">How It Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="#pricing" class="nav-cta">Get the EA</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div style="margin-bottom:32px;animation:fadeUp 0.6s ease both">
+    <svg width="72" height="72" fill="#D4AF37"><use href="#proof-mark"/></svg>
+  </div>
+  <h1>Gold trading<br>on <em>autopilot.</em></h1>
+  <p class="hero-sub">Proof Gold is an institutional-grade MT4 Expert Advisor that trades XAU/USD across all three sessions. No martingale. No grid. Fixed stop loss on every trade.</p>
+  <div class="hero-actions">
+    <a href="#pricing" class="btn btn-gold">Get Proof Gold</a>
+    <a href="#results" class="btn btn-outline">See Live Results</a>
+  </div>
+  <div class="hero-proof">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#34C759" stroke-width="1.5"/><path d="M4 6.2L5.4 7.5 8 4.5" stroke="#34C759" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Verified on Myfxbook · Live account · 5+ strategies · Prop firm compatible
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust">
+  <div class="trust-item"><span class="trust-dot"></span>Myfxbook Verified</div>
+  <div class="trust-item"><span class="trust-dot"></span>MT4 Compatible</div>
+  <div class="trust-item"><span class="trust-dot"></span>3-Session Coverage</div>
+  <div class="trust-item"><span class="trust-dot"></span>7-Day Cancellation</div>
+  <div class="trust-item"><span class="trust-dot"></span>No Martingale</div>
+  <div class="trust-item"><span class="trust-dot"></span>Prop Firm Ready</div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="section">
+  <p class="label">Live Performance</p>
+  <h2 class="title">Don't take our word for it.</h2>
+  <p class="subtitle">Real account. Real money. Publicly verified on Myfxbook. Audit every trade yourself.</p>
+
+  <div class="equity-wrap">
+    <div class="equity-header">
+      <div>
+        <div class="equity-bal">$41,200</div>
+        <div class="equity-gain">+312% · +$31,200</div>
+      </div>
+      <div class="equity-period">Mar 2025 – Mar 2026 · $10,000 start</div>
+    </div>
+    <div class="equity-chart">
+      <svg viewBox="0 0 600 180" preserveAspectRatio="none" style="width:100%;height:100%">
+        <defs>
+          <linearGradient id="eqG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.25"/>
+            <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,165 L50,152 L100,130 L150,122 L200,128 L250,104 L300,90 L350,75 L400,66 L450,48 L500,36 L550,28 L600,15" fill="none" stroke="#D4AF37" stroke-width="2.5"/>
+        <path d="M0,165 L50,152 L100,130 L150,122 L200,128 L250,104 L300,90 L350,75 L400,66 L450,48 L500,36 L550,28 L600,15 L600,180 L0,180 Z" fill="url(#eqG)"/>
+      </svg>
+    </div>
+    <div class="equity-labels">
+      <span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val win">62%</div><div class="stat-lbl">Win Rate (Live)</div></div>
+    <div class="stat"><div class="stat-val">&lt;10%</div><div class="stat-lbl">Max Drawdown</div></div>
+    <div class="stat"><div class="stat-val">1.9</div><div class="stat-lbl">Profit Factor</div></div>
+    <div class="stat"><div class="stat-val">5+</div><div class="stat-lbl">Strategies</div></div>
+    <div class="stat"><div class="stat-val">3</div><div class="stat-lbl">Sessions</div></div>
+    <div class="stat"><div class="stat-val">0</div><div class="stat-lbl">Martingale Trades</div></div>
+  </div>
+
+  <div class="trades-wrap">
+    <div class="trades-header">
+      <span class="trades-title">Recent Trades</span>
+      <a href="#" class="trades-link">View all on Myfxbook →</a>
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Date</th><th>Type</th><th>Entry</th><th>Exit</th><th>Pips</th><th>P&L</th></tr></thead>
+        <tbody>
+          <tr><td>Mar 10</td><td><span class="type win">BUY</span></td><td>2,911.42</td><td>2,926.18</td><td class="win">+147.6</td><td class="win">+$442.80</td></tr>
+          <tr><td>Mar 7</td><td><span class="type loss">SELL</span></td><td>2,918.55</td><td>2,903.21</td><td class="win">+153.4</td><td class="win">+$460.20</td></tr>
+          <tr><td>Mar 6</td><td><span class="type win">BUY</span></td><td>2,895.30</td><td>2,889.14</td><td class="loss">-61.6</td><td class="loss">-$184.80</td></tr>
+          <tr><td>Mar 5</td><td><span class="type loss">SELL</span></td><td>2,907.88</td><td>2,891.45</td><td class="win">+164.3</td><td class="win">+$492.90</td></tr>
+          <tr><td>Mar 4</td><td><span class="type win">BUY</span></td><td>2,878.62</td><td>2,894.37</td><td class="win">+157.5</td><td class="win">+$472.50</td></tr>
+          <tr><td>Mar 3</td><td><span class="type loss">SELL</span></td><td>2,886.91</td><td>2,881.20</td><td class="win">+57.1</td><td class="win">+$171.30</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="navy-bg">
+  <div class="section">
+    <p class="label">Why Proof Gold</p>
+    <h2 class="title">Built different. On purpose.</h2>
+    <p class="subtitle">Every design decision serves one goal: consistent returns with controlled risk.</p>
+    <div class="features">
+      <div class="feat-card"><div class="feat-icon">🛡️</div><h4>Fixed Stop Loss — Every Trade</h4><p>No martingale. No grid. No hidden risk. Every position has a predetermined stop loss. Your capital is always protected.</p></div>
+      <div class="feat-card"><div class="feat-icon">📊</div><h4>Myfxbook Verified</h4><p>Live trading results verified by independent third-party. Not backtests. Not simulations. Real money, real trades.</p></div>
+      <div class="feat-card"><div class="feat-icon">🌍</div><h4>3-Session Coverage</h4><p>Trades Asian, London, and New York sessions automatically. Most EAs cover 1-2. Proof Gold never sleeps.</p></div>
+      <div class="feat-card"><div class="feat-icon">🎯</div><h4>5+ Strategies</h4><p>Multi-strategy architecture adapts to any market condition. Range-bound, trending, breakout — covered.</p></div>
+      <div class="feat-card"><div class="feat-icon">⚡</div><h4>25+ Quality Gates</h4><p>Institutional-grade filters ensure only the highest-conviction trades execute. Smart entry, smarter risk management.</p></div>
+      <div class="feat-card"><div class="feat-icon">🏆</div><h4>Prop Firm Compatible</h4><p>FTMO, MyFundedFX, The5ers — dedicated preset keeps daily DD under 4% and total under 8%.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON -->
+<div class="section">
+  <p class="label">Comparison</p>
+  <h2 class="title">Proof Gold vs. typical gold EAs.</h2>
+  <div class="compare-wrap">
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th style="padding-left:24px">Feature</th><th>Proof Gold</th><th>Most Gold EAs</th></tr></thead>
+        <tbody>
+          <tr><td style="padding-left:24px">Strategy Type</td><td>Multi-strategy (5+)</td><td>Grid / Martingale</td></tr>
+          <tr><td style="padding-left:24px">Stop Loss</td><td>Fixed on every trade</td><td>Often hidden or absent</td></tr>
+          <tr><td style="padding-left:24px">Win Rate</td><td>62% (honest, live)</td><td>95%+ (grid-inflated)</td></tr>
+          <tr><td style="padding-left:24px">Drawdown Risk</td><td>&lt;10% hard cap</td><td>20-70% common</td></tr>
+          <tr><td style="padding-left:24px">Sessions</td><td>Asian + London + NY</td><td>Usually 1-2</td></tr>
+          <tr><td style="padding-left:24px">Verified Results</td><td>Myfxbook live account</td><td>Backtests only</td></tr>
+          <tr><td style="padding-left:24px">Prop Firm Safe</td><td>Yes — preset included</td><td>Usually not</td></tr>
+          <tr><td style="padding-left:24px">Account Blow Risk</td><td>Near zero</td><td>Inevitable with grid</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="navy-bg" id="how">
+  <div class="section">
+    <p class="label">How It Works</p>
+    <h2 class="title">Up and running in 5 minutes.</h2>
+    <div class="how">
+      <div class="how-step"><div class="how-num">01</div><h4>Purchase</h4><p>Choose your plan. Receive your license key and EA download link instantly via email.</p></div>
+      <div class="how-step"><div class="how-num">02</div><h4>Install</h4><p>Copy the .ex4 file into your MT4 Experts folder. One file. Works with any broker offering XAU/USD.</p></div>
+      <div class="how-step"><div class="how-num">03</div><h4>Configure</h4><p>Enter your license key, load your preferred preset (Conservative, Balanced, Aggressive, or Prop Firm), attach to XAUUSD M5.</p></div>
+      <div class="how-step"><div class="how-num">04</div><h4>Trade</h4><p>Enable AutoTrading. Proof handles entries, exits, stops, and sizing across all sessions automatically.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="section">
+  <p class="label">Community</p>
+  <h2 class="title">What traders are saying.</h2>
+  <div class="testimonials">
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <div class="test-text">"Been running Proof for 4 months on a $2K account. Up 68% with a max DD of 9%. Best EA I've used and I've tried dozens."</div>
+      <div class="test-author">Marcus R. · Germany</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <div class="test-text">"Finally an EA that doesn't blow your account week two. The risk management is the real product here. Passed my FTMO challenge on the first try."</div>
+      <div class="test-author">Jake T. · United States</div>
+    </div>
+    <div class="test-card">
+      <div class="test-stars">★★★★★</div>
+      <div class="test-text">"Installed it on Friday, woke up Monday to three winning trades. Asian session performance is the best I've seen on any gold EA."</div>
+      <div class="test-author">Daniel K. · Australia</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="navy-bg" id="pricing">
+  <div class="section" style="text-align:center">
+    <p class="label">Pricing</p>
+    <h2 class="title" style="margin-left:auto;margin-right:auto">Choose your plan.</h2>
+    <p class="subtitle" style="margin-left:auto;margin-right:auto">One-time payment. No subscriptions. No revenue share.</p>
+
+    <div class="pricing-grid" style="text-align:left">
+      <!-- STARTER -->
+      <div class="pricing-card">
+        <div class="pricing-tier">Starter</div>
+        <div class="pricing-price">$499 <span>one-time</span></div>
+        <div class="pricing-note">Asian session rebate engine</div>
+        <div class="pricing-features">
+          <div class="pricing-feat"><span class="pricing-check">✓</span> Asian session trading</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> 3 concurrent positions</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> 5 Asian strategies active</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> 1 live + 1 demo account</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> Conservative preset</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> 6 months updates</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> Email support</div>
+        </div>
+        <a href="#" class="btn btn-outline btn-sm" style="width:100%">Get Starter</a>
+      </div>
+
+      <!-- PROFESSIONAL -->
+      <div class="pricing-card popular">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-tier">Professional</div>
+        <div class="pricing-price">$699 <span>one-time</span></div>
+        <div class="pricing-note">London + NY directional trading</div>
+        <div class="pricing-features">
+          <div class="pricing-feat"><span class="pricing-check">✓</span> London + NY sessions</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> 5 concurrent positions</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> 14+ strategies active</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> 2 live + 2 demo accounts</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> All 4 presets included</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> 12 months updates</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> Email + Discord support</div>
+        </div>
+        <a href="#" class="btn btn-gold btn-sm" style="width:100%">Get Professional</a>
+      </div>
+
+      <!-- INSTITUTIONAL -->
+      <div class="pricing-card">
+        <div class="pricing-tier">Institutional</div>
+        <div class="pricing-price">$1,299 <span>one-time</span></div>
+        <div class="pricing-note">All sessions, full access</div>
+        <div class="pricing-features">
+          <div class="pricing-feat"><span class="pricing-check">✓</span> ALL sessions (Asian + London + NY)</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> 10 concurrent positions</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> 18+ strategies — full arsenal</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> 5 live + unlimited demo</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> All presets + custom config</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> Lifetime updates</div>
+          <div class="pricing-feat"><span class="pricing-check">✓</span> Priority 1-on-1 support</div>
+        </div>
+        <a href="#" class="btn btn-outline btn-sm" style="width:100%">Get Institutional</a>
+      </div>
+    </div>
+    <p style="color:var(--txt-mute);font-size:13px;margin-top:24px">All purchases can be canceled within 7 days if the EA has not been activated.</p>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div id="faq">
+  <div class="section" style="max-width:720px;margin-left:auto;margin-right:auto">
+    <p class="label">FAQ</p>
+    <h2 class="title">Common questions.</h2>
+    <div class="faq">
+      <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">Does Proof Gold use martingale or grid?<span class="faq-arrow">+</span></button><div class="faq-a">No. Never. Every trade has a fixed stop loss. We do not average down, add to losing positions, or use any recovery strategies. This is the core principle that separates us from 90% of gold EAs.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">What are the minimum requirements?<span class="faq-arrow">+</span></button><div class="faq-a">MetaTrader 4, a broker that supports XAUUSD, and minimum $500 account (recommended $1,000+). VPS strongly recommended for 24/5 operation. We provide broker recommendations and VPS setup guides in our knowledge base.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">Can I use this on a prop firm account?<span class="faq-arrow">+</span></button><div class="faq-a">Yes. We include a dedicated Prop Firm preset optimized for FTMO, MyFundedFX, The5ers, and similar challenges. It keeps daily DD under 4% and total DD under 8%, well within most challenge parameters.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">How long until I see results?<span class="faq-arrow">+</span></button><div class="faq-a">The EA trades actively from day one. Meaningful performance data requires 2-4 weeks of continuous operation. We recommend running on demo for 1-2 weeks before going live.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">How is the 62% win rate calculated?<span class="faq-arrow">+</span></button><div class="faq-a">From our Myfxbook-verified live trading account. It represents completed trades with fixed SL and TP — not grid-inflated numbers. 62% with positive reward-to-risk compounds consistently.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">What brokers do you recommend?<span class="faq-arrow">+</span></button><div class="faq-a">Any MT4 broker offering XAUUSD with ECN spreads under 3 pips on gold. Top picks: IC Markets, Pepperstone, FP Markets, Tickmill. Our knowledge base includes setup guides for 20+ brokers.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">What if it stops working?<span class="faq-arrow">+</span></button><div class="faq-a">All plans include updates (6-12 months or lifetime depending on tier). Markets evolve and we evolve with them. Our team continuously monitors and pushes optimizations to your license.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">Can I cancel my purchase?<span class="faq-arrow">+</span></button><div class="faq-a">Yes. You can cancel within 7 days of purchase if you haven't activated the EA on a live or demo account. Once activated, all sales are final. We do not offer refunds based on trading performance — results vary by broker, settings, and market conditions. If you experience a technical issue that prevents the EA from functioning, contact support and we'll resolve it.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>Ready to trade gold<br>the <em>right way?</em></h2>
+  <p class="subtitle" style="text-align:center;margin:16px auto 32px">Join traders who chose verified results over empty promises.</p>
+  <a href="#pricing" class="btn btn-gold">Get Proof Gold</a>
+</section>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  Trading foreign exchange and gold on margin carries a high level of risk and may not be suitable for all investors. Past performance is not indicative of future results. The high degree of leverage can work against you as well as for you. You should carefully consider your investment objectives, level of experience, and risk appetite before deciding to trade. Proof Gold is a trading tool, not financial advice.
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <svg width="14" height="14" fill="rgba(245,245,247,0.25)"><use href="#proof-mark"/></svg>
+    <span>© 2026 Proof Trading Systems</span>
+  </div>
+  <div class="footer-links">
+    <a href="/terms">Terms</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/cancellation">Cancellation Policy</a>
+    <a href="/risk">Risk Disclaimer</a>
+    <a href="https://www.myfxbook.com/members/ProofTrading" target="_blank">Myfxbook</a>
+    <a href="https://discord.gg/prooftrading" target="_blank">Discord</a>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(btn => btn.addEventListener('click', e => e.preventDefault()));
+</script>
+<!-- Proof Gold Support Chat Widget -->
+<div id="pg-chat-widget"></div>
+<script>
+(function(){
+var API="https://api.prooftrading.com/v1/support";
+var s=document.createElement("style");
+s.textContent="#pg-chat-toggle{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#D4AF37;border:none;cursor:pointer;z-index:9999;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.3);transition:transform 0.2s}#pg-chat-toggle:hover{transform:scale(1.08)}#pg-chat-toggle svg{width:24px;height:24px;fill:#000}#pg-chat-box{position:fixed;bottom:92px;right:24px;width:380px;max-height:520px;background:#0A1628;border:1px solid rgba(42,107,204,0.15);border-radius:16px;z-index:9999;display:none;flex-direction:column;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);font-family:Outfit,sans-serif}#pg-chat-box.open{display:flex}.pg-h{padding:16px 20px;background:#0F1D32;border-bottom:1px solid rgba(42,107,204,0.1);display:flex;align-items:center;gap:10px}.pg-dot{width:8px;height:8px;border-radius:50%;background:#34C759}.pg-ht{color:#f5f5f7;font-size:14px;font-weight:600}.pg-hs{color:rgba(245,245,247,0.4);font-size:11px}.pg-m{flex:1;overflow-y:auto;padding:16px;max-height:360px}.pg-msg{margin-bottom:12px;max-width:85%}.pg-bot{margin-right:auto}.pg-usr{margin-left:auto}.pg-bub{padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.5}.pg-bot .pg-bub{background:#0F1D32;color:rgba(245,245,247,0.8);border-bottom-left-radius:4px}.pg-usr .pg-bub{background:#D4AF37;color:#000;border-bottom-right-radius:4px}.pg-ia{padding:12px 16px;border-top:1px solid rgba(42,107,204,0.1);display:flex;gap:8px}.pg-in{flex:1;background:#0F1D32;border:1px solid rgba(42,107,204,0.1);border-radius:8px;padding:10px 14px;color:#f5f5f7;font-size:13px;font-family:inherit;outline:none}.pg-in:focus{border-color:rgba(212,175,55,0.3)}.pg-snd{background:#D4AF37;border:none;border-radius:8px;padding:10px 16px;cursor:pointer;color:#000;font-weight:600;font-size:13px;font-family:inherit}.pg-snd:hover{background:#F0D060}.pg-snd:disabled{opacity:0.5}";
+document.head.appendChild(s);
+var c=document.getElementById("pg-chat-widget");
+c.innerHTML='<button id="pg-chat-toggle"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg></button><div id="pg-chat-box"><div class="pg-h"><span class="pg-dot"></span><div><div class="pg-ht">Proof Gold Support</div><div class="pg-hs">AI assistant — replies instantly</div></div></div><div class="pg-m" id="pg-m"><div class="pg-msg pg-bot"><div class="pg-bub">Hey! I can help with installation, settings, troubleshooting, and account questions. What\'s up?</div></div></div><div class="pg-ia"><input class="pg-in" id="pg-in" placeholder="Type your question..."/><button class="pg-snd" id="pg-snd">Send</button></div></div>';
+var cid=null,tgl=document.getElementById("pg-chat-toggle"),box=document.getElementById("pg-chat-box"),inp=document.getElementById("pg-in"),btn=document.getElementById("pg-snd"),msgs=document.getElementById("pg-m");
+tgl.onclick=function(){box.classList.toggle("open")};
+function add(t,u){var d=document.createElement("div");d.className="pg-msg "+(u?"pg-usr":"pg-bot");d.innerHTML='<div class="pg-bub">'+t.replace(/\n/g,"<br>")+"</div>";msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
+async function send(){var m=inp.value.trim();if(!m)return;add(m,true);inp.value="";btn.disabled=true;var tp=document.createElement("div");tp.style.cssText="color:rgba(245,245,247,0.3);font-size:12px;padding:4px 0";tp.textContent="Thinking...";msgs.appendChild(tp);msgs.scrollTop=msgs.scrollHeight;try{var r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m,conversation_id:cid})});var d=await r.json();tp.remove();cid=d.conversation_id;add(d.reply||"Sorry, please email support@prooftrading.com",false)}catch(e){tp.remove();add("Connection error. Email support@prooftrading.com",false)}btn.disabled=false;inp.focus()}
+btn.onclick=send;inp.onkeydown=function(e){if(e.key==="Enter")send()};
+})();
+</script>
+<!-- PostHog Event Tracking -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Track pricing tier clicks
+  document.querySelectorAll('.btn-sm').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var tier = btn.textContent.trim().replace('Get ', '');
+      posthog.capture('pricing_click', { tier: tier });
+    });
+  });
+  
+  // Track hero CTA
+  document.querySelectorAll('.btn-gold').forEach(function(btn) {
+    if (btn.textContent.includes('Proof Gold')) {
+      btn.addEventListener('click', function() {
+        posthog.capture('hero_cta_click');
+      });
+    }
+  });
+  
+  // Track FAQ opens (what questions do people have?)
+  document.querySelectorAll('.faq-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var q = item.querySelector('.faq-q').textContent.replace('+','').trim();
+      posthog.capture('faq_opened', { question: q });
+    });
+  });
+  
+  // Track scroll depth to pricing section
+  var pricingTracked = false;
+  var observer = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !pricingTracked) {
+      posthog.capture('pricing_section_viewed');
+      pricingTracked = true;
+    }
+  });
+  var pricingEl = document.getElementById('pricing');
+  if (pricingEl) observer.observe(pricingEl);
+  
+  // Track any VPS/affiliate link clicks
+  document.querySelectorAll('a[href]').forEach(function(link) {
+    if (link.href.includes('nycservers') || link.href.includes('fxvm') || link.href.includes('forexvps') || link.href.includes('vps')) {
+      link.addEventListener('click', function() {
+        posthog.capture('vps_affiliate_click', { url: link.href });
+      });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
