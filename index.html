@@ -27,27 +27,27 @@ body { background: #000; color: #f5f5f7; font-family: 'Outfit', -apple-system, s
 @keyframes fadeUp { from { opacity:0; transform:translateY(24px) } to { opacity:1; transform:translateY(0) } }
 
 /* NAV */
-.nav { position:fixed; top:0; left:0; right:0; z-index:200; height:48px; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(16px,4vw,48px); background:rgba(0,0,0,0.75); backdrop-filter:saturate(180%) blur(20px); border-bottom:1px solid rgba(255,255,255,0.06); }
+.nav { position:fixed; top:0; left:0; right:0; z-index:200; height:56px; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(16px,4vw,48px); background:rgba(0,0,0,0.75); backdrop-filter:saturate(180%) blur(20px); border-bottom:1px solid rgba(255,255,255,0.06); }
 .nav-left { display:flex; align-items:center; gap:10px; }
 .nav-word { display:flex; align-items:baseline; gap:5px; }
-.nav-word-proof { font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:20px; letter-spacing:0.14em; color:var(--gold); text-transform:uppercase; line-height:1; }
-.nav-word-gold { font-family:'Outfit',sans-serif; font-weight:300; font-size:11px; letter-spacing:0.18em; color:rgba(245,245,247,0.45); text-transform:uppercase; line-height:1; padding-bottom:1px; }
+.nav-word-proof { font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:24px; letter-spacing:0.14em; color:var(--gold); text-transform:uppercase; line-height:1; }
+.nav-word-gold { font-family:'Outfit',sans-serif; font-weight:300; font-size:13px; letter-spacing:0.18em; color:rgba(245,245,247,0.45); text-transform:uppercase; line-height:1; padding-bottom:1px; }
 .nav-links { display:flex; align-items:center; gap:24px; }
-.nav-links a { font-size:12px; font-weight:400; color:rgba(245,245,247,0.6); text-decoration:none; transition:color 0.25s; }
+.nav-links a { font-size:14px; font-weight:400; color:rgba(245,245,247,0.6); text-decoration:none; transition:color 0.25s; }
 .nav-links a:hover { color:var(--txt); }
-.nav-cta { font-size:12px!important; font-weight:600!important; color:#000!important; background:var(--gold); padding:7px 18px; border-radius:980px; transition:background 0.25s; }
+.nav-cta { font-size:14px!important; font-weight:600!important; color:#000!important; background:var(--gold); padding:7px 18px; border-radius:980px; transition:background 0.25s; }
 .nav-cta:hover { background:var(--gold-lt); }
 
 /* HERO */
 .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:120px 24px 60px; background:radial-gradient(ellipse 70% 50% at 50% 100%, var(--navy) 0%, #000 100%); }
 .hero h1 { font-weight:700; font-size:clamp(44px,7.5vw,88px); line-height:1.06; letter-spacing:-0.025em; max-width:820px; animation:fadeUp 0.8s ease both; }
 .hero h1 em { font-style:normal; color:var(--gold); }
-.hero-sub { margin-top:18px; font-weight:400; font-size:clamp(16px,2vw,20px); line-height:1.5; color:var(--txt-dim); max-width:500px; animation:fadeUp 0.8s 0.12s ease both; }
+.hero-sub { margin-top:18px; font-weight:400; font-size:clamp(18px,2.5vw,24px); line-height:1.6; color:var(--txt-dim); max-width:580px; animation:fadeUp 0.8s 0.12s ease both; }
 .hero-actions { margin-top:36px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center; animation:fadeUp 0.8s 0.24s ease both; }
-.hero-proof { margin-top:28px; font-size:12px; color:var(--txt-mute); display:flex; align-items:center; gap:6px; animation:fadeUp 0.8s 0.34s ease both; }
+.hero-proof { margin-top:28px; font-size:14px; color:var(--txt-mute); display:flex; align-items:center; gap:6px; animation:fadeUp 0.8s 0.34s ease both; }
 
 /* BUTTONS */
-.btn { display:inline-flex; align-items:center; justify-content:center; font-family:inherit; font-weight:600; font-size:16px; border-radius:980px; padding:14px 32px; border:none; cursor:pointer; transition:all 0.25s; text-decoration:none; }
+.btn { display:inline-flex; align-items:center; justify-content:center; font-family:inherit; font-weight:600; font-size:17px; border-radius:980px; padding:16px 36px; border:none; cursor:pointer; transition:all 0.25s; text-decoration:none; }
 .btn-gold { background:var(--gold); color:#000; }
 .btn-gold:hover { background:var(--gold-lt); }
 .btn-outline { background:transparent; color:var(--txt); border:1px solid rgba(255,255,255,0.15); }
@@ -56,58 +56,58 @@ body { background: #000; color: #f5f5f7; font-family: 'Outfit', -apple-system, s
 
 /* TRUST BAR */
 .trust { display:flex; align-items:center; justify-content:center; gap:clamp(16px,3.5vw,48px); flex-wrap:wrap; padding:36px 24px; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background:var(--navy); }
-.trust-item { font-weight:500; font-size:12px; color:rgba(245,245,247,0.4); display:flex; align-items:center; gap:7px; }
+.trust-item { font-weight:500; font-size:14px; color:rgba(245,245,247,0.4); display:flex; align-items:center; gap:7px; }
 .trust-dot { width:5px; height:5px; border-radius:50%; background:var(--green); }
 
 /* SECTIONS */
 .section { padding:clamp(60px,10vw,100px) clamp(16px,4vw,48px); max-width:1080px; margin:0 auto; }
-.label { font-weight:600; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--blue); margin-bottom:12px; }
+.label { font-weight:600; font-size:14px; letter-spacing:0.14em; text-transform:uppercase; color:var(--blue); margin-bottom:12px; }
 .title { font-weight:700; font-size:clamp(28px,4.5vw,48px); line-height:1.1; letter-spacing:-0.02em; margin-bottom:16px; }
-.subtitle { font-weight:400; font-size:16px; line-height:1.55; color:var(--txt-dim); max-width:520px; }
+.subtitle { font-weight:400; font-size:18px; line-height:1.6; color:var(--txt-dim); max-width:600px; }
 
 /* EQUITY */
 .equity-wrap { background:var(--navy); border:1px solid var(--border); border-radius:16px; padding:32px 24px 16px; margin-top:36px; }
 .equity-header { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:12px; margin-bottom:16px; }
 .equity-bal { font-weight:700; font-size:36px; letter-spacing:-0.02em; }
-.equity-gain { font-weight:600; font-size:14px; color:var(--green); }
-.equity-period { font-size:12px; color:var(--txt-mute); }
+.equity-gain { font-weight:600; font-size:16px; color:var(--green); }
+.equity-period { font-size:14px; color:var(--txt-mute); }
 .equity-chart { width:100%; height:180px; }
-.equity-labels { display:flex; justify-content:space-between; font-size:10px; color:rgba(245,245,247,0.2); margin-top:6px; padding:0 4px; }
+.equity-labels { display:flex; justify-content:space-between; font-size:12px; color:rgba(245,245,247,0.2); margin-top:6px; padding:0 4px; }
 
 /* STATS */
 .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1px; background:var(--border); border-radius:12px; overflow:hidden; margin-top:32px; }
 .stat { background:var(--navy-mid); padding:24px 20px; }
-.stat-val { font-weight:700; font-size:22px; margin-bottom:2px; }
-.stat-lbl { font-size:11px; color:var(--txt-mute); letter-spacing:0.04em; text-transform:uppercase; }
+.stat-val { font-weight:700; font-size:28px; margin-bottom:2px; }
+.stat-lbl { font-size:13px; color:var(--txt-mute); letter-spacing:0.04em; text-transform:uppercase; }
 
 /* TRADES TABLE */
 .trades-wrap { background:var(--navy); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-top:36px; }
 .trades-header { padding:20px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); }
-.trades-title { font-weight:600; font-size:15px; }
-.trades-link { font-size:12px; color:var(--blue); text-decoration:none; }
+.trades-title { font-weight:600; font-size:17px; }
+.trades-link { font-size:14px; color:var(--blue); text-decoration:none; }
 table { width:100%; border-collapse:collapse; }
-table th { font-size:10px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--txt-mute); text-align:left; padding:12px 14px; border-bottom:1px solid rgba(42,107,204,0.06); }
-table td { font-size:13px; color:rgba(245,245,247,0.7); padding:13px 14px; border-bottom:1px solid rgba(255,255,255,0.03); }
+table th { font-size:12px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--txt-mute); text-align:left; padding:12px 14px; border-bottom:1px solid rgba(42,107,204,0.06); }
+table td { font-size:15px; color:rgba(245,245,247,0.7); padding:13px 14px; border-bottom:1px solid rgba(255,255,255,0.03); }
 table tr:last-child td { border-bottom:none; }
 .win { color:var(--green); font-weight:600; }
 .loss { color:var(--red); font-weight:600; }
-.type { font-weight:600; font-size:11px; }
+.type { font-weight:600; font-size:13px; }
 
 /* HOW */
 .how { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border-radius:16px; overflow:hidden; margin-top:36px; }
 .how-step { background:var(--navy-mid); padding:36px 24px; transition:background 0.3s; }
 .how-step:hover { background:var(--navy-lt); }
 .how-num { font-weight:800; font-size:40px; color:rgba(42,107,204,0.15); margin-bottom:14px; line-height:1; }
-.how-step h4 { font-weight:600; font-size:16px; margin-bottom:6px; }
-.how-step p { font-size:13px; line-height:1.5; color:rgba(245,245,247,0.4); }
+.how-step h4 { font-weight:600; font-size:18px; margin-bottom:6px; }
+.how-step p { font-size:15px; line-height:1.5; color:rgba(245,245,247,0.4); }
 
 /* FEATURES */
 .features { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; margin-top:36px; }
 .feat-card { background:var(--navy-mid); border:1px solid var(--border); border-radius:12px; padding:28px 24px; transition:background 0.3s; }
 .feat-card:hover { background:var(--navy-lt); }
 .feat-icon { font-size:24px; margin-bottom:14px; }
-.feat-card h4 { font-weight:600; font-size:15px; margin-bottom:6px; }
-.feat-card p { font-size:13px; line-height:1.55; color:rgba(245,245,247,0.4); }
+.feat-card h4 { font-weight:600; font-size:17px; margin-bottom:6px; }
+.feat-card p { font-size:15px; line-height:1.55; color:rgba(245,245,247,0.4); }
 
 /* COMPARISON */
 .compare-wrap { background:var(--navy); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-top:36px; }
@@ -121,7 +121,7 @@ table tr:last-child td { border-bottom:none; }
 .test-card { background:var(--navy-mid); border:1px solid var(--border); border-radius:12px; padding:28px 24px; }
 .test-stars { color:var(--gold); font-size:14px; letter-spacing:2px; margin-bottom:12px; }
 .test-text { font-size:14px; line-height:1.6; color:rgba(245,245,247,0.6); margin-bottom:16px; }
-.test-author { font-size:12px; color:var(--txt-mute); }
+.test-author { font-size:14px; color:var(--txt-mute); }
 
 /* PRICING */
 .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:40px; align-items:start; }
@@ -129,23 +129,23 @@ table tr:last-child td { border-bottom:none; }
 .pricing-card:hover { border-color:rgba(42,107,204,0.2); }
 .pricing-card.popular { border-color:rgba(212,175,55,0.3); transform:scale(1.02); }
 .pricing-card.popular::before { content:''; position:absolute; top:-1px; left:15%; right:15%; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
-.pricing-badge { position:absolute; top:12px; right:12px; font-size:10px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); background:rgba(212,175,55,0.1); padding:4px 10px; border-radius:980px; }
+.pricing-badge { position:absolute; top:12px; right:12px; font-size:12px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); background:rgba(212,175,55,0.1); padding:4px 10px; border-radius:980px; }
 .pricing-tier { font-weight:600; font-size:18px; margin-bottom:4px; }
 .pricing-price { font-weight:700; font-size:44px; letter-spacing:-0.03em; margin:8px 0 2px; }
-.pricing-price span { font-size:15px; font-weight:400; color:var(--txt-dim); }
-.pricing-note { font-size:13px; color:var(--txt-mute); margin-bottom:24px; }
+.pricing-price span { font-size:17px; font-weight:400; color:var(--txt-dim); }
+.pricing-note { font-size:15px; color:var(--txt-mute); margin-bottom:24px; }
 .pricing-features { margin-bottom:28px; }
-.pricing-feat { display:flex; align-items:center; gap:9px; padding:8px 0; font-size:13px; color:rgba(245,245,247,0.65); border-bottom:1px solid rgba(255,255,255,0.03); }
+.pricing-feat { display:flex; align-items:center; gap:9px; padding:10px 0; font-size:15px; color:rgba(245,245,247,0.65); border-bottom:1px solid rgba(255,255,255,0.03); }
 .pricing-feat:last-child { border-bottom:none; }
-.pricing-check { color:var(--green); font-size:13px; flex-shrink:0; }
+.pricing-check { color:var(--green); font-size:15px; flex-shrink:0; }
 
 /* FAQ */
 .faq { margin-top:36px; max-width:680px; margin-left:auto; margin-right:auto; }
 .faq-item { border-bottom:1px solid rgba(255,255,255,0.06); }
-.faq-q { width:100%; background:none; border:none; color:var(--txt); font-family:inherit; font-size:15px; font-weight:500; padding:20px 0; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+.faq-q { width:100%; background:none; border:none; color:var(--txt); font-family:inherit; font-size:17px; font-weight:500; padding:20px 0; text-align:left; cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
 .faq-q:hover { color:var(--gold); }
 .faq-arrow { font-size:18px; color:var(--txt-mute); transition:transform 0.3s; }
-.faq-a { font-size:14px; line-height:1.65; color:rgba(245,245,247,0.45); max-height:0; overflow:hidden; transition:max-height 0.35s ease, padding 0.35s ease; padding-bottom:0; }
+.faq-a { font-size:16px; line-height:1.65; color:rgba(245,245,247,0.45); max-height:0; overflow:hidden; transition:max-height 0.35s ease, padding 0.35s ease; padding-bottom:0; }
 .faq-item.open .faq-a { max-height:400px; padding-bottom:20px; }
 .faq-item.open .faq-arrow { transform:rotate(45deg); }
 
@@ -155,7 +155,7 @@ table tr:last-child td { border-bottom:none; }
 .cta h2 em { font-style:normal; color:var(--gold); }
 
 .disclaimer { max-width:600px; margin:0 auto; padding:0 24px 48px; font-size:11px; line-height:1.6; color:rgba(245,245,247,0.14); text-align:center; }
-footer { padding:20px clamp(16px,4vw,48px); display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.04); font-size:12px; color:rgba(245,245,247,0.25); }
+footer { padding:20px clamp(16px,4vw,48px); display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(255,255,255,0.04); font-size:14px; color:rgba(245,245,247,0.25); }
 .footer-left { display:flex; align-items:center; gap:8px; }
 .footer-links { display:flex; gap:20px; }
 .footer-links a { color:rgba(245,245,247,0.25); text-decoration:none; }
@@ -297,8 +297,8 @@ footer { padding:20px clamp(16px,4vw,48px); display:flex; align-items:center; ju
       <div class="feat-card"><div class="feat-icon">📊</div><h4>Myfxbook Verified</h4><p>Live trading results verified by independent third-party. Not backtests. Not simulations. Real money, real trades.</p></div>
       <div class="feat-card"><div class="feat-icon">🌍</div><h4>3-Session Coverage</h4><p>Trades Asian, London, and New York sessions automatically. Most EAs cover 1-2. Proof Gold never sleeps.</p></div>
       <div class="feat-card"><div class="feat-icon">🎯</div><h4>5+ Strategies</h4><p>Multi-strategy architecture adapts to any market condition. Range-bound, trending, breakout — covered.</p></div>
-      <div class="feat-card"><div class="feat-icon">⚡</div><h4>25+ Quality Gates</h4><p>Institutional-grade filters ensure only the highest-conviction trades execute. Smart entry, smarter risk management.</p></div>
-      <div class="feat-card"><div class="feat-icon">🏆</div><h4>Prop Firm Compatible</h4><p>FTMO, MyFundedFX, The5ers — dedicated preset keeps daily DD under 4% and total under 8%.</p></div>
+      <div class="feat-card"><div class="feat-icon">⚡</div><h4>Built-In Protection</h4><p>Before every trade, 25 safety checks run automatically. Spread too wide? It waits. News coming? It pauses. Daily loss limit hit? It stops. Your money comes first.</p></div>
+      <div class="feat-card"><div class="feat-icon">🏆</div><h4>Prop Firm Protected</h4><p>Auto-detects FTMO, FundedNext, The5ers. Keeps daily DD under 4%, total under 8%. Even if your VPS crashes, every trade has a hard stop loss and backup take profit on the broker — your challenge stays alive.</p></div>
     </div>
   </div>
 </div>
@@ -334,7 +334,7 @@ footer { padding:20px clamp(16px,4vw,48px); display:flex; align-items:center; ju
     <div class="how">
       <div class="how-step"><div class="how-num">01</div><h4>Purchase</h4><p>Choose your plan. Receive your license key and EA download link instantly via email.</p></div>
       <div class="how-step"><div class="how-num">02</div><h4>Install</h4><p>Copy the .ex4 file into your MT4 Experts folder. One file. Works with any broker offering XAU/USD.</p></div>
-      <div class="how-step"><div class="how-num">03</div><h4>Configure</h4><p>Enter your license key, load your preferred preset (Conservative, Balanced, Aggressive, or Prop Firm), attach to XAUUSD M5.</p></div>
+      <div class="how-step"><div class="how-num">03</div><h4>Attach</h4><p>Drag the EA onto your gold chart and click OK. It auto-detects your broker and configures everything for you. Zero settings to change.</p></div>
       <div class="how-step"><div class="how-num">04</div><h4>Trade</h4><p>Enable AutoTrading. Proof handles entries, exits, stops, and sizing across all sessions automatically.</p></div>
     </div>
   </div>
@@ -361,6 +361,33 @@ footer { padding:20px clamp(16px,4vw,48px); display:flex; align-items:center; ju
       <div class="test-author">Daniel K. · Australia</div>
     </div>
   </div>
+</div>
+
+<!-- CRASH PROTECTION -->
+<div style="padding:80px clamp(16px,4vw,48px);text-align:center;background:#000;">
+  <p class="label">When Everything Goes Wrong</p>
+  <h2 class="title" style="margin-left:auto;margin-right:auto;max-width:700px;">Your account survives.<br>Even when your server doesn't.</h2>
+  <p class="subtitle" style="margin:20px auto 48px;max-width:620px;text-align:center;">VPS crashes. Internet drops. Servers go offline. Most EAs leave your trades unprotected. Proof Gold doesn't.</p>
+  
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:900px;margin:0 auto;">
+    <div style="background:var(--navy-mid);border-radius:16px;padding:32px 24px;text-align:left;">
+      <div style="font-size:28px;margin-bottom:12px;">🛡️</div>
+      <h4 style="font-weight:600;font-size:17px;margin-bottom:8px;color:var(--txt);">Hard Stop Loss — Always</h4>
+      <p style="font-size:15px;line-height:1.6;color:rgba(245,245,247,0.45);">Every trade has a real stop loss on your broker's server. Not managed by the EA. Not "mental." If the EA dies, your broker still protects you.</p>
+    </div>
+    <div style="background:var(--navy-mid);border-radius:16px;padding:32px 24px;text-align:left;">
+      <div style="font-size:28px;margin-bottom:12px;">🎯</div>
+      <h4 style="font-weight:600;font-size:17px;margin-bottom:8px;color:var(--txt);">Backup Take Profit</h4>
+      <p style="font-size:15px;line-height:1.6;color:rgba(245,245,247,0.45);">A winning trade shouldn't become a losing trade just because your VPS rebooted. A backup profit target sits on the broker — catching your gains even while you're offline.</p>
+    </div>
+    <div style="background:var(--navy-mid);border-radius:16px;padding:32px 24px;text-align:left;">
+      <div style="font-size:28px;margin-bottom:12px;">🔄</div>
+      <h4 style="font-weight:600;font-size:17px;margin-bottom:8px;color:var(--txt);">Auto-Recovery on Restart</h4>
+      <p style="font-size:15px;line-height:1.6;color:rgba(245,245,247,0.45);">When your server comes back, the EA finds your open trades, picks up where it left off, and closes anything that's been sitting too long. No orphan trades. No surprises.</p>
+    </div>
+  </div>
+  
+  <p style="margin-top:40px;font-size:16px;color:var(--gold);font-weight:500;">Built for the worst day of your trading life — so you never have to worry about it.</p>
 </div>
 
 <!-- PRICING -->
@@ -423,7 +450,7 @@ footer { padding:20px clamp(16px,4vw,48px); display:flex; align-items:center; ju
         <a href="#" class="btn btn-outline btn-sm" style="width:100%">Get Institutional</a>
       </div>
     </div>
-    <p style="color:var(--txt-mute);font-size:13px;margin-top:24px">All purchases can be canceled within 7 days if the EA has not been activated.</p>
+    <p style="color:var(--txt-mute);font-size:15px;margin-top:24px">All purchases can be canceled within 7 days if the EA has not been activated.</p>
   </div>
 </div>
 
@@ -435,7 +462,7 @@ footer { padding:20px clamp(16px,4vw,48px); display:flex; align-items:center; ju
     <div class="faq">
       <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">Does Proof Gold use martingale or grid?<span class="faq-arrow">+</span></button><div class="faq-a">No. Never. Every trade has a fixed stop loss. We do not average down, add to losing positions, or use any recovery strategies. This is the core principle that separates us from 90% of gold EAs.</div></div>
       <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">What are the minimum requirements?<span class="faq-arrow">+</span></button><div class="faq-a">MetaTrader 4, a broker that supports XAUUSD, and minimum $500 account (recommended $1,000+). VPS strongly recommended for 24/5 operation. We provide broker recommendations and VPS setup guides in our knowledge base.</div></div>
-      <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">Can I use this on a prop firm account?<span class="faq-arrow">+</span></button><div class="faq-a">Yes. We include a dedicated Prop Firm preset optimized for FTMO, MyFundedFX, The5ers, and similar challenges. It keeps daily DD under 4% and total DD under 8%, well within most challenge parameters.</div></div>
+      <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">Can I use this on a prop firm account?<span class="faq-arrow">+</span></button><div class="faq-a">Yes. Proof Gold auto-detects prop firm accounts (FTMO, FundedNext, The5ers, and 35+ others) and activates protection automatically. Daily drawdown stays under 4%, total under 8%. Every trade has a hard stop loss and backup take profit on the broker server — so even if your VPS crashes, your challenge stays alive.</div></div>
       <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">How long until I see results?<span class="faq-arrow">+</span></button><div class="faq-a">The EA trades actively from day one. Meaningful performance data requires 2-4 weeks of continuous operation. We recommend running on demo for 1-2 weeks before going live.</div></div>
       <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">How is the 62% win rate calculated?<span class="faq-arrow">+</span></button><div class="faq-a">From our Myfxbook-verified live trading account. It represents completed trades with fixed SL and TP — not grid-inflated numbers. 62% with positive reward-to-risk compounds consistently.</div></div>
       <div class="faq-item" onclick="this.classList.toggle('open')"><button class="faq-q">What brokers do you recommend?<span class="faq-arrow">+</span></button><div class="faq-a">Any MT4 broker offering XAUUSD with ECN spreads under 3 pips on gold. Top picks: IC Markets, Pepperstone, FP Markets, Tickmill. Our knowledge base includes setup guides for 20+ brokers.</div></div>
