@@ -108,12 +108,34 @@ a{color:var(--gold);text-decoration:none;}
 .success-step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:rgba(212,175,55,0.1);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
 .success-note{font-size:14px;color:var(--text2);line-height:1.7;margin-top:8px;}
 
+/* ONBOARDING QUESTIONNAIRE */
+.onboard-card{background:var(--surface);border:1px solid var(--gold);border-radius:12px;padding:48px 40px;max-width:520px;margin:60px auto;display:none;}
+.onboard-card.visible{display:block;}
+.onboard-card h1{font-size:22px;font-weight:600;margin-bottom:6px;}
+.onboard-card .sub{color:var(--text2);font-size:15px;margin-bottom:28px;line-height:1.6;}
+.onboard-q{margin-bottom:24px;}
+.onboard-q label{display:block;font-size:14px;font-weight:600;color:var(--text);margin-bottom:10px;}
+.onboard-options{display:flex;flex-direction:column;gap:8px;}
+.onboard-opt{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:15px;color:var(--text2);}
+.onboard-opt:hover{border-color:var(--gold);color:var(--text);}
+.onboard-opt.selected{border-color:var(--gold);background:rgba(212,175,55,0.06);color:var(--text);}
+.onboard-opt input{display:none;}
+.onboard-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.onboard-opt.selected .onboard-dot{border-color:var(--gold);background:var(--gold);}
+.onboard-opt.selected .onboard-dot::after{content:'';width:8px;height:8px;border-radius:50%;background:#000;}
+.onboard-progress{display:flex;gap:8px;margin-bottom:24px;}
+.onboard-pip{flex:1;height:4px;border-radius:2px;background:var(--border);}
+.onboard-pip.active{background:var(--gold);}
+.onboard-btns{display:flex;gap:12px;margin-top:24px;}
+.onboard-btns .btn{flex:1;}
+
 /* RESPONSIVE */
 @media(max-width:600px){
   .nav{padding:12px 16px;}
   .container{padding:24px 16px;}
   .login-card{padding:32px 24px;margin:40px auto;}
   .success-card{padding:40px 24px;margin:40px auto;}
+  .onboard-card{padding:32px 24px;margin:40px auto;}
   .license-header{flex-direction:column;align-items:flex-start;gap:8px;}
   .license-grid{grid-template-columns:1fr 1fr;}
   .upgrade-bar{flex-direction:column;gap:12px;text-align:center;}
@@ -136,25 +158,88 @@ a{color:var(--gold);text-decoration:none;}
   </div>
 </nav>
 
-<!-- SUCCESS SCREEN (shown after Stripe payment) -->
-<div class="container">
+<!-- SUCCESS SCREEN — Step 1: Celebration -->
+<div class="container" id="successContainer">
 <div id="successScreen" class="success-card">
   <div class="success-icon">🎉</div>
   <h1>Welcome to Proof Gold.</h1>
-  <p class="sub">Your purchase was successful. Your license key and setup instructions are being sent to your email right now. Check your inbox (and spam folder).</p>
-  
-  <div class="success-steps">
-    <h3>What happens next</h3>
-    <div class="success-step"><div class="success-step-num">1</div><div>Check your email for your <strong style="color:var(--text);">license key</strong> (PG-XXXX-XXXX-XXXX-XXXX) and download link.</div></div>
-    <div class="success-step"><div class="success-step-num">2</div><div>Follow our <a href="setup.html" style="color:var(--gold);">step-by-step setup guide</a> — it takes about 5 minutes, no experience needed.</div></div>
-    <div class="success-step"><div class="success-step-num">3</div><div>Once attached to your chart, click AutoTrading and you're done. <strong style="color:var(--gold);">Proof Gold takes over from here.</strong></div></div>
+  <p class="sub">Your purchase was successful. Your license key and setup instructions are being sent to your email right now.</p>
+  <p class="sub" style="margin-top:12px;">Before we get you set up, let us know a little about your setup so we can give you <strong style="color:var(--text);">personalized guidance</strong> instead of generic instructions.</p>
+  <button class="btn btn-gold" style="width:100%;margin-top:24px;" onclick="showOnboarding()">Let's Get Started →</button>
+  <p class="success-note" style="margin-top:16px;">Takes 30 seconds. Helps us help you.</p>
+</div>
+
+<!-- SUCCESS SCREEN — Step 2: Onboarding Questions -->
+<div id="onboardScreen" class="onboard-card">
+  <div class="onboard-progress">
+    <div class="onboard-pip active" id="pip1"></div>
+    <div class="onboard-pip" id="pip2"></div>
+    <div class="onboard-pip" id="pip3"></div>
+    <div class="onboard-pip" id="pip4"></div>
   </div>
 
-  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-    <a href="setup.html" class="btn btn-gold" style="padding:14px 32px;font-size:15px;border-radius:8px;text-decoration:none;">📖 Setup Guide</a>
-    <button class="btn-outline" style="padding:14px 32px;font-size:15px;border-radius:8px;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--text);font-family:inherit;" onclick="document.getElementById('successScreen').parentElement.style.display='none';document.getElementById('loginContainer').style.display='block';">View My License</button>
+  <!-- Q1: Experience -->
+  <div id="onboardQ1" class="onboard-step">
+    <h1>How experienced are you with EAs?</h1>
+    <p class="sub">This helps us tailor your setup instructions — no judgment either way.</p>
+    <div class="onboard-options" data-group="experience">
+      <div class="onboard-opt" onclick="selectOpt(this,'experience','beginner')"><div class="onboard-dot"></div>Brand new — never used an EA before</div>
+      <div class="onboard-opt" onclick="selectOpt(this,'experience','some')"><div class="onboard-dot"></div>I've used a few EAs before</div>
+      <div class="onboard-opt" onclick="selectOpt(this,'experience','advanced')"><div class="onboard-dot"></div>I'm experienced — just point me to the file</div>
+    </div>
+    <div class="onboard-btns"><button class="btn btn-gold" onclick="nextQ(2)">Next →</button></div>
   </div>
-  <p class="success-note">Need help? Email <a href="mailto:support@proof.trading">support@proof.trading</a> — we usually respond within a few hours.</p>
+
+  <!-- Q2: MT4 -->
+  <div id="onboardQ2" class="onboard-step" style="display:none;">
+    <h1>Do you have MT4 installed?</h1>
+    <p class="sub">MT4 (MetaTrader 4) is the platform the EA runs on.</p>
+    <div class="onboard-options" data-group="mt4">
+      <div class="onboard-opt" onclick="selectOpt(this,'mt4','yes')"><div class="onboard-dot"></div>Yes — MT4 is ready to go</div>
+      <div class="onboard-opt" onclick="selectOpt(this,'mt4','no')"><div class="onboard-dot"></div>No — I need to install it</div>
+      <div class="onboard-opt" onclick="selectOpt(this,'mt4','unsure')"><div class="onboard-dot"></div>I'm not sure what MT4 is</div>
+    </div>
+    <div class="onboard-btns"><button class="btn btn-outline" onclick="prevQ(1)">← Back</button><button class="btn btn-gold" onclick="nextQ(3)">Next →</button></div>
+  </div>
+
+  <!-- Q3: Broker -->
+  <div id="onboardQ3" class="onboard-step" style="display:none;">
+    <h1>Do you have a broker account?</h1>
+    <p class="sub">You need a broker that offers gold (XAU/USD) trading.</p>
+    <div class="onboard-options" data-group="broker">
+      <div class="onboard-opt" onclick="selectOpt(this,'broker','yes')"><div class="onboard-dot"></div>Yes — I have a broker with gold trading</div>
+      <div class="onboard-opt" onclick="selectOpt(this,'broker','no')"><div class="onboard-dot"></div>No — I need help choosing a broker</div>
+      <div class="onboard-opt" onclick="selectOpt(this,'broker','unsure')"><div class="onboard-dot"></div>I have a broker but not sure about gold</div>
+    </div>
+    <div class="onboard-btns"><button class="btn btn-outline" onclick="prevQ(2)">← Back</button><button class="btn btn-gold" onclick="nextQ(4)">Next →</button></div>
+  </div>
+
+  <!-- Q4: VPS -->
+  <div id="onboardQ4" class="onboard-step" style="display:none;">
+    <h1>Do you have a VPS?</h1>
+    <p class="sub">A VPS is a cloud computer that runs the EA 24/7 even when your laptop is off. It's not required but strongly recommended.</p>
+    <div class="onboard-options" data-group="vps">
+      <div class="onboard-opt" onclick="selectOpt(this,'vps','yes')"><div class="onboard-dot"></div>Yes — I already have a VPS running</div>
+      <div class="onboard-opt" onclick="selectOpt(this,'vps','no')"><div class="onboard-dot"></div>No — I'll run it on my own computer for now</div>
+      <div class="onboard-opt" onclick="selectOpt(this,'vps','want')"><div class="onboard-dot"></div>No — but I'd like to get one</div>
+    </div>
+    <div class="onboard-btns"><button class="btn btn-outline" onclick="prevQ(3)">← Back</button><button class="btn btn-gold" onclick="submitOnboarding()">See My Personalized Guide →</button></div>
+  </div>
+</div>
+
+<!-- SUCCESS SCREEN — Step 3: Personalized Results -->
+<div id="resultsScreen" class="success-card" style="max-width:560px;">
+  <div class="success-icon">✅</div>
+  <h1>Your personalized setup plan</h1>
+  <p class="sub" id="resultsIntro"></p>
+  
+  <div class="success-steps" id="resultsList"></div>
+
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+    <a href="setup.html" id="resultsMainBtn" class="btn btn-gold" style="padding:14px 32px;font-size:15px;border-radius:8px;text-decoration:none;">📖 Start Setup Guide</a>
+    <button class="btn-outline" style="padding:14px 32px;font-size:15px;border-radius:8px;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--text);font-family:inherit;" onclick="document.getElementById('successContainer').style.display='none';document.getElementById('loginContainer').style.display='block';">View My License</button>
+  </div>
+  <p class="success-note">Check your email for your license key. Need help? <a href="mailto:support@proof.trading">support@proof.trading</a></p>
 </div>
 </div>
 
@@ -221,14 +306,106 @@ const API = "https://proofgold.vercel.app";
   if (params.get('success') === 'true') {
     document.getElementById('successScreen').classList.add('visible');
     document.getElementById('loginContainer').style.display = 'none';
-    
-    // Pre-fill email if we can get it from the session
-    const sessionId = params.get('session_id');
-    if (sessionId) {
-      // Could fetch session details here in the future
-    }
   }
 })();
+
+// ── ONBOARDING QUESTIONNAIRE ──────────────────────────────
+const onboardAnswers = { experience: null, mt4: null, broker: null, vps: null };
+
+function showOnboarding() {
+  document.getElementById('successScreen').style.display = 'none';
+  document.getElementById('onboardScreen').classList.add('visible');
+}
+
+function selectOpt(el, group, value) {
+  onboardAnswers[group] = value;
+  el.parentElement.querySelectorAll('.onboard-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function nextQ(num) {
+  // Hide all
+  for (let i = 1; i <= 4; i++) document.getElementById('onboardQ' + i).style.display = 'none';
+  document.getElementById('onboardQ' + num).style.display = 'block';
+  // Update progress pips
+  for (let i = 1; i <= 4; i++) document.getElementById('pip' + i).classList.toggle('active', i <= num);
+}
+
+function prevQ(num) { nextQ(num); }
+
+function submitOnboarding() {
+  const a = onboardAnswers;
+  
+  // Build personalized steps
+  let steps = [];
+  let intro = '';
+  
+  // Beginner vs advanced intro
+  if (a.experience === 'advanced') {
+    intro = 'You know the drill. Here\'s your express checklist:';
+  } else if (a.experience === 'some') {
+    intro = 'You\'ve done this before — here are the key steps tailored to your setup:';
+  } else {
+    intro = 'No worries — we\'ll walk you through everything. Here\'s your personalized plan:';
+  }
+  
+  // Step 1: Email
+  steps.push({ num: '📧', text: '<strong>Check your email</strong> for your license key (PG-XXXX-XXXX-XXXX-XXXX). Check spam too.' });
+  
+  // MT4
+  if (a.mt4 === 'no' || a.mt4 === 'unsure') {
+    steps.push({ num: '💻', text: '<strong>Install MT4 first.</strong> Download it free from your broker\'s website. Our <a href="setup.html" style="color:var(--gold);">setup guide</a> walks you through every step.' });
+  }
+  
+  // Broker
+  if (a.broker === 'no') {
+    steps.push({ num: '🏦', text: '<strong>You need a broker.</strong> We recommend <a href="brokers.html" style="color:var(--gold);">ICMarkets or Pepperstone</a> — they have the lowest gold trading costs. Signing up takes about 10 minutes.' });
+  } else if (a.broker === 'unsure') {
+    steps.push({ num: '🏦', text: '<strong>Check if your broker offers gold (XAUUSD).</strong> If not, see our <a href="brokers.html" style="color:var(--gold);">broker recommendations</a> for easy switching.' });
+  }
+  
+  // VPS
+  if (a.vps === 'want') {
+    steps.push({ num: '☁️', text: '<strong>Get a VPS first</strong> so the EA runs 24/7 from day one. <a href="vps.html" style="color:var(--gold);">ForexVPS.net</a> has MT4 pre-installed — takes 10 minutes to set up.' });
+  } else if (a.vps === 'no') {
+    steps.push({ num: '☁️', text: '<strong>VPS (optional but recommended).</strong> You can start on your own computer, but a <a href="vps.html" style="color:var(--gold);">$10/month VPS</a> lets the EA trade 24 hours a day even when your computer is off.' });
+  }
+  
+  // Setup guide
+  if (a.experience === 'advanced') {
+    steps.push({ num: '⚡', text: '<strong>Install:</strong> Copy .ex4 to MQL4/Experts → Attach to XAUUSD M5 → Enter license key in Inputs → Enable AutoTrading. Done.' });
+  } else {
+    steps.push({ num: '📖', text: '<strong>Follow the setup guide.</strong> It walks you through every single click — from copying the file to seeing the smiley face. <a href="setup.html" style="color:var(--gold);">Open Setup Guide →</a>' });
+  }
+  
+  // Troubleshooting
+  steps.push({ num: '🆘', text: 'Stuck at any point? Check our <a href="troubleshooting.html" style="color:var(--gold);">troubleshooting page</a> or email <a href="mailto:support@proof.trading" style="color:var(--gold);">support@proof.trading</a> — we\'ll even screen-share to set it up for you.' });
+  
+  // Render
+  document.getElementById('resultsIntro').textContent = intro;
+  const list = document.getElementById('resultsList');
+  list.innerHTML = '<h3>Your setup plan</h3>' + steps.map(s => 
+    `<div class="success-step"><div class="success-step-num" style="font-size:16px;">${s.num}</div><div>${s.text}</div></div>`
+  ).join('');
+  
+  // Show results
+  document.getElementById('onboardScreen').style.display = 'none';
+  document.getElementById('resultsScreen').classList.add('visible');
+  
+  // Save to API (best effort — don't block)
+  try {
+    const params = new URLSearchParams(window.location.search);
+    fetch(API + '/v1/telemetry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        license_key: 'onboarding',
+        event: 'onboarding_complete',
+        data: a
+      })
+    }).catch(() => {});
+  } catch(e) {}
+}
 let currentEmail = "";
 let currentKey = "";
 
