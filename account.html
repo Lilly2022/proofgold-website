@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Manage your Proof Gold EA license, view activations, download the EA, and access your trading dashboard.">
 <title>My Account — Proof Gold EA</title>
 <style>
-:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a25;--border:#252535;--text:#e8e8ed;--text2:#8888a0;--gold:#d4a54a;--gold2:#b8912e;--blue:#4a7fd4;--green:#3ab06a;--red:#d44a4a;--orange:#d48a3a;}
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a25;--border:#252535;--text:#e8e8ed;--text2:#8888a0;--gold:#D4AF37;--gold2:#b8912e;--blue:#5B9CF6;--green:#3DDC84;--red:#FF6B6B;--orange:#d48a3a;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'SF Pro Text',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
 a{color:var(--gold);text-decoration:none;}
@@ -148,7 +149,7 @@ a{color:var(--gold);text-decoration:none;}
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-logo">
-    <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#d4a54a"/><text x="16" y="22" text-anchor="middle" font-size="18" font-weight="700" fill="#0a0a0f">P</text></svg>
+    <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#D4AF37"/><text x="16" y="22" text-anchor="middle" font-size="18" font-weight="700" fill="#0a0a0f">P</text></svg>
     Proof Trading
   </div>
   <div class="nav-links">
@@ -439,6 +440,8 @@ async function login() {
     
     currentEmail = email;
     currentKey = key;
+    localStorage.setItem('pg_email', email);
+    localStorage.setItem('pg_key', key);
     renderDashboard(data);
   } catch (e) {
     errEl.textContent = "Connection error. Please try again.";
@@ -573,8 +576,12 @@ async function deactivate(licKey, accountNum) {
 function logout() {
   currentEmail = "";
   currentKey = "";
+  localStorage.removeItem('pg_email');
+  localStorage.removeItem('pg_key');
   document.getElementById("dashboard").style.display = "none";
   document.getElementById("loginScreen").style.display = "block";
+  document.getElementById("loginEmail").value = "";
+  document.getElementById("loginKey").value = "";
   document.getElementById("loginBtn").textContent = "View My Account";
   document.getElementById("loginBtn").disabled = false;
 }
@@ -592,6 +599,17 @@ function timeAgo(date) {
 document.addEventListener("keydown", e => {
   if (e.key === "Enter" && document.getElementById("loginScreen").style.display !== "none") login();
 });
+
+// Auto-login from saved session
+(function() {
+  const savedEmail = localStorage.getItem('pg_email');
+  const savedKey = localStorage.getItem('pg_key');
+  if (savedEmail && savedKey) {
+    document.getElementById('loginEmail').value = savedEmail;
+    document.getElementById('loginKey').value = savedKey;
+    login();
+  }
+})();
 </script>
 </body>
 </html>
