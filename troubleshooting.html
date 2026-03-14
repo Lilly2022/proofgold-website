@@ -68,7 +68,7 @@ footer{padding:32px clamp(24px,5vw,64px);text-align:center;font-size:14px;color:
     <div class="issue-symptom">"The EA says my license key is invalid"</div>
     <div class="fix"><h3>✓ Fix 1 — Check the key</h3><p>Open the EA properties (right-click chart → Expert Advisors → Properties → Inputs). Make sure <code>InpLicenseKey</code> has your full key including the PG- prefix: <code>PG-XXXX-XXXX-XXXX-XXXX</code>. No extra spaces before or after.</p></div>
     <div class="fix"><h3>✓ Fix 2 — Check the email</h3><p>Make sure <code>InpLicenseEmail</code> matches exactly the email you used when purchasing. Uppercase/lowercase doesn't matter, but spelling does.</p></div>
-    <div class="fix"><h3>✓ Fix 3 — Enable WebRequest</h3><p>The EA needs internet access to verify your license. In MT4: Tools → Options → Expert Advisors → Check <code>Allow WebRequest for listed URL</code>. Click "Add" and paste: <code>https://proof.trading</code>. Click OK and restart the EA.</p></div>
+    <div class="fix"><h3>✓ Fix 3 — Enable WebRequest</h3><p>The EA needs internet access to verify your license. In MT4: Tools → Options → Expert Advisors → Check <code>Allow WebRequest for listed URL</code>. Click "Add" and paste: <code>https://api.proof.trading</code>. Click OK and restart the EA.</p></div>
   </div>
 
   <div class="issue">
