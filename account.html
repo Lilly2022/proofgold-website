@@ -404,8 +404,8 @@ function submitOnboarding() {
         event: 'onboarding_complete',
         data: a
       })
-    }).catch(() => {});
-  } catch(e) {}
+    }).catch(function(err) { console.warn('[telemetry]', err.message); });
+  } catch(e) { console.warn('[telemetry]', e.message); }
 }
 let currentEmail = "";
 let currentKey = "";
