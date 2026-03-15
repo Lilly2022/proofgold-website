@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.proof.trading; img-src 'self' data:; frame-ancestors 'none';">
 <meta name="description" content="Join the Proof Gold affiliate program. Earn 25-40% commission per referral with marketing materials and tracking.">
 <title>Proof Gold — Affiliate Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -170,12 +171,16 @@ footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,25
     <!-- Success state (hidden by default) -->
     <div id="signup-success" class="link-box" style="display:none;text-align:center;">
       <div style="font-size:20px;margin-bottom:8px;color:var(--green);">You're in!</div>
+      <div style="background:var(--navy-mid);border-radius:8px;padding:14px;margin-bottom:16px;">
+        <div style="font-size:11px;color:var(--txt-mute);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Your Affiliate ID (save this!)</div>
+        <div id="new-aff-id" style="font-family:monospace;font-size:18px;font-weight:700;color:var(--gold);letter-spacing:0.04em;"></div>
+      </div>
       <p style="font-size:14px;color:var(--txt-dim);margin-bottom:16px;">Your referral link:</p>
       <div class="link-box-row" style="justify-content:center;">
         <input class="link-box-input" id="new-ref-link" readonly style="max-width:420px;" />
         <button class="btn-copy" onclick="copyNewLink()">Copy Link</button>
       </div>
-      <p style="font-size:12px;color:var(--txt-mute);margin-top:12px;">Share this link anywhere. When someone buys through it, you earn a commission.</p>
+      <p style="font-size:12px;color:var(--txt-mute);margin-top:12px;">Share this link anywhere. When someone buys through it, you earn a commission.<br>You'll need your email + affiliate ID to log in to the dashboard.</p>
     </div>
   </div>
 
@@ -184,10 +189,11 @@ footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,25
     <p class="sec-label">Your Dashboard</p>
     <h2 class="sec-title">Clicks, conversions, and earnings.</h2>
     <div class="link-box">
-      <div class="link-box-label">Log in with your affiliate email</div>
-      <div class="link-box-row">
+      <div class="link-box-label">Log in with your email and affiliate ID</div>
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:440px;">
         <input class="link-box-input" id="login-email" type="email" placeholder="your@email.com" style="color:var(--txt);" />
-        <button class="btn-rewardful" onclick="affiliateLogin()">View Stats</button>
+        <input class="link-box-input" id="login-affid" placeholder="aff_xxxxxxxxxxxx" style="color:var(--txt);font-family:monospace;" />
+        <button class="btn-rewardful" onclick="affiliateLogin()" style="border-radius:8px;">View Stats</button>
       </div>
       <p id="login-error" style="font-size:12px;color:var(--red);margin-top:8px;display:none;"></p>
     </div>
@@ -591,6 +597,7 @@ async function affiliateSignup() {
     if (res.ok) {
       document.getElementById('signup-section').style.display = 'none';
       document.getElementById('signup-success').style.display = 'block';
+      document.getElementById('new-aff-id').textContent = data.affiliate_id;
       document.getElementById('new-ref-link').value = data.referral_url;
     } else {
       errEl.textContent = data.error || 'Something went wrong.';
@@ -617,11 +624,12 @@ function copyNewLink() {
 // ── Login / Dashboard ───────────────────────────────────
 async function affiliateLogin() {
   const email = document.getElementById('login-email').value.trim();
+  const affId = document.getElementById('login-affid').value.trim();
   const errEl = document.getElementById('login-error');
   errEl.style.display = 'none';
 
-  if (!email) {
-    errEl.textContent = 'Please enter your email.';
+  if (!email || !affId) {
+    errEl.textContent = 'Please enter both your email and affiliate ID.';
     errEl.style.display = 'block';
     return;
   }
@@ -630,7 +638,7 @@ async function affiliateLogin() {
     const res = await fetch(API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'login', email })
+      body: JSON.stringify({ action: 'login', email: email, affiliate_id: affId })
     });
     const data = await res.json();
 
@@ -658,17 +666,28 @@ async function affiliateLogin() {
     document.getElementById('stat-paid').textContent = '$' + (e.paid / 100).toFixed(2);
     document.getElementById('ref-link').value = data.referral_url;
 
-    // Render commissions
+    // Render commissions (safe DOM construction — no innerHTML with API data)
     if (data.commissions.length > 0) {
       const body = document.getElementById('commissions-body');
-      body.innerHTML = data.commissions.slice(0, 20).map(c => {
-        const statusColors = { pending: '#D4AF37', approved: '#34C759', paid: '#2A6BCC', denied: '#FF453A' };
-        const date = new Date(c.created_at).toLocaleDateString();
-        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);font-size:13px;">' +
-          '<span style="color:var(--txt-dim);">' + date + ' · ' + (c.product_tier || '—') + '</span>' +
-          '<span style="color:' + (statusColors[c.status] || '#fff') + ';font-weight:600;">$' + (c.commission_amount / 100).toFixed(2) + ' <span style="font-weight:400;font-size:11px;opacity:0.6;">' + c.status + '</span></span>' +
-        '</div>';
-      }).join('');
+      body.textContent = '';
+      const statusColors = { pending: '#D4AF37', approved: '#34C759', paid: '#2A6BCC', denied: '#FF453A' };
+      data.commissions.slice(0, 20).forEach(function(c) {
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);font-size:13px;';
+        var left = document.createElement('span');
+        left.style.color = 'var(--txt-dim)';
+        left.textContent = new Date(c.created_at).toLocaleDateString() + ' \u00b7 ' + (c.product_tier || '\u2014');
+        var right = document.createElement('span');
+        right.style.cssText = 'color:' + (statusColors[c.status] || '#fff') + ';font-weight:600;';
+        right.textContent = '$' + (c.commission_amount / 100).toFixed(2) + ' ';
+        var badge = document.createElement('span');
+        badge.style.cssText = 'font-weight:400;font-size:11px;opacity:0.6;';
+        badge.textContent = c.status;
+        right.appendChild(badge);
+        row.appendChild(left);
+        row.appendChild(right);
+        body.appendChild(row);
+      });
       document.getElementById('commissions-list').style.display = 'block';
     }
 

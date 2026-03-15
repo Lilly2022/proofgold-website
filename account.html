@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.proof.trading; img-src 'self' data:; frame-ancestors 'none';">
 <meta name="description" content="Manage your Proof Gold EA license, view activations, download the EA, and access your trading dashboard.">
 <title>My Account — Proof Gold EA</title>
 <style>
@@ -451,6 +452,12 @@ async function login() {
   }
 }
 
+function esc(s) {
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
 function renderDashboard(data) {
   document.getElementById("loginScreen").style.display = "none";
   document.getElementById("dashboard").style.display = "block";
@@ -478,10 +485,10 @@ function renderDashboard(data) {
       lic.activations.forEach(a => {
         const lastSeen = a.last_seen ? timeAgo(new Date(a.last_seen)) : "Never";
         actRows += `<tr>
-          <td class="act-account">${a.account_number}</td>
-          <td>${a.broker}</td>
-          <td>${lastSeen}</td>
-          <td><button class="btn btn-sm btn-outline" onclick="deactivate('${lic.license_key}','${a.account_number}')">Remove</button></td>
+          <td class="act-account">${esc(a.account_number)}</td>
+          <td>${esc(a.broker)}</td>
+          <td>${esc(lastSeen)}</td>
+          <td><button class="btn btn-sm btn-outline" onclick="deactivate('${esc(lic.license_key)}','${esc(a.account_number)}')">Remove</button></td>
         </tr>`;
       });
     }
@@ -495,21 +502,21 @@ function renderDashboard(data) {
     card.className = "license-card";
     card.innerHTML = `
       <div class="license-header">
-        <span class="license-key">${lic.license_key}</span>
-        <span class="tier-badge ${tierClass}">${lic.tier}</span>
+        <span class="license-key">${esc(lic.license_key)}</span>
+        <span class="tier-badge ${esc(tierClass)}">${esc(lic.tier)}</span>
       </div>
       <div class="license-body">
         <div class="license-grid">
-          <div class="license-stat"><span class="stat-label">Status</span><span class="stat-value ${statusClass}">${lic.status.toUpperCase()}</span></div>
-          <div class="license-stat"><span class="stat-label">Max Positions</span><span class="stat-value">${lic.max_positions}</span></div>
-          <div class="license-stat"><span class="stat-label">Sessions</span><span class="stat-value">${lic.sessions_label || (lic.all_sessions ? "All 4" : "Asian")}</span></div>
-          <div class="license-stat"><span class="stat-label">Activations</span><span class="stat-value">${lic.activations.length} / ${lic.max_activations}</span></div>
-          <div class="license-stat"><span class="stat-label">Expires</span><span class="stat-value">${expiry}</span></div>
-          <div class="license-stat"><span class="stat-label">Purchased</span><span class="stat-value">${created}</span></div>
+          <div class="license-stat"><span class="stat-label">Status</span><span class="stat-value ${esc(statusClass)}">${esc(lic.status.toUpperCase())}</span></div>
+          <div class="license-stat"><span class="stat-label">Max Positions</span><span class="stat-value">${parseInt(lic.max_positions) || 0}</span></div>
+          <div class="license-stat"><span class="stat-label">Sessions</span><span class="stat-value">${esc(lic.sessions_label || (lic.all_sessions ? "All 4" : "Asian"))}</span></div>
+          <div class="license-stat"><span class="stat-label">Activations</span><span class="stat-value">${parseInt(lic.activations.length) || 0} / ${parseInt(lic.max_activations) || 0}</span></div>
+          <div class="license-stat"><span class="stat-label">Expires</span><span class="stat-value">${esc(expiry)}</span></div>
+          <div class="license-stat"><span class="stat-label">Purchased</span><span class="stat-value">${esc(created)}</span></div>
         </div>
         <div class="activations-title">
           <span>Active Installations</span>
-          <span style="font-weight:400;font-size:11px;color:var(--text2)">${lic.activations.length}/${lic.max_activations} slots used</span>
+          <span style="font-weight:400;font-size:11px;color:var(--text2)">${parseInt(lic.activations.length) || 0}/${parseInt(lic.max_activations) || 0} slots used</span>
         </div>
         <table class="act-table">
           <thead><tr><th>MT4 Account</th><th>Broker</th><th>Last Seen</th><th></th></tr></thead>
@@ -538,17 +545,27 @@ function renderDashboard(data) {
   
   const svgDL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
   
-  if (data.download_url) {
-    dlGrid.innerHTML += `<a href="${data.download_url}" class="dl-btn" download>${svgDL} Proof Gold EA (.ex4)</a>`;
+  function safeDlLink(url, label) {
+    if (!url || typeof url !== 'string' || !url.startsWith('https://')) return '';
+    var a = document.createElement('a');
+    a.href = url;
+    a.className = 'dl-btn';
+    a.setAttribute('download', '');
+    a.innerHTML = svgDL + ' ' + esc(label);
+    dlGrid.appendChild(a);
+    return true;
+  }
+  if (data.download_url && safeDlLink(data.download_url, 'Proof Gold EA (.ex4)')) {
     dlSection.style.display = "block";
   }
   if (data.preset_urls) {
-    const presets = data.preset_urls;
-    if (presets.conservative) dlGrid.innerHTML += `<a href="${presets.conservative}" class="dl-btn" download>${svgDL} Conservative Preset</a>`;
-    if (presets.balanced) dlGrid.innerHTML += `<a href="${presets.balanced}" class="dl-btn" download>${svgDL} Balanced Preset</a>`;
-    if (presets.aggressive) dlGrid.innerHTML += `<a href="${presets.aggressive}" class="dl-btn" download>${svgDL} Aggressive Preset</a>`;
-    if (presets.propfirm) dlGrid.innerHTML += `<a href="${presets.propfirm}" class="dl-btn" download>${svgDL} PropFirm Preset</a>`;
-    if (Object.values(presets).some(v => v)) dlSection.style.display = "block";
+    var presets = data.preset_urls;
+    var shown = false;
+    if (presets.conservative && safeDlLink(presets.conservative, 'Conservative Preset')) shown = true;
+    if (presets.balanced && safeDlLink(presets.balanced, 'Balanced Preset')) shown = true;
+    if (presets.aggressive && safeDlLink(presets.aggressive, 'Aggressive Preset')) shown = true;
+    if (presets.propfirm && safeDlLink(presets.propfirm, 'PropFirm Preset')) shown = true;
+    if (shown) dlSection.style.display = "block";
   }
 }
 

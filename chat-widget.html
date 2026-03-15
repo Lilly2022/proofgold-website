@@ -75,8 +75,15 @@
 
   function addMessage(text, isUser) {
     const div = document.createElement("div");
-    div.className = `pg-msg pg-msg-${isUser ? "user" : "bot"}`;
-    div.innerHTML = `<div class="pg-msg-bubble">${text.replace(/\n/g, "<br>")}</div>`;
+    div.className = "pg-msg pg-msg-" + (isUser ? "user" : "bot");
+    const bubble = document.createElement("div");
+    bubble.className = "pg-msg-bubble";
+    // Split on newlines and insert <br> safely
+    text.split("\n").forEach(function(line, i) {
+      if (i > 0) bubble.appendChild(document.createElement("br"));
+      bubble.appendChild(document.createTextNode(line));
+    });
+    div.appendChild(bubble);
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
   }
