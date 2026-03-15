@@ -794,9 +794,20 @@ async function checkout(tier) {
 })();
 </script>
 
-<!-- Rewardful affiliate tracking — attributes visits from ?via= links -->
-<script>(function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');</script>
-<script async src='https://r.wdfl.co/rw.js' data-rewardful='YOUR_REWARDFUL_ID'></script>
+<!-- Affiliate click tracking — logs visits from ?via= referral links -->
+<script>
+(function() {
+  var p = new URLSearchParams(window.location.search);
+  var via = p.get('via') || p.get('ref');
+  if (via) {
+    fetch('https://api.proof.trading/v1/affiliate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'click', affiliate_id: via })
+    }).catch(function() {});
+  }
+})();
+</script>
 
 </body>
 </html>
