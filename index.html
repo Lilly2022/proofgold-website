@@ -755,15 +755,22 @@ async function checkout(tier) {
   const originalText = btn.textContent;
   btn.textContent = 'Loading...';
   btn.style.pointerEvents = 'none';
-  
+
   try {
+    // Capture affiliate ref from URL (?via= or ?ref=) for commission attribution
+    const params = new URLSearchParams(window.location.search);
+    const affiliate = params.get('via') || params.get('ref') || null;
+
+    const body = { tier };
+    if (affiliate) body.affiliate = affiliate;
+
     const res = await fetch('https://api.proof.trading/v1/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tier })
+      body: JSON.stringify(body)
     });
     const data = await res.json();
-    
+
     if (data.url) {
       window.location.href = data.url;
     } else {
@@ -786,6 +793,10 @@ async function checkout(tier) {
   d.head.appendChild(s);var toggle=d.createElement("button");toggle.id="pg-chat-toggle";toggle.innerHTML='<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>';d.body.appendChild(toggle);var box=d.createElement("div");box.id="pg-chat-box";box.innerHTML='<div class="pg-h"><div class="pg-dot"></div><div><div class="pg-ht">Proof Gold Support</div><div class="pg-hs">We typically reply instantly</div></div></div><div class="pg-m" id="pg-msgs"></div><div class="pg-ia"><input class="pg-in" id="pg-input" placeholder="Ask anything about Proof Gold..." /><button class="pg-snd" id="pg-send">Send</button></div>';d.body.appendChild(box);var msgs=d.getElementById("pg-msgs"),inp=d.getElementById("pg-input"),btn=d.getElementById("pg-send");toggle.onclick=function(){box.classList.toggle("open");if(box.classList.contains("open")&&!msgs.children.length)add("Hi! I can answer any questions about Proof Gold EA. What would you like to know?",false)};function add(text,isUser){var w=d.createElement("div");w.className="pg-msg "+(isUser?"pg-usr":"pg-bot");var b=d.createElement("div");b.className="pg-bub";b.textContent=text;w.appendChild(b);msgs.appendChild(w);msgs.scrollTop=msgs.scrollHeight}inp.addEventListener("keydown",function(e){if(e.key==="Enter")send()});btn.onclick=send;async function send(){var m=inp.value.trim();if(!m)return;add(m,true);inp.value="";btn.disabled=true;var tp=d.createElement("div");tp.style.cssText="color:rgba(240,237,230,0.3);font-size:13px;padding:4px 0";tp.textContent="Thinking...";msgs.appendChild(tp);msgs.scrollTop=msgs.scrollHeight;try{var r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m,conversation_id:cid})});var data=await r.json();tp.remove();cid=data.conversation_id;add(data.reply||"Sorry, please email proofgoldtrading@proton.me",false)}catch(e){tp.remove();add("Connection error. Email proofgoldtrading@proton.me",false)}btn.disabled=false;inp.focus()}
 })();
 </script>
+
+<!-- Rewardful affiliate tracking — attributes visits from ?via= links -->
+<script>(function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');</script>
+<script async src='https://r.wdfl.co/rw.js' data-rewardful='YOUR_REWARDFUL_ID'></script>
 
 </body>
 </html>

@@ -136,6 +136,7 @@ footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,25
   </div>
   <div class="nav-links">
     <a href="https://proof.trading">Main Site</a>
+    <a href="#join">Join</a>
     <a href="#materials">Materials</a>
     <a href="#swipes">Swipe Files</a>
     <a href="#rules">Rules</a>
@@ -147,15 +148,27 @@ footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,25
   <h1 class="page-title">Affiliate Portal</h1>
   <p class="page-sub">Everything you need to promote Proof Gold and earn 25-40% commission on every sale.</p>
 
+  <!-- ═══ JOIN / SIGNUP ═══ -->
+  <div class="section" id="join">
+    <p class="sec-label">Get Started</p>
+    <h2 class="sec-title">Join the Proof Gold Affiliate Program</h2>
+    <p class="sec-body">Sign up in 30 seconds. Get your unique referral link. Start earning 25-40% commission on every sale you refer — that's up to $519 per customer.</p>
+    <div class="link-box" style="text-align:center;">
+      <a href="https://prooftrading.getrewardful.com/signup" target="_blank" class="btn-rewardful" style="font-size:16px;padding:16px 48px;">Apply Now — It's Free</a>
+      <p style="font-size:12px;color:var(--txt-mute);margin-top:12px;">Already approved? <a href="https://prooftrading.getrewardful.com" style="color:var(--gold);text-decoration:none;">Log in to your dashboard</a> to get your referral link.</p>
+    </div>
+  </div>
+
   <!-- ═══ YOUR LINK ═══ -->
   <div class="section">
     <p class="sec-label">Your Referral Link</p>
     <div class="link-box">
-      <div class="link-box-label">Share this link — commissions tracked automatically</div>
+      <div class="link-box-label">Share this link — commissions tracked automatically via Rewardful</div>
       <div class="link-box-row">
-        <input class="link-box-input" id="ref-link" value="https://proof.trading/?ref=YOUR_ID" readonly />
+        <input class="link-box-input" id="ref-link" value="https://proof.trading/?via=YOUR_ID" readonly />
         <button class="btn-copy" id="btn-copy-link" onclick="copyLink()">Copy Link</button>
       </div>
+      <p style="font-size:12px;color:var(--txt-mute);margin-top:10px;">Replace YOUR_ID with your Rewardful affiliate ID. Find it in your <a href="https://prooftrading.getrewardful.com" style="color:var(--gold);text-decoration:none;">Rewardful dashboard</a>.</p>
     </div>
   </div>
 
@@ -478,6 +491,16 @@ See for yourself: [YOUR AFFILIATE LINK]</div>
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// Auto-populate ref link if affiliate has ?ref= in URL (e.g. from Rewardful)
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('ref') || params.get('via');
+  if (ref) {
+    const input = document.getElementById('ref-link');
+    input.value = 'https://proof.trading/?via=' + encodeURIComponent(ref);
+  }
+})();
+
 function copyLink() {
   const input = document.getElementById('ref-link');
   navigator.clipboard.writeText(input.value);
@@ -487,4 +510,23 @@ function copyLink() {
   setTimeout(() => { btn.textContent = 'Copy Link'; btn.classList.remove('copied'); }, 2000);
 }
 
-function c
+function copySwipe(btn) {
+  const text = btn.parentElement.querySelector('.swipe-text').textContent;
+  navigator.clipboard.writeText(text);
+  btn.textContent = 'Copied!';
+  btn.style.color = '#34C759';
+  btn.style.borderColor = '#34C759';
+  setTimeout(() => {
+    btn.textContent = 'Copy to clipboard';
+    btn.style.color = '';
+    btn.style.borderColor = '';
+  }, 2000);
+}
+</script>
+
+<!-- Rewardful tracking — lets Rewardful attribute visits and conversions -->
+<script>(function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');</script>
+<script async src='https://r.wdfl.co/rw.js' data-rewardful='YOUR_REWARDFUL_ID'></script>
+
+</body>
+</html>
