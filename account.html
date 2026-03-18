@@ -165,6 +165,11 @@ a{color:var(--gold);text-decoration:none;}
 <div id="successScreen" class="success-card">
   <div class="success-icon">🎉</div>
   <h1>Welcome to Proof Gold.</h1>
+  <div id="successLicenseBox" style="display:none;background:#12121C;border-radius:12px;padding:24px;margin-bottom:20px;text-align:center;">
+    <p style="font-size:12px;color:rgba(240,237,230,0.5);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px;">Your License Key</p>
+    <p id="successLicenseKey" style="font-size:22px;font-weight:700;font-family:'SF Mono',monospace;letter-spacing:2px;color:#D4AF37;margin:0;word-break:break-all;"></p>
+    <p style="font-size:12px;color:rgba(240,237,230,0.4);margin:8px 0 0;">Save this key — you'll need it to activate the EA.</p>
+  </div>
   <p class="sub">Your purchase was successful. Your license key and setup instructions are being sent to your email right now.</p>
   <p class="sub" style="margin-top:12px;">Before we get you set up, let us know a little about your setup so we can give you <strong style="color:var(--text);">personalized guidance</strong> instead of generic instructions.</p>
   <button class="btn btn-gold" style="width:100%;margin-top:24px;" onclick="showOnboarding()">Let's Get Started →</button>
@@ -308,6 +313,34 @@ const API = "https://api.proof.trading";
   if (params.get('success') === 'true') {
     document.getElementById('successScreen').classList.add('visible');
     document.getElementById('loginContainer').style.display = 'none';
+
+    // Fetch license key using session_id (webhook may take a few seconds)
+    const sessionId = params.get('session_id');
+    if (sessionId) {
+      let attempts = 0;
+      function fetchLicense() {
+        attempts++;
+        fetch(API + '/v1/lookup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session_id: sessionId })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.licenses && data.licenses.length > 0) {
+            var key = data.licenses[0].license_key;
+            document.getElementById('successLicenseKey').textContent = key;
+            document.getElementById('successLicenseBox').style.display = 'block';
+          } else if (attempts < 5) {
+            setTimeout(fetchLicense, 3000);
+          }
+        })
+        .catch(function() {
+          if (attempts < 5) setTimeout(fetchLicense, 3000);
+        });
+      }
+      setTimeout(fetchLicense, 2000);
+    }
   }
 })();
 
