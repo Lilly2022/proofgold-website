@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.proof.trading; img-src 'self' data:; frame-ancestors 'none';">
 <meta name="description" content="Fix common Proof Gold EA issues: frowning face, license errors, no trades, disconnections, and more.">
+<meta property="og:title" content="Troubleshooting — Proof Gold EA">
+<meta property="og:description" content="Fix common Proof Gold EA issues: frowning face, license errors, no trades, disconnections, and more.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://proof.trading/troubleshooting.html">
+<meta property="og:image" content="https://proof.trading/logo.svg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Troubleshooting — Proof Gold EA">
+<meta name="twitter:description" content="Fix common Proof Gold EA issues: frowning face, license errors, no trades, disconnections, and more.">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
 <title>Troubleshooting — Proof Gold EA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -41,6 +50,7 @@ nav a.back{font-size:15px;color:var(--text-secondary);}
 .still-stuck p{font-size:17px;color:var(--text-body);margin-bottom:20px;}
 .still-stuck a.btn{display:inline-block;padding:14px 36px;background:var(--gold);color:#000;font-weight:700;font-size:16px;border-radius:980px;}
 
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 footer{padding:32px clamp(24px,5vw,64px);text-align:center;font-size:14px;color:var(--text-muted);border-top:1px solid var(--border);}
 </style>
 </head>
@@ -59,13 +69,13 @@ footer{padding:32px clamp(24px,5vw,64px);text-align:center;font-size:14px;color:
 <div class="content">
 
   <div class="issue">
-    <div class="issue-header"><span class="issue-icon">😐</span><h2>EA shows a sad face (not a smiley face)</h2></div>
+    <div class="issue-header"><span class="issue-icon" role="img" aria-label="Flat results">😐</span><h2>EA shows a sad face (not a smiley face)</h2></div>
     <div class="issue-symptom">"I attached the EA but it shows a frown or nothing happens"</div>
     <div class="fix"><h3>✓ Fix</h3><p>The EA needs permission to trade. Right-click the chart → Expert Advisors → Properties → Common tab. Check both <code>Allow live trading</code> and <code>Allow DLL imports</code>. Click OK. Then make sure the <strong>AutoTrading</strong> button in the toolbar is green (not gray/red).</p></div>
   </div>
 
   <div class="issue">
-    <div class="issue-header"><span class="issue-icon">🔑</span><h2>"License Required" or "Invalid License"</h2></div>
+    <div class="issue-header"><span class="issue-icon" role="img" aria-label="License key">🔑</span><h2>"License Required" or "Invalid License"</h2></div>
     <div class="issue-symptom">"The EA says my license key is invalid"</div>
     <div class="fix"><h3>✓ Fix 1 — Check the key</h3><p>Open the EA properties (right-click chart → Expert Advisors → Properties → Inputs). Make sure <code>InpLicenseKey</code> has your full key including the PG- prefix: <code>PG-XXXX-XXXX-XXXX-XXXX</code>. No extra spaces before or after.</p></div>
     <div class="fix"><h3>✓ Fix 2 — Check the email</h3><p>Make sure <code>InpLicenseEmail</code> matches exactly the email you used when purchasing. Uppercase/lowercase doesn't matter, but spelling does.</p></div>
@@ -73,7 +83,7 @@ footer{padding:32px clamp(24px,5vw,64px);text-align:center;font-size:14px;color:
   </div>
 
   <div class="issue">
-    <div class="issue-header"><span class="issue-icon">📉</span><h2>EA is running but not opening trades</h2></div>
+    <div class="issue-header"><span class="issue-icon" role="img" aria-label="Drawdown">📉</span><h2>EA is running but not opening trades</h2></div>
     <div class="issue-symptom">"The smiley face is showing but no trades are being placed"</div>
     <div class="fix"><h3>✓ This is probably normal</h3><p>The EA only trades when market conditions pass all 25 safety checks. During low-volatility periods, it might wait several hours. Check the dashboard on your chart — if it shows the current session as "ACTIVE" and the spread as acceptable, the EA is working correctly and simply waiting for a good setup.</p></div>
     <div class="fix"><h3>✓ Check the Experts tab</h3><p>Click the "Experts" tab at the bottom of MT4. You should see log messages from Proof Gold. If it says "Spread too wide" or "Outside session," that's the EA doing its job — protecting you from bad entries. If you see errors, screenshot them and email us.</p></div>
@@ -81,32 +91,32 @@ footer{padding:32px clamp(24px,5vw,64px);text-align:center;font-size:14px;color:
   </div>
 
   <div class="issue">
-    <div class="issue-header"><span class="issue-icon">🔌</span><h2>EA disconnected or went offline</h2></div>
+    <div class="issue-header"><span class="issue-icon" role="img" aria-label="Connection">🔌</span><h2>EA disconnected or went offline</h2></div>
     <div class="issue-symptom">"My MT4 disconnected or my VPS restarted"</div>
     <div class="fix"><h3>✓ Just restart MT4</h3><p>Proof Gold has built-in crash recovery. When MT4 restarts, the EA automatically finds any open trades from before the disconnect and resumes managing them. Any trades that have been sitting unmanaged for too long are safely closed. You don't need to do anything — just make sure MT4 is running and AutoTrading is enabled.</p></div>
   </div>
 
   <div class="issue">
-    <div class="issue-header"><span class="issue-icon">❌</span><h2>Can't find XAUUSD in MT4</h2></div>
+    <div class="issue-header"><span class="issue-icon" role="img" aria-label="Error">❌</span><h2>Can't find XAUUSD in MT4</h2></div>
     <div class="issue-symptom">"Gold doesn't show up in my chart list"</div>
     <div class="fix"><h3>✓ Fix</h3><p>Press <code>Ctrl+M</code> to open Market Watch. Right-click anywhere in the Market Watch panel → click <code>Show All</code>. Now search for XAUUSD. It might also be listed as "Gold", "XAU/USD", or under a category like "Spot Metals" or "CFDs" depending on your broker. If you still can't find it, your broker might not offer gold — contact them or switch to ICMarkets or Pepperstone.</p></div>
   </div>
 
   <div class="issue">
-    <div class="issue-header"><span class="issue-icon">📂</span><h2>Can't find the EA in Navigator panel</h2></div>
+    <div class="issue-header"><span class="issue-icon" role="img" aria-label="Files">📂</span><h2>Can't find the EA in Navigator panel</h2></div>
     <div class="issue-symptom">"I copied the file but ProofGold doesn't show in Expert Advisors"</div>
     <div class="fix"><h3>✓ Fix 1 — Right folder?</h3><p>Make sure you copied the .ex4 file to the correct folder. In MT4: File → Open Data Folder → MQL4 → Experts. The file should be here — not in a subfolder.</p></div>
     <div class="fix"><h3>✓ Fix 2 — Refresh</h3><p>Right-click "Expert Advisors" in the Navigator panel → click "Refresh." If it still doesn't show, close MT4 completely and reopen it.</p></div>
   </div>
 
   <div class="issue">
-    <div class="issue-header"><span class="issue-icon">⚠️</span><h2>Activation limit reached</h2></div>
+    <div class="issue-header"><span class="issue-icon" role="img" aria-label="Warning">⚠️</span><h2>Activation limit reached</h2></div>
     <div class="issue-symptom">"The EA says I've used all my activations"</div>
     <div class="fix"><h3>✓ Fix</h3><p>Each plan has a limited number of account activations (Starter: 2, Professional: 3, Institutional: 5). If you've changed broker accounts, you need to deactivate the old one first. Go to <a href="account.html">My Account</a>, log in, and click "Deactivate" next to the account you're no longer using. This frees up a slot for your new account.</p></div>
   </div>
 
   <div class="issue">
-    <div class="issue-header"><span class="issue-icon">💰</span><h2>The EA is losing money</h2></div>
+    <div class="issue-header"><span class="issue-icon" role="img" aria-label="Money">💰</span><h2>The EA is losing money</h2></div>
     <div class="issue-symptom">"My first week is negative"</div>
     <div class="fix"><h3>✓ This is normal</h3><p>No trading system wins every day or every week. Proof Gold has a 62% win rate — that means 38% of trades lose. A losing week doesn't mean the EA is broken. It means you're seeing a small sample. We recommend running for at least 30 days before evaluating. The edge compounds over hundreds of trades, not a handful.</p></div>
     <div class="fix"><h3>✓ Check your broker spreads</h3><p>High spreads eat into profits. If you're using a broker with gold spreads above 30 points, consider switching to <a href="brokers.html">ICMarkets or Pepperstone</a>. This alone can double your net profit.</p></div>
