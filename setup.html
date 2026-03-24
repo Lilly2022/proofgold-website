@@ -15,3 +15,175 @@
 <meta name="twitter:description" content="Step-by-step guide to install and configure the Proof Gold EA on MetaTrader 4. Get trading in under 10 minutes.">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <title>Setup Guide — Proof Gold EA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#D4AF37;--gold-bright:#E8C55A;--bg:#08080C;--bg2:#0D0D14;--bg3:#12121C;--text:#F0EDE6;--text-body:rgba(240,237,230,0.80);--text-secondary:rgba(240,237,230,0.55);--text-muted:rgba(240,237,230,0.35);--green:#3DDC84;--border:rgba(212,175,55,0.08);--radius:20px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+::selection{background:var(--gold);color:#000;}
+body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:18px;line-height:1.7;}
+a{color:var(--gold);text-decoration:none;}
+a:hover{color:var(--gold-bright);}
+
+nav{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,5vw,64px);background:rgba(8,8,12,0.95);border-bottom:1px solid var(--border);}
+.nav-brand{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:22px;color:var(--gold);}
+.nav-brand span{font-weight:400;color:var(--text-secondary);margin-left:6px;font-size:16px;font-family:'DM Sans',sans-serif;}
+nav a.back{font-size:15px;color:var(--text-secondary);}
+nav a.back:hover{color:var(--text);}
+
+.hero{text-align:center;padding:80px clamp(24px,5vw,64px) 48px;}
+.hero h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(36px,5vw,56px);font-weight:700;line-height:1.15;margin-bottom:16px;}
+.hero p{font-size:20px;color:var(--text-body);max-width:600px;margin:0 auto;}
+
+.guide{max-width:720px;margin:0 auto;padding:0 clamp(24px,5vw,64px) 100px;}
+
+.step{margin-bottom:64px;position:relative;padding-left:72px;}
+.step-num{position:absolute;left:0;top:0;width:52px;height:52px;border-radius:50%;background:rgba(212,175,55,0.08);border:2px solid rgba(212,175,55,0.2);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:22px;color:var(--gold);}
+.step h2{font-size:24px;font-weight:700;margin-bottom:12px;color:var(--text);}
+.step p{font-size:18px;line-height:1.8;color:var(--text-body);margin-bottom:16px;}
+.step .tip{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:20px 24px;font-size:16px;line-height:1.7;color:var(--text-secondary);margin-top:16px;}
+.step .tip strong{color:var(--gold);font-weight:600;}
+
+.checklist{list-style:none;margin:16px 0;}
+.checklist li{display:flex;align-items:flex-start;gap:12px;padding:10px 0;font-size:17px;color:var(--text-body);line-height:1.6;}
+.checklist li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;margin-top:2px;}
+
+.help-banner{max-width:720px;margin:0 auto 80px;padding:40px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);text-align:center;}
+.help-banner h3{font-size:22px;font-weight:700;margin-bottom:8px;}
+.help-banner p{font-size:17px;color:var(--text-body);margin-bottom:20px;}
+.help-banner a.btn{display:inline-block;padding:14px 36px;background:var(--gold);color:#000;font-weight:700;font-size:16px;border-radius:980px;}
+.help-banner a.btn:hover{background:var(--gold-bright);}
+
+footer{padding:32px clamp(24px,5vw,64px);text-align:center;font-size:14px;color:var(--text-muted);border-top:1px solid var(--border);}
+
+@media(max-width:600px){
+  .step{padding-left:0;padding-top:64px;}
+  .step-num{left:0;top:0;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">Proof <span>Gold</span></a>
+  <a href="/" class="back">← Back to Home</a>
+</nav>
+
+<div class="hero">
+  <h1>Setup Guide</h1>
+  <p>From download to your first trade in under 5 minutes. Follow each step — we'll walk you through everything.</p>
+</div>
+
+<div class="guide">
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <h2>Before You Start</h2>
+    <p>Make sure you have these three things ready:</p>
+    <ul class="checklist">
+      <li><strong>MT4 installed</strong> — Download from your broker's website (ICMarkets, Pepperstone, etc.) if you haven't already. It's free.</li>
+      <li><strong>A trading account with XAU/USD</strong> — Any broker that offers gold trading will work. We recommend ICMarkets (Raw Spread) or Pepperstone (Razor) for the lowest costs.</li>
+      <li><strong>Your license key</strong> — Check the email you used when purchasing. Your key looks like: PG-XXXX-XXXX-XXXX-XXXX</li>
+    </ul>
+    <div class="tip"><strong>Don't have a license key?</strong> Check your email inbox and spam folder. If you can't find it, email us at support@proof.trading with your purchase email and we'll resend it right away.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <h2>Download the EA File</h2>
+    <p>Log in to your <a href="account.html">My Account</a> page using your purchase email and license key. You'll see a download button for the .ex4 file.</p>
+    <p>Save the file somewhere easy to find — like your Desktop.</p>
+    <div class="tip"><strong>What's an .ex4 file?</strong> It's the EA program file that MT4 runs. Think of it like installing an app — you download it once and it does all the work.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <h2>Copy the File to MT4</h2>
+    <p>This is the only technical step, and it takes 30 seconds:</p>
+    <ul class="checklist">
+      <li>Open MT4</li>
+      <li>Click <strong>File</strong> in the top menu</li>
+      <li>Click <strong>Open Data Folder</strong></li>
+      <li>A folder opens. Double-click <strong>MQL4</strong></li>
+      <li>Double-click <strong>Experts</strong></li>
+      <li>Paste the ProofGold .ex4 file here</li>
+      <li>Close the folder and <strong>restart MT4</strong></li>
+    </ul>
+    <div class="tip"><strong>Can't find it?</strong> In MT4, you can also right-click on "Expert Advisors" in the Navigator panel (bottom-left) and click "Open Folder." That takes you directly to the Experts folder.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <h2>Open a Gold Chart</h2>
+    <p>In MT4, open a chart for gold (XAUUSD):</p>
+    <ul class="checklist">
+      <li>Click <strong>File → New Chart</strong></li>
+      <li>Find <strong>XAUUSD</strong> (it might be under "Spot Metals" or "CFDs" depending on your broker)</li>
+      <li>Once the chart opens, right-click the chart → <strong>Timeframes → M5</strong> (5 minutes)</li>
+    </ul>
+    <div class="tip"><strong>Don't see XAUUSD?</strong> Right-click on "Symbols" in Market Watch (Ctrl+M) and click "Show All." XAUUSD should appear. If not, your broker might list it as "Gold" or "XAU/USD" with a slash.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <h2>Attach the EA to Your Chart</h2>
+    <p>Now connect Proof Gold to your gold chart:</p>
+    <ul class="checklist">
+      <li>In the <strong>Navigator</strong> panel (left side), expand <strong>Expert Advisors</strong></li>
+      <li>Find <strong>ProofGold_v1.0</strong> in the list</li>
+      <li>Drag it onto your XAUUSD chart (or double-click it)</li>
+      <li>A settings window pops up</li>
+    </ul>
+    <p>In the settings window:</p>
+    <ul class="checklist">
+      <li><strong>Common tab</strong> → Check "Allow live trading" and "Allow DLL imports"</li>
+      <li><strong>Inputs tab</strong> → Find <strong>InpLicenseKey</strong> → Paste your license key (PG-XXXX-XXXX-XXXX-XXXX)</li>
+      <li><strong>Inputs tab</strong> → Find <strong>InpLicenseEmail</strong> → Type the email you used to purchase</li>
+      <li>Click <strong>OK</strong></li>
+    </ul>
+    <div class="tip"><strong>Everything else is automatic.</strong> The EA auto-detects your broker, your account type, and configures all the trading settings. You don't need to change anything else.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">6</div>
+    <h2>Enable AutoTrading</h2>
+    <p>One final click — the big one:</p>
+    <ul class="checklist">
+      <li>Look at the <strong>toolbar</strong> at the top of MT4</li>
+      <li>Find the <strong>AutoTrading</strong> button (it has a play/stop icon)</li>
+      <li>Click it so it turns <strong>green</strong></li>
+      <li>You should see a <strong>smiley face</strong> in the top-right corner of your chart</li>
+    </ul>
+    <p>That smiley face means Proof Gold is running. It will start looking for trades at the next session.</p>
+    <div class="tip"><strong>That's it. You're done.</strong> Proof Gold is now monitoring the market 24 hours a day. It will open and close trades automatically based on market conditions. You don't need to watch the chart — it works whether you're sleeping, working, or on vacation.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">7</div>
+    <h2>What to Expect</h2>
+    <p>Here's what happens from here:</p>
+    <ul class="checklist">
+      <li><strong>First trades</strong> usually appear within 24 hours, depending on when you start and market conditions</li>
+      <li>The <strong>dashboard</strong> on your chart shows your daily profit, active session, and trade history in real time</li>
+      <li><strong>Some days will be red</strong> — that's normal. The edge shows over weeks and months, not individual days</li>
+      <li>We recommend running for at least <strong>30 days</strong> before evaluating performance</li>
+      <li>You'll receive <strong>milestone emails</strong> as the EA hits trading achievements</li>
+    </ul>
+    <div class="tip"><strong>Pro tip:</strong> For the best results, run the EA on a VPS (a small cloud server, about $10/month) so it trades 24 hours a day even when your computer is off. We recommend <a href="https://www.forexvps.net/" target="_blank" rel="noopener">ForexVPS.net</a> — they pre-install MT4 for you.</div>
+  </div>
+
+</div>
+
+<div class="help-banner">
+  <h3>Stuck? We're here.</h3>
+  <p>Our support team has helped hundreds of traders get set up. No question is too basic — we'd rather hear from you than have you stuck.</p>
+  <a href="mailto:support@proof.trading" class="btn">Email Support</a>
+</div>
+
+<footer>
+  © 2026 Proof Trading. All rights reserved.
+</footer>
+
+</body>
+</html>
