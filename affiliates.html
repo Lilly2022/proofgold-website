@@ -15,3 +15,723 @@
 <meta name="twitter:description" content="Join the Proof Gold affiliate program. Earn 25-40% commission per referral with marketing materials and tracking.">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <title>Proof Gold — Affiliate Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: #000; color: #f5f5f7; font-family: 'Outfit', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+::selection { background: #D4AF37; color: #000; }
+
+:root {
+  --gold: #D4AF37; --gold-lt: #F0D060; --navy: #0A1628; --navy-mid: #0F1D32;
+  --navy-lt: #14253E; --blue: #2A6BCC; --green: #34C759; --red: #FF453A;
+  --txt: #f5f5f7; --txt-dim: rgba(245,245,247,0.5); --txt-mute: rgba(245,245,247,0.3);
+  --border: rgba(42,107,204,0.10);
+}
+
+/* NAV */
+.nav { position:fixed; top:0; left:0; right:0; z-index:200; height:48px; display:flex; align-items:center; justify-content:space-between; padding:0 clamp(16px,4vw,48px); background:rgba(0,0,0,0.75); backdrop-filter:saturate(180%) blur(20px); border-bottom:1px solid rgba(255,255,255,0.06); }
+.nav-left { display:flex; align-items:center; gap:10px; }
+.nav-word { display:flex; align-items:baseline; gap:5px; }
+.nav-word-proof { font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:20px; letter-spacing:0.14em; color:var(--gold); text-transform:uppercase; }
+.nav-word-gold { font-family:'Outfit',sans-serif; font-weight:300; font-size:11px; letter-spacing:0.18em; color:rgba(245,245,247,0.45); text-transform:uppercase; padding-bottom:1px; }
+.nav-links { display:flex; align-items:center; gap:24px; }
+.nav-links a { font-size:12px; font-weight:400; color:rgba(245,245,247,0.6); text-decoration:none; transition:color 0.25s; }
+.nav-links a:hover { color:var(--txt); }
+
+/* LAYOUT */
+.page { max-width:1000px; margin:0 auto; padding:80px 24px 60px; }
+.page-title { font-weight:700; font-size:clamp(28px,4vw,40px); letter-spacing:-0.02em; margin-bottom:6px; }
+.page-sub { font-size:16px; color:var(--txt-dim); margin-bottom:40px; }
+
+/* SECTION */
+.section { margin-bottom:48px; }
+.sec-label { font-weight:600; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:var(--blue); margin-bottom:10px; }
+.sec-title { font-weight:700; font-size:22px; margin-bottom:14px; }
+.sec-body { font-size:14px; line-height:1.6; color:var(--txt-dim); margin-bottom:16px; }
+
+/* LINK BOX */
+.link-box { background:var(--navy); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:24px; }
+.link-box-label { font-size:12px; color:var(--txt-mute); margin-bottom:8px; }
+.link-box-row { display:flex; gap:10px; align-items:center; }
+.link-box-input { flex:1; background:var(--navy-mid); border:1px solid rgba(42,107,204,0.12); border-radius:8px; padding:12px 16px; color:var(--gold); font-family:'Outfit',monospace; font-size:14px; font-weight:500; letter-spacing:0.02em; outline:none; }
+.link-box-input:focus { border-color:rgba(212,175,55,0.3); }
+.btn-copy { background:var(--gold); color:#000; border:none; border-radius:8px; padding:12px 20px; font-family:inherit; font-weight:600; font-size:13px; cursor:pointer; transition:background 0.2s; white-space:nowrap; }
+.btn-copy:hover { background:var(--gold-lt); }
+.btn-copy.copied { background:var(--green); color:#fff; }
+
+/* COMMISSION TIERS */
+.tiers { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border-radius:12px; overflow:hidden; margin-bottom:24px; }
+.tier { background:var(--navy-mid); padding:24px 16px; text-align:center; transition:background 0.3s; }
+.tier:hover { background:var(--navy-lt); }
+.tier-name { font-weight:600; font-size:13px; color:var(--gold); margin-bottom:4px; }
+.tier-pct { font-weight:700; font-size:28px; letter-spacing:-0.02em; margin-bottom:2px; }
+.tier-req { font-size:11px; color:var(--txt-mute); }
+
+/* STATS EMBED */
+.stats-embed { background:var(--navy); border:1px solid var(--border); border-radius:12px; padding:32px; text-align:center; margin-bottom:24px; min-height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.stats-embed p { color:var(--txt-dim); font-size:14px; margin-bottom:16px; }
+.btn-rewardful { background:var(--blue); color:#fff; border:none; border-radius:8px; padding:12px 28px; font-family:inherit; font-weight:600; font-size:14px; cursor:pointer; text-decoration:none; display:inline-block; transition:opacity 0.2s; }
+.btn-rewardful:hover { opacity:0.85; }
+
+/* SWIPE FILES */
+.swipe-grid { display:flex; flex-direction:column; gap:12px; }
+.swipe-card { background:var(--navy); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.swipe-header { padding:16px 20px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:background 0.2s; }
+.swipe-header:hover { background:rgba(42,107,204,0.04); }
+.swipe-title { font-weight:600; font-size:14px; }
+.swipe-tag { font-size:11px; color:var(--txt-mute); background:rgba(255,255,255,0.04); padding:3px 10px; border-radius:99px; }
+.swipe-arrow { font-size:16px; color:var(--txt-mute); transition:transform 0.3s; }
+.swipe-body { padding:0 20px; max-height:0; overflow:hidden; transition:max-height 0.4s ease, padding 0.3s ease; }
+.swipe-card.open .swipe-body { max-height:600px; padding:0 20px 20px; }
+.swipe-card.open .swipe-arrow { transform:rotate(45deg); }
+.swipe-text { font-size:13px; line-height:1.65; color:rgba(245,245,247,0.55); white-space:pre-wrap; }
+.swipe-copy { margin-top:12px; font-size:12px; font-weight:600; color:var(--gold); background:none; border:1px solid rgba(212,175,55,0.25); border-radius:6px; padding:6px 14px; cursor:pointer; transition:border-color 0.2s; }
+.swipe-copy:hover { border-color:var(--gold); }
+
+/* ASSETS */
+.asset-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+.asset-card { background:var(--navy); border:1px solid var(--border); border-radius:12px; padding:20px; text-align:center; transition:border-color 0.3s; }
+.asset-card:hover { border-color:rgba(42,107,204,0.2); }
+.asset-icon { font-size:28px; margin-bottom:10px; }
+.asset-name { font-weight:600; font-size:14px; margin-bottom:4px; }
+.asset-desc { font-size:12px; color:var(--txt-mute); margin-bottom:14px; }
+.btn-download { background:transparent; color:var(--gold); border:1px solid rgba(212,175,55,0.25); border-radius:8px; padding:8px 20px; font-family:inherit; font-weight:500; font-size:12px; cursor:pointer; text-decoration:none; display:inline-block; transition:all 0.2s; }
+.btn-download:hover { background:rgba(212,175,55,0.08); border-color:var(--gold); }
+
+/* COMPARISON TABLE */
+.compare { background:var(--navy); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:24px; }
+.compare table { width:100%; border-collapse:collapse; }
+.compare th { font-size:10px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--txt-mute); text-align:left; padding:12px 14px; background:var(--navy-mid); }
+.compare td { font-size:12px; color:rgba(245,245,247,0.6); padding:10px 14px; border-bottom:1px solid rgba(255,255,255,0.03); }
+.compare tr:last-child td { border-bottom:none; }
+.compare td:nth-child(2) { color:var(--green); font-weight:500; }
+
+/* VIDEO SCRIPT */
+.script-box { background:var(--navy); border:1px solid var(--border); border-radius:12px; padding:24px; margin-bottom:24px; }
+.script-section { margin-bottom:16px; }
+.script-label { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--blue); margin-bottom:4px; }
+.script-text { font-size:13px; line-height:1.6; color:rgba(245,245,247,0.6); }
+
+/* RULES */
+.rules { background:var(--navy); border:1px solid rgba(255,69,58,0.15); border-radius:12px; padding:24px; }
+.rules-title { font-weight:600; font-size:15px; color:var(--red); margin-bottom:12px; }
+.rule { font-size:13px; color:rgba(245,245,247,0.5); padding:6px 0; display:flex; gap:8px; }
+.rule-x { color:var(--red); font-weight:700; flex-shrink:0; }
+
+/* FOOTER */
+footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,255,0.04); font-size:12px; color:rgba(245,245,247,0.2); text-align:center; }
+
+@media(max-width:640px) {
+  .tiers { grid-template-columns:repeat(2,1fr); }
+  .link-box-row { flex-direction:column; }
+  .link-box-input { width:100%; }
+}
+</style>
+</head>
+<body>
+
+<svg style="display:none">
+  <symbol id="proof-mark" viewBox="0 0 100 100">
+    <path d="M8 38 C8 35,10 33,13 33 L41 33 C43 33,44 35,44 38 L44 60 L50 46 L44 60 L44 92 C44 95,43 96,40 96 L12 96 C9 96,8 95,8 92 Z"/>
+    <path d="M56 92 L56 60 L50 46 L56 60 L56 12 C56 9,58 8,60 8 L88 8 C91 8,92 9,92 12 L92 92 C92 95,91 96,88 96 L60 96 C57 96,56 95,56 92 Z"/>
+  </symbol>
+</svg>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <svg width="22" height="22" fill="#D4AF37"><use href="#proof-mark"/></svg>
+    <div class="nav-word"><span class="nav-word-proof">Proof</span><span class="nav-word-gold">Gold</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="https://proof.trading">Main Site</a>
+    <a href="#join">Join</a>
+    <a href="#materials">Materials</a>
+    <a href="#swipes">Swipe Files</a>
+    <a href="#rules">Rules</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <h1 class="page-title">Affiliate Portal</h1>
+  <p class="page-sub">Everything you need to promote Proof Gold and earn 25-40% commission on every sale.</p>
+
+  <!-- ═══ JOIN / SIGNUP ═══ -->
+  <div class="section" id="join">
+    <p class="sec-label">Get Started</p>
+    <h2 class="sec-title">Join the Proof Gold Affiliate Program</h2>
+    <p class="sec-body">Sign up in 30 seconds. Get your unique referral link. Start earning 25-40% commission on every sale you refer — that's up to $519 per customer.</p>
+
+    <!-- Signup Form -->
+    <div id="signup-section" class="link-box">
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:440px;margin:0 auto;">
+        <input class="link-box-input" id="signup-name" placeholder="Your name" style="color:var(--txt);" />
+        <input class="link-box-input" id="signup-email" type="email" placeholder="Your email" style="color:var(--txt);" />
+        <input class="link-box-input" id="signup-paypal" placeholder="PayPal email (for payouts)" style="color:var(--txt);" />
+        <input class="link-box-input" id="signup-website" placeholder="Website or social link (optional)" style="color:var(--txt);" />
+        <button class="btn-rewardful" style="font-size:16px;padding:14px 0;width:100%;border-radius:8px;" onclick="affiliateSignup()">Join — It's Free</button>
+        <p id="signup-error" style="font-size:12px;color:var(--red);text-align:center;display:none;"></p>
+      </div>
+      <p style="font-size:12px;color:var(--txt-mute);margin-top:14px;text-align:center;">Already have an account? <a href="#dashboard" onclick="document.getElementById('login-email').focus()" style="color:var(--gold);text-decoration:none;">Log in below</a> to see your stats.</p>
+    </div>
+
+    <!-- Success state (hidden by default) -->
+    <div id="signup-success" class="link-box" style="display:none;text-align:center;">
+      <div style="font-size:20px;margin-bottom:8px;color:var(--green);">You're in!</div>
+      <div style="background:var(--navy-mid);border-radius:8px;padding:14px;margin-bottom:16px;">
+        <div style="font-size:11px;color:var(--txt-mute);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Your Affiliate ID (save this!)</div>
+        <div id="new-aff-id" style="font-family:monospace;font-size:18px;font-weight:700;color:var(--gold);letter-spacing:0.04em;"></div>
+      </div>
+      <p style="font-size:14px;color:var(--txt-dim);margin-bottom:16px;">Your referral link:</p>
+      <div class="link-box-row" style="justify-content:center;">
+        <input class="link-box-input" id="new-ref-link" readonly style="max-width:420px;" />
+        <button class="btn-copy" onclick="copyNewLink()">Copy Link</button>
+      </div>
+      <p style="font-size:12px;color:var(--txt-mute);margin-top:12px;">Share this link anywhere. When someone buys through it, you earn a commission.<br>You'll need your email + affiliate ID to log in to the dashboard.</p>
+    </div>
+  </div>
+
+  <!-- ═══ AFFILIATE DASHBOARD ═══ -->
+  <div class="section" id="dashboard">
+    <p class="sec-label">Your Dashboard</p>
+    <h2 class="sec-title">Clicks, conversions, and earnings.</h2>
+    <div class="link-box">
+      <div class="link-box-label">Log in with your email and affiliate ID</div>
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:440px;">
+        <input class="link-box-input" id="login-email" type="email" placeholder="your@email.com" style="color:var(--txt);" />
+        <input class="link-box-input" id="login-affid" placeholder="aff_xxxxxxxxxxxx" style="color:var(--txt);font-family:monospace;" />
+        <button class="btn-rewardful" onclick="affiliateLogin()" style="border-radius:8px;">View Stats</button>
+      </div>
+      <p id="login-error" style="font-size:12px;color:var(--red);margin-top:8px;display:none;"></p>
+    </div>
+
+    <!-- Stats (hidden until login) -->
+    <div id="stats-panel" style="display:none;">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px;">
+        <div class="tier" style="background:var(--navy-mid);">
+          <div style="font-size:11px;color:var(--txt-mute);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Clicks (30d)</div>
+          <div id="stat-clicks" style="font-weight:700;font-size:24px;">—</div>
+        </div>
+        <div class="tier" style="background:var(--navy-mid);">
+          <div style="font-size:11px;color:var(--txt-mute);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Conversions</div>
+          <div id="stat-conversions" style="font-weight:700;font-size:24px;">—</div>
+        </div>
+        <div class="tier" style="background:var(--navy-mid);">
+          <div style="font-size:11px;color:var(--txt-mute);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Conv. Rate</div>
+          <div id="stat-rate" style="font-weight:700;font-size:24px;">—</div>
+        </div>
+        <div class="tier" style="background:var(--navy-mid);">
+          <div style="font-size:11px;color:var(--txt-mute);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Your Tier</div>
+          <div id="stat-tier" style="font-weight:700;font-size:24px;color:var(--gold);">—</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden;margin-bottom:24px;">
+        <div class="tier" style="background:var(--navy-mid);">
+          <div style="font-size:11px;color:var(--txt-mute);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Pending</div>
+          <div id="stat-pending" style="font-weight:700;font-size:24px;color:var(--gold);">$0</div>
+          <div style="font-size:10px;color:var(--txt-mute);">7-day hold</div>
+        </div>
+        <div class="tier" style="background:var(--navy-mid);">
+          <div style="font-size:11px;color:var(--txt-mute);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Approved</div>
+          <div id="stat-approved" style="font-weight:700;font-size:24px;color:var(--green);">$0</div>
+          <div style="font-size:10px;color:var(--txt-mute);">Ready to pay out</div>
+        </div>
+        <div class="tier" style="background:var(--navy-mid);">
+          <div style="font-size:11px;color:var(--txt-mute);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Total Paid</div>
+          <div id="stat-paid" style="font-weight:700;font-size:24px;">$0</div>
+        </div>
+      </div>
+
+      <!-- Your link -->
+      <div class="link-box">
+        <div class="link-box-label">Your referral link</div>
+        <div class="link-box-row">
+          <input class="link-box-input" id="ref-link" value="" readonly />
+          <button class="btn-copy" id="btn-copy-link" onclick="copyLink()">Copy Link</button>
+        </div>
+      </div>
+
+      <!-- Recent commissions -->
+      <div id="commissions-list" class="link-box" style="display:none;">
+        <div class="link-box-label" style="margin-bottom:12px;">Recent Commissions</div>
+        <div id="commissions-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ COMMISSION TIERS ═══ -->
+  <div class="section">
+    <p class="sec-label">Commission Structure</p>
+    <h2 class="sec-title">Earn more as you sell more.</h2>
+    <p class="sec-body">One-time payouts. No recurring hassle. Commissions held 7 days (cancellation protection), then paid monthly via PayPal, Wise, or crypto. $50 minimum payout.</p>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tier-name">Bronze</div>
+        <div class="tier-pct">25%</div>
+        <div class="tier-req">0+ sales</div>
+      </div>
+      <div class="tier">
+        <div class="tier-name">Silver</div>
+        <div class="tier-pct">30%</div>
+        <div class="tier-req">10+ sales/mo</div>
+      </div>
+      <div class="tier">
+        <div class="tier-name">Gold</div>
+        <div class="tier-pct">35%</div>
+        <div class="tier-req">25+ sales/mo</div>
+      </div>
+      <div class="tier">
+        <div class="tier-name">Platinum</div>
+        <div class="tier-pct">40%</div>
+        <div class="tier-req">50+ sales/mo</div>
+      </div>
+    </div>
+    <div class="link-box">
+      <div class="link-box-label" style="margin-bottom:0">Earnings per sale at each tier</div>
+      <table style="width:100%;border-collapse:collapse;margin-top:12px">
+        <tr style="font-size:11px;color:rgba(245,245,247,0.3);text-transform:uppercase;letter-spacing:0.06em">
+          <td style="padding:6px 0">Product</td><td>Price</td><td>Bronze (25%)</td><td>Silver (30%)</td><td>Gold (35%)</td><td>Platinum (40%)</td>
+        </tr>
+        <tr style="font-size:13px;color:rgba(245,245,247,0.6)">
+          <td style="padding:6px 0">Starter</td><td>$499</td><td style="color:#34C759">$124.75</td><td style="color:#34C759">$149.70</td><td style="color:#34C759">$174.65</td><td style="color:#34C759">$199.60</td>
+        </tr>
+        <tr style="font-size:13px;color:rgba(245,245,247,0.6)">
+          <td style="padding:6px 0">Professional</td><td>$699</td><td style="color:#34C759">$174.75</td><td style="color:#34C759">$209.70</td><td style="color:#34C759">$244.65</td><td style="color:#34C759">$279.60</td>
+        </tr>
+        <tr style="font-size:13px;color:rgba(245,245,247,0.6)">
+          <td style="padding:6px 0">Institutional</td><td>$1,299</td><td style="color:#34C759">$324.75</td><td style="color:#34C759">$389.70</td><td style="color:#34C759">$454.65</td><td style="color:#34C759">$519.60</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- stats section moved into dashboard above -->
+
+  <!-- ═══ MARKETING MATERIALS ═══ -->
+  <div class="section" id="materials">
+    <p class="sec-label">Marketing Materials</p>
+    <h2 class="sec-title">Ready-to-use assets.</h2>
+    <p class="sec-body">Download banners, one-pagers, and the full affiliate kit. All assets are brand-approved.</p>
+    <div class="asset-grid">
+      <div class="asset-card">
+        <div class="asset-icon">📄</div>
+        <div class="asset-name">Full Affiliate Kit</div>
+        <div class="asset-desc">Swipe emails, social posts, comparison chart, objection handling, video script</div>
+        <a href="mailto:affiliates@proof.trading?subject=Affiliate%20Kit%20Request" class="btn-download">Request Kit</a>
+      </div>
+      <div class="asset-card">
+        <div class="asset-icon">📊</div>
+        <div class="asset-name">Comparison Chart</div>
+        <div class="asset-desc">Proof Gold vs Gold Trade Pro vs Gold Reaper vs EA Gold Stuff</div>
+        <a href="mailto:affiliates@proof.trading?subject=Comparison%20Chart%20Request" class="btn-download">Request Chart</a>
+      </div>
+      <div class="asset-card">
+        <div class="asset-icon">🖼️</div>
+        <div class="asset-name">Banner Pack</div>
+        <div class="asset-desc">728x90, 300x250, 160x600, 1200x628 social share</div>
+        <a href="mailto:affiliates@proof.trading?subject=Banner%20Pack%20Request" class="btn-download">Request Banners</a>
+      </div>
+      <div class="asset-card">
+        <div class="asset-icon">🎬</div>
+        <div class="asset-name">Video Script</div>
+        <div class="asset-desc">60-second script for YouTube Shorts / TikTok / Reels</div>
+        <a href="mailto:affiliates@proof.trading?subject=Video%20Script%20Request" class="btn-download">Request Script</a>
+      </div>
+      <div class="asset-card">
+        <div class="asset-icon">🏷️</div>
+        <div class="asset-name">Logo Pack</div>
+        <div class="asset-desc">SVG, PNG (dark + light backgrounds), favicon</div>
+        <a href="mailto:affiliates@proof.trading?subject=Logo%20Pack%20Request" class="btn-download">Request Logos</a>
+      </div>
+      <div class="asset-card">
+        <div class="asset-icon">📋</div>
+        <div class="asset-name">Product One-Pager</div>
+        <div class="asset-desc">Key features, stats, pricing — send to prospects</div>
+        <a href="mailto:affiliates@proof.trading?subject=One-Pager%20Request" class="btn-download">Request PDF</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ COMPARISON TABLE ═══ -->
+  <div class="section">
+    <p class="sec-label">Competitor Comparison</p>
+    <h2 class="sec-title">Use this in your content.</h2>
+    <p class="sec-body">Copy this table directly into your reviews, emails, or posts. These are verified facts.</p>
+    <div class="compare">
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>Proof Gold (from $499)</th><th>Gold Trade Pro ($539)</th><th>Gold Reaper ($599)</th><th>EA Gold Stuff ($149)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Strategy</td><td>Multi-strategy (5+)</td><td>7 breakout</td><td>9 breakout</td><td>Trend + Grid</td></tr>
+          <tr><td>Martingale</td><td>NO</td><td>NO</td><td>NO</td><td>YES</td></tr>
+          <tr><td>Win Rate</td><td>62% (live)</td><td>60% (live)</td><td>~55% (live)</td><td>72% (backtest)</td></tr>
+          <tr><td>Max DD</td><td>&lt;10%</td><td>14.8%</td><td>30-40%</td><td>19-22%</td></tr>
+          <tr><td>Sessions</td><td>All 3</td><td>London/NY</td><td>London/NY</td><td>London/NY</td></tr>
+          <tr><td>Asian Session</td><td>YES (primary)</td><td>No</td><td>No</td><td>No</td></tr>
+          <tr><td>Prop Firm</td><td>Preset included</td><td>Compatible</td><td>Compatible</td><td>No</td></tr>
+          <tr><td>Myfxbook</td><td>Verified live</td><td>Verified live</td><td>Verified live</td><td>Backtest only</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══ SWIPE FILES ═══ -->
+  <div class="section" id="swipes">
+    <p class="sec-label">Swipe Files</p>
+    <h2 class="sec-title">Copy, paste, send.</h2>
+    <p class="sec-body">Ready-to-send emails for your list. Replace [YOUR AFFILIATE LINK] with your referral URL.</p>
+    <div class="swipe-grid">
+
+      <div class="swipe-card" onclick="this.classList.toggle('open')">
+        <div class="swipe-header">
+          <span class="swipe-title">Email 1: Introduction (Cold Audience)</span>
+          <span class="swipe-tag">Best opener</span>
+          <span class="swipe-arrow">+</span>
+        </div>
+        <div class="swipe-body">
+          <div class="swipe-text">Subject: The gold EA that doesn't use martingale (finally)
+
+If you've been burned by gold EAs that showed 95% win rates and then blew your account — you're not alone.
+
+Most gold EAs use martingale or grid strategies. They look incredible in backtests. Then gold moves 200 pips against them and your account is gone.
+
+Proof Gold is different. Fixed stop loss on every single trade. No martingale. No grid. No hidden risk. Period.
+
+Their results are Myfxbook-verified with live trading — not backtest fantasies.
+
+62% win rate, under 10% drawdown, across all 3 trading sessions.
+
+Check it out: [YOUR AFFILIATE LINK]</div>
+          <button class="swipe-copy" onclick="event.stopPropagation();copySwipe(this)">Copy to clipboard</button>
+        </div>
+      </div>
+
+      <div class="swipe-card" onclick="this.classList.toggle('open')">
+        <div class="swipe-header">
+          <span class="swipe-title">Email 2: Prop Firm Angle</span>
+          <span class="swipe-tag">High converting</span>
+          <span class="swipe-arrow">+</span>
+        </div>
+        <div class="swipe-body">
+          <div class="swipe-text">Subject: Pass your FTMO challenge with this gold EA
+
+If you're trying to pass a prop firm challenge, you need two things: consistent profits and controlled drawdown.
+
+Most gold EAs fail prop firms because they use martingale (instant disqualification) or have uncontrolled drawdowns.
+
+Proof Gold comes with a dedicated Prop Firm preset that keeps daily DD under 4% and total DD under 8%. It trades all sessions automatically so you're making progress 24/5.
+
+FTMO, MyFundedFX, The5ers — it works with all of them.
+
+See the verified results: [YOUR AFFILIATE LINK]</div>
+          <button class="swipe-copy" onclick="event.stopPropagation();copySwipe(this)">Copy to clipboard</button>
+        </div>
+      </div>
+
+      <div class="swipe-card" onclick="this.classList.toggle('open')">
+        <div class="swipe-header">
+          <span class="swipe-title">Email 3: Comparison Angle</span>
+          <span class="swipe-tag">For researchers</span>
+          <span class="swipe-arrow">+</span>
+        </div>
+        <div class="swipe-body">
+          <div class="swipe-text">Subject: I compared the top 5 gold EAs. One stood out.
+
+I spent a week researching gold EAs. Here's what I found:
+
+EA Gold Stuff ($149) — Grid strategy. 96% win rate sounds great until the 4% wipes your account.
+Gold Trade Pro ($539) — Honest breakout EA. 60% win rate. But only trades 1-2 sessions.
+Gold Reaper ($599) — 9 breakout strategies. But 30-40% drawdown swings.
+Proof Gold (from $499) — 62% win rate. Under 10% DD. ALL sessions. No martingale. Myfxbook verified.
+
+The only EA that combines honest risk management with full session coverage.
+
+My pick: [YOUR AFFILIATE LINK]</div>
+          <button class="swipe-copy" onclick="event.stopPropagation();copySwipe(this)">Copy to clipboard</button>
+        </div>
+      </div>
+
+      <div class="swipe-card" onclick="this.classList.toggle('open')">
+        <div class="swipe-header">
+          <span class="swipe-title">Email 4: Results-Focused</span>
+          <span class="swipe-tag">Data-driven</span>
+          <span class="swipe-arrow">+</span>
+        </div>
+        <div class="swipe-body">
+          <div class="swipe-text">Subject: 62% win rate. Under 10% drawdown. Myfxbook verified.
+
+Numbers don't lie.
+
+Proof Gold live trading results:
+• 62% win rate (not grid-inflated)
+• Under 10% max drawdown (hard cap)
+• 3 sessions (Asian + London + NY)
+• Fixed stop loss on EVERY trade
+• 0 martingale trades. Ever.
+
+These aren't backtests. This is real money, real trades, verified by Myfxbook.
+
+See for yourself: [YOUR AFFILIATE LINK]</div>
+          <button class="swipe-copy" onclick="event.stopPropagation();copySwipe(this)">Copy to clipboard</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ VIDEO SCRIPT ═══ -->
+  <div class="section">
+    <p class="sec-label">Video Script</p>
+    <h2 class="sec-title">60-second video (YouTube Shorts / TikTok / Reels)</h2>
+    <div class="script-box">
+      <div class="script-section">
+        <div class="script-label">Hook — 5 sec</div>
+        <div class="script-text">"Most gold EAs will blow your account. Here's why — and what's different about Proof Gold."</div>
+      </div>
+      <div class="script-section">
+        <div class="script-label">Problem — 15 sec</div>
+        <div class="script-text">"95% of gold EAs use martingale or grid strategies. They show 95% win rates in backtests. But in live trading, one bad move wipes out everything. It happens every single year."</div>
+      </div>
+      <div class="script-section">
+        <div class="script-label">Solution — 20 sec</div>
+        <div class="script-text">"Proof Gold is the opposite. Fixed stop loss on every trade. No martingale. No grid. It trades all three sessions — Asian, London, and New York — using 5 different strategies. And the results are Myfxbook verified. Real money."</div>
+      </div>
+      <div class="script-section">
+        <div class="script-label">Proof — 10 sec</div>
+        <div class="script-text">"62% win rate. Under 10% max drawdown. Prop firm compatible. Real numbers from a live trading account anyone can verify."</div>
+      </div>
+      <div class="script-section">
+        <div class="script-label">CTA — 10 sec</div>
+        <div class="script-text">"Link in the description to see the live results. 7-day cancellation if you haven't activated. Check it out."</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ OBJECTION HANDLING ═══ -->
+  <div class="section">
+    <p class="sec-label">Objection Handling</p>
+    <h2 class="sec-title">When prospects push back.</h2>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="link-box">
+        <div style="font-weight:600;font-size:14px;margin-bottom:8px">"62% win rate is low"</div>
+        <div style="font-size:13px;color:rgba(245,245,247,0.5);line-height:1.6">Grid EAs show 95% by hiding losses in open positions. When those positions eventually close, the account blows up. 62% with positive R:R compounds consistently. Do the math: 62 wins at $1.50 vs 38 losses at $1.00 = net +$55 per 100 trades.</div>
+      </div>
+      <div class="link-box">
+        <div style="font-weight:600;font-size:14px;margin-bottom:8px">"Too expensive"</div>
+        <div style="font-size:13px;color:rgba(245,245,247,0.5);line-height:1.6">Gold Trade Pro is $539. Gold Reaper is $599. Golden Pickaxe is $2,520. Proof Gold (from $499) is the only one that covers all sessions with under 10% drawdown. It's the best value per feature in the market.</div>
+      </div>
+      <div class="link-box">
+        <div style="font-weight:600;font-size:14px;margin-bottom:8px">"I don't trust EAs"</div>
+        <div style="font-size:13px;color:rgba(245,245,247,0.5);line-height:1.6">Smart. Most EAs deserve skepticism. That's why Proof Gold's results are Myfxbook-verified — not just backtests. And there's a 7-day cancellation policy before activation. You can verify everything before committing.</div>
+      </div>
+      <div class="link-box">
+        <div style="font-weight:600;font-size:14px;margin-bottom:8px">"I can trade manually"</div>
+        <div style="font-size:13px;color:rgba(245,245,247,0.5);line-height:1.6">Can you trade 24 hours a day, 5 days a week, across 3 sessions, without emotional decisions? That's what automation solves. And you can still trade manually alongside it.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ RULES ═══ -->
+  <div class="section" id="rules">
+    <p class="sec-label">Affiliate Rules</p>
+    <h2 class="sec-title">Do's and don'ts.</h2>
+    <p class="sec-body">Violating these rules will result in termination from the program.</p>
+    <div class="rules">
+      <div class="rules-title">You MUST NOT:</div>
+      <div class="rule"><span class="rule-x">✕</span> Make income claims or guarantee specific profits</div>
+      <div class="rule"><span class="rule-x">✕</span> Create fake reviews or testimonials</div>
+      <div class="rule"><span class="rule-x">✕</span> Use spam, unsolicited messaging, or bulk DMs</div>
+      <div class="rule"><span class="rule-x">✕</span> Bid on "Proof Gold" brand terms in paid ads (PPC)</div>
+      <div class="rule"><span class="rule-x">✕</span> Misrepresent the product's capabilities or results</div>
+      <div class="rule"><span class="rule-x">✕</span> Use cookie stuffing or fraudulent tracking</div>
+    </div>
+    <div style="margin-top:16px;font-size:13px;color:var(--txt-dim);line-height:1.6">
+      <strong style="color:var(--green)">DO:</strong> Be honest about results (our numbers are real), focus on the "no martingale" differentiator, target prop firm traders, share Myfxbook link, use comparison content. Email lists convert best, followed by YouTube, then social media.
+    </div>
+  </div>
+
+  <!-- ═══ CONTACT ═══ -->
+  <div class="section">
+    <p class="sec-label">Support</p>
+    <h2 class="sec-title">Need help?</h2>
+    <p class="sec-body">
+      Email: <a href="mailto:affiliates@proof.trading" style="color:var(--gold);text-decoration:none">affiliates@proof.trading</a><br>
+      Discord: <a href="https://discord.gg/prooftrading" style="color:var(--gold);text-decoration:none">discord.gg/prooftrading</a> (ask in #affiliates channel)<br>
+      Dashboard: <a href="#dashboard" style="color:var(--gold);text-decoration:none">Log in above</a> to view your stats
+    </p>
+  </div>
+
+</div>
+
+<footer>
+  Trading involves substantial risk. Past performance does not guarantee future results.<br>
+  © 2026 Proof Trading Systems. All rights reserved.
+</footer>
+
+<script>
+const API = 'https://api.proof.trading/v1/affiliate';
+
+// ── Signup ──────────────────────────────────────────────
+async function affiliateSignup() {
+  const name = document.getElementById('signup-name').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const paypal_email = document.getElementById('signup-paypal').value.trim();
+  const website = document.getElementById('signup-website').value.trim();
+  const errEl = document.getElementById('signup-error');
+  errEl.style.display = 'none';
+
+  if (!email || !email.includes('@')) {
+    errEl.textContent = 'Please enter a valid email.';
+    errEl.style.display = 'block';
+    return;
+  }
+  if (!paypal_email || !paypal_email.includes('@')) {
+    errEl.textContent = 'Please enter a valid PayPal email for payouts.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'signup', name, email, paypal_email, website })
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      document.getElementById('signup-section').style.display = 'none';
+      document.getElementById('signup-success').style.display = 'block';
+      document.getElementById('new-aff-id').textContent = data.affiliate_id;
+      document.getElementById('new-ref-link').value = data.referral_url;
+    } else {
+      errEl.textContent = data.error || 'Something went wrong.';
+      if (data.affiliate_id) {
+        errEl.textContent += ' Your ID: ' + data.affiliate_id;
+      }
+      errEl.style.display = 'block';
+    }
+  } catch (err) {
+    errEl.textContent = 'Connection error. Please try again.';
+    errEl.style.display = 'block';
+  }
+}
+
+function copyNewLink() {
+  const input = document.getElementById('new-ref-link');
+  navigator.clipboard.writeText(input.value);
+  const btn = input.nextElementSibling;
+  btn.textContent = 'Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copy Link'; btn.classList.remove('copied'); }, 2000);
+}
+
+// ── Login / Dashboard ───────────────────────────────────
+async function affiliateLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const affId = document.getElementById('login-affid').value.trim();
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+
+  if (!email || !affId) {
+    errEl.textContent = 'Please enter both your email and affiliate ID.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'login', email: email, affiliate_id: affId })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      errEl.textContent = data.error || 'Not found.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    // Populate stats
+    const a = data.affiliate;
+    const e = {
+      pending: data.commissions.filter(c => c.status === 'pending').reduce((s, c) => s + c.commission_amount, 0),
+      approved: data.commissions.filter(c => c.status === 'approved').reduce((s, c) => s + c.commission_amount, 0),
+      paid: data.commissions.filter(c => c.status === 'paid').reduce((s, c) => s + c.commission_amount, 0),
+    };
+
+    document.getElementById('stat-clicks').textContent = data.clicks_30d;
+    document.getElementById('stat-conversions').textContent = data.commissions.length;
+    document.getElementById('stat-rate').textContent = data.clicks_30d > 0
+      ? ((data.commissions.length / data.clicks_30d) * 100).toFixed(1) + '%' : '0%';
+    document.getElementById('stat-tier').textContent = data.tier.name.charAt(0).toUpperCase() + data.tier.name.slice(1) + ' (' + (data.tier.rate * 100) + '%)';
+    document.getElementById('stat-pending').textContent = '$' + (e.pending / 100).toFixed(2);
+    document.getElementById('stat-approved').textContent = '$' + (e.approved / 100).toFixed(2);
+    document.getElementById('stat-paid').textContent = '$' + (e.paid / 100).toFixed(2);
+    document.getElementById('ref-link').value = data.referral_url;
+
+    // Render commissions (safe DOM construction — no innerHTML with API data)
+    if (data.commissions.length > 0) {
+      const body = document.getElementById('commissions-body');
+      body.textContent = '';
+      const statusColors = { pending: '#D4AF37', approved: '#34C759', paid: '#2A6BCC', denied: '#FF453A' };
+      data.commissions.slice(0, 20).forEach(function(c) {
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);font-size:13px;';
+        var left = document.createElement('span');
+        left.style.color = 'var(--txt-dim)';
+        left.textContent = new Date(c.created_at).toLocaleDateString() + ' \u00b7 ' + (c.product_tier || '\u2014');
+        var right = document.createElement('span');
+        right.style.cssText = 'color:' + (statusColors[c.status] || '#fff') + ';font-weight:600;';
+        right.textContent = '$' + (c.commission_amount / 100).toFixed(2) + ' ';
+        var badge = document.createElement('span');
+        badge.style.cssText = 'font-weight:400;font-size:11px;opacity:0.6;';
+        badge.textContent = c.status;
+        right.appendChild(badge);
+        row.appendChild(left);
+        row.appendChild(right);
+        body.appendChild(row);
+      });
+      document.getElementById('commissions-list').style.display = 'block';
+    }
+
+    document.getElementById('stats-panel').style.display = 'block';
+    document.getElementById('stats-panel').scrollIntoView({ behavior: 'smooth' });
+
+  } catch (err) {
+    errEl.textContent = 'Connection error. Please try again.';
+    errEl.style.display = 'block';
+  }
+}
+
+// ── Copy helpers ────────────────────────────────────────
+function copyLink() {
+  const input = document.getElementById('ref-link');
+  navigator.clipboard.writeText(input.value);
+  const btn = document.getElementById('btn-copy-link');
+  btn.textContent = 'Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copy Link'; btn.classList.remove('copied'); }, 2000);
+}
+
+function copySwipe(btn) {
+  const text = btn.parentElement.querySelector('.swipe-text').textContent;
+  navigator.clipboard.writeText(text);
+  btn.textContent = 'Copied!';
+  btn.style.color = '#34C759';
+  btn.style.borderColor = '#34C759';
+  setTimeout(() => {
+    btn.textContent = 'Copy to clipboard';
+    btn.style.color = '';
+    btn.style.borderColor = '';
+  }, 2000);
+}
+</script>
+
+</body>
+</html>
