@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.proof.trading; img-src 'self' data:; frame-ancestors 'none';">
+<meta name="description" content="Manage your Proof Gold EA license, view activations, download the EA, and access your trading dashboard.">
 <title>My Account — Proof Gold EA</title>
 <style>
-:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a25;--border:#252535;--text:#e8e8ed;--text2:#8888a0;--gold:#d4a54a;--gold2:#b8912e;--blue:#4a7fd4;--green:#3ab06a;--red:#d44a4a;--orange:#d48a3a;}
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a25;--border:#252535;--text:#e8e8ed;--text2:#8888a0;--gold:#D4AF37;--gold2:#b8912e;--blue:#5B9CF6;--green:#3DDC84;--red:#FF6B6B;--orange:#d48a3a;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'SF Pro Text',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
 a{color:var(--gold);text-decoration:none;}
@@ -148,7 +150,7 @@ a{color:var(--gold);text-decoration:none;}
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-logo">
-    <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#d4a54a"/><text x="16" y="22" text-anchor="middle" font-size="18" font-weight="700" fill="#0a0a0f">P</text></svg>
+    <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="#D4AF37"/><text x="16" y="22" text-anchor="middle" font-size="18" font-weight="700" fill="#0a0a0f">P</text></svg>
     Proof Trading
   </div>
   <div class="nav-links">
@@ -163,6 +165,11 @@ a{color:var(--gold);text-decoration:none;}
 <div id="successScreen" class="success-card">
   <div class="success-icon">🎉</div>
   <h1>Welcome to Proof Gold.</h1>
+  <div id="successLicenseBox" style="display:none;background:#12121C;border-radius:12px;padding:24px;margin-bottom:20px;text-align:center;">
+    <p style="font-size:12px;color:rgba(240,237,230,0.5);text-transform:uppercase;letter-spacing:1px;margin:0 0 8px;">Your License Key</p>
+    <p id="successLicenseKey" style="font-size:22px;font-weight:700;font-family:'SF Mono',monospace;letter-spacing:2px;color:#D4AF37;margin:0;word-break:break-all;"></p>
+    <p style="font-size:12px;color:rgba(240,237,230,0.4);margin:8px 0 0;">Save this key — you'll need it to activate the EA.</p>
+  </div>
   <p class="sub">Your purchase was successful. Your license key and setup instructions are being sent to your email right now.</p>
   <p class="sub" style="margin-top:12px;">Before we get you set up, let us know a little about your setup so we can give you <strong style="color:var(--text);">personalized guidance</strong> instead of generic instructions.</p>
   <button class="btn btn-gold" style="width:100%;margin-top:24px;" onclick="showOnboarding()">Let's Get Started →</button>
@@ -298,7 +305,7 @@ a{color:var(--gold);text-decoration:none;}
 </div>
 
 <script>
-const API = "https://proofgold.vercel.app";
+const API = "https://api.proof.trading";
 
 // Detect success redirect from Stripe
 (function() {
@@ -306,6 +313,34 @@ const API = "https://proofgold.vercel.app";
   if (params.get('success') === 'true') {
     document.getElementById('successScreen').classList.add('visible');
     document.getElementById('loginContainer').style.display = 'none';
+
+    // Fetch license key using session_id (webhook may take a few seconds)
+    const sessionId = params.get('session_id');
+    if (sessionId) {
+      let attempts = 0;
+      function fetchLicense() {
+        attempts++;
+        fetch(API + '/v1/lookup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session_id: sessionId })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.licenses && data.licenses.length > 0) {
+            var key = data.licenses[0].license_key;
+            document.getElementById('successLicenseKey').textContent = key;
+            document.getElementById('successLicenseBox').style.display = 'block';
+          } else if (attempts < 5) {
+            setTimeout(fetchLicense, 3000);
+          }
+        })
+        .catch(function() {
+          if (attempts < 5) setTimeout(fetchLicense, 3000);
+        });
+      }
+      setTimeout(fetchLicense, 2000);
+    }
   }
 })();
 
@@ -403,8 +438,8 @@ function submitOnboarding() {
         event: 'onboarding_complete',
         data: a
       })
-    }).catch(() => {});
-  } catch(e) {}
+    }).catch(function(err) { console.warn('[telemetry]', err.message); });
+  } catch(e) { console.warn('[telemetry]', e.message); }
 }
 let currentEmail = "";
 let currentKey = "";
@@ -439,6 +474,8 @@ async function login() {
     
     currentEmail = email;
     currentKey = key;
+    localStorage.setItem('pg_email', email);
+    localStorage.setItem('pg_key', key);
     renderDashboard(data);
   } catch (e) {
     errEl.textContent = "Connection error. Please try again.";
@@ -446,6 +483,12 @@ async function login() {
     btn.textContent = "View My Account";
     btn.disabled = false;
   }
+}
+
+function esc(s) {
+  var d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
 }
 
 function renderDashboard(data) {
@@ -475,10 +518,10 @@ function renderDashboard(data) {
       lic.activations.forEach(a => {
         const lastSeen = a.last_seen ? timeAgo(new Date(a.last_seen)) : "Never";
         actRows += `<tr>
-          <td class="act-account">${a.account_number}</td>
-          <td>${a.broker}</td>
-          <td>${lastSeen}</td>
-          <td><button class="btn btn-sm btn-outline" onclick="deactivate('${lic.license_key}','${a.account_number}')">Remove</button></td>
+          <td class="act-account">${esc(a.account_number)}</td>
+          <td>${esc(a.broker)}</td>
+          <td>${esc(lastSeen)}</td>
+          <td><button class="btn btn-sm btn-outline" onclick="deactivate('${esc(lic.license_key)}','${esc(a.account_number)}')">Remove</button></td>
         </tr>`;
       });
     }
@@ -492,21 +535,21 @@ function renderDashboard(data) {
     card.className = "license-card";
     card.innerHTML = `
       <div class="license-header">
-        <span class="license-key">${lic.license_key}</span>
-        <span class="tier-badge ${tierClass}">${lic.tier}</span>
+        <span class="license-key">${esc(lic.license_key)}</span>
+        <span class="tier-badge ${esc(tierClass)}">${esc(lic.tier)}</span>
       </div>
       <div class="license-body">
         <div class="license-grid">
-          <div class="license-stat"><span class="stat-label">Status</span><span class="stat-value ${statusClass}">${lic.status.toUpperCase()}</span></div>
-          <div class="license-stat"><span class="stat-label">Max Positions</span><span class="stat-value">${lic.max_positions}</span></div>
-          <div class="license-stat"><span class="stat-label">Sessions</span><span class="stat-value">${lic.sessions_label || (lic.all_sessions ? "All 4" : "Asian")}</span></div>
-          <div class="license-stat"><span class="stat-label">Activations</span><span class="stat-value">${lic.activations.length} / ${lic.max_activations}</span></div>
-          <div class="license-stat"><span class="stat-label">Expires</span><span class="stat-value">${expiry}</span></div>
-          <div class="license-stat"><span class="stat-label">Purchased</span><span class="stat-value">${created}</span></div>
+          <div class="license-stat"><span class="stat-label">Status</span><span class="stat-value ${esc(statusClass)}">${esc(lic.status.toUpperCase())}</span></div>
+          <div class="license-stat"><span class="stat-label">Max Positions</span><span class="stat-value">${parseInt(lic.max_positions) || 0}</span></div>
+          <div class="license-stat"><span class="stat-label">Sessions</span><span class="stat-value">${esc(lic.sessions_label || (lic.all_sessions ? "All 4" : "Asian"))}</span></div>
+          <div class="license-stat"><span class="stat-label">Activations</span><span class="stat-value">${parseInt(lic.activations.length) || 0} / ${parseInt(lic.max_activations) || 0}</span></div>
+          <div class="license-stat"><span class="stat-label">Expires</span><span class="stat-value">${esc(expiry)}</span></div>
+          <div class="license-stat"><span class="stat-label">Purchased</span><span class="stat-value">${esc(created)}</span></div>
         </div>
         <div class="activations-title">
           <span>Active Installations</span>
-          <span style="font-weight:400;font-size:11px;color:var(--text2)">${lic.activations.length}/${lic.max_activations} slots used</span>
+          <span style="font-weight:400;font-size:11px;color:var(--text2)">${parseInt(lic.activations.length) || 0}/${parseInt(lic.max_activations) || 0} slots used</span>
         </div>
         <table class="act-table">
           <thead><tr><th>MT4 Account</th><th>Broker</th><th>Last Seen</th><th></th></tr></thead>
@@ -535,17 +578,27 @@ function renderDashboard(data) {
   
   const svgDL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
   
-  if (data.download_url) {
-    dlGrid.innerHTML += `<a href="${data.download_url}" class="dl-btn" download>${svgDL} Proof Gold EA (.ex4)</a>`;
+  function safeDlLink(url, label) {
+    if (!url || typeof url !== 'string' || !url.startsWith('https://')) return '';
+    var a = document.createElement('a');
+    a.href = url;
+    a.className = 'dl-btn';
+    a.setAttribute('download', '');
+    a.innerHTML = svgDL + ' ' + esc(label);
+    dlGrid.appendChild(a);
+    return true;
+  }
+  if (data.download_url && safeDlLink(data.download_url, 'Proof Gold EA (.ex4)')) {
     dlSection.style.display = "block";
   }
   if (data.preset_urls) {
-    const presets = data.preset_urls;
-    if (presets.conservative) dlGrid.innerHTML += `<a href="${presets.conservative}" class="dl-btn" download>${svgDL} Conservative Preset</a>`;
-    if (presets.balanced) dlGrid.innerHTML += `<a href="${presets.balanced}" class="dl-btn" download>${svgDL} Balanced Preset</a>`;
-    if (presets.aggressive) dlGrid.innerHTML += `<a href="${presets.aggressive}" class="dl-btn" download>${svgDL} Aggressive Preset</a>`;
-    if (presets.propfirm) dlGrid.innerHTML += `<a href="${presets.propfirm}" class="dl-btn" download>${svgDL} PropFirm Preset</a>`;
-    if (Object.values(presets).some(v => v)) dlSection.style.display = "block";
+    var presets = data.preset_urls;
+    var shown = false;
+    if (presets.conservative && safeDlLink(presets.conservative, 'Conservative Preset')) shown = true;
+    if (presets.balanced && safeDlLink(presets.balanced, 'Balanced Preset')) shown = true;
+    if (presets.aggressive && safeDlLink(presets.aggressive, 'Aggressive Preset')) shown = true;
+    if (presets.propfirm && safeDlLink(presets.propfirm, 'PropFirm Preset')) shown = true;
+    if (shown) dlSection.style.display = "block";
   }
 }
 
@@ -573,8 +626,12 @@ async function deactivate(licKey, accountNum) {
 function logout() {
   currentEmail = "";
   currentKey = "";
+  localStorage.removeItem('pg_email');
+  localStorage.removeItem('pg_key');
   document.getElementById("dashboard").style.display = "none";
   document.getElementById("loginScreen").style.display = "block";
+  document.getElementById("loginEmail").value = "";
+  document.getElementById("loginKey").value = "";
   document.getElementById("loginBtn").textContent = "View My Account";
   document.getElementById("loginBtn").disabled = false;
 }
@@ -592,6 +649,17 @@ function timeAgo(date) {
 document.addEventListener("keydown", e => {
   if (e.key === "Enter" && document.getElementById("loginScreen").style.display !== "none") login();
 });
+
+// Auto-login from saved session
+(function() {
+  const savedEmail = localStorage.getItem('pg_email');
+  const savedKey = localStorage.getItem('pg_key');
+  if (savedEmail && savedKey) {
+    document.getElementById('loginEmail').value = savedEmail;
+    document.getElementById('loginKey').value = savedKey;
+    login();
+  }
+})();
 </script>
 </body>
 </html>

@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://api.proof.trading; img-src 'self' data:; frame-ancestors 'none';">
+<meta name="description" content="Fix common Proof Gold EA issues: frowning face, license errors, no trades, disconnections, and more.">
 <title>Troubleshooting — Proof Gold EA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -67,7 +69,7 @@ footer{padding:32px clamp(24px,5vw,64px);text-align:center;font-size:14px;color:
     <div class="issue-symptom">"The EA says my license key is invalid"</div>
     <div class="fix"><h3>✓ Fix 1 — Check the key</h3><p>Open the EA properties (right-click chart → Expert Advisors → Properties → Inputs). Make sure <code>InpLicenseKey</code> has your full key including the PG- prefix: <code>PG-XXXX-XXXX-XXXX-XXXX</code>. No extra spaces before or after.</p></div>
     <div class="fix"><h3>✓ Fix 2 — Check the email</h3><p>Make sure <code>InpLicenseEmail</code> matches exactly the email you used when purchasing. Uppercase/lowercase doesn't matter, but spelling does.</p></div>
-    <div class="fix"><h3>✓ Fix 3 — Enable WebRequest</h3><p>The EA needs internet access to verify your license. In MT4: Tools → Options → Expert Advisors → Check <code>Allow WebRequest for listed URL</code>. Click "Add" and paste: <code>https://proofgold.vercel.app</code>. Click OK and restart the EA.</p></div>
+    <div class="fix"><h3>✓ Fix 3 — Enable WebRequest</h3><p>The EA needs internet access to verify your license. In MT4: Tools → Options → Expert Advisors → Check <code>Allow WebRequest for listed URL</code>. Click "Add" and paste: <code>https://api.proof.trading</code>. Click OK and restart the EA.</p></div>
   </div>
 
   <div class="issue">

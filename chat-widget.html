@@ -7,7 +7,7 @@
 <div id="pg-chat-widget"></div>
 <script>
 (function() {
-  const SUPPORT_API_URL = "https://YOUR-PROJECT.vercel.app/v1/support";
+  const SUPPORT_API_URL = "https://api.proof.trading/v1/support";
   
   const CSS = `
     #pg-chat-toggle { position:fixed; bottom:24px; right:24px; width:56px; height:56px; border-radius:50%; background:#D4AF37; border:none; cursor:pointer; z-index:9999; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,0,0,0.3); transition:transform 0.2s; }
@@ -75,8 +75,15 @@
 
   function addMessage(text, isUser) {
     const div = document.createElement("div");
-    div.className = `pg-msg pg-msg-${isUser ? "user" : "bot"}`;
-    div.innerHTML = `<div class="pg-msg-bubble">${text.replace(/\n/g, "<br>")}</div>`;
+    div.className = "pg-msg pg-msg-" + (isUser ? "user" : "bot");
+    const bubble = document.createElement("div");
+    bubble.className = "pg-msg-bubble";
+    // Split on newlines and insert <br> safely
+    text.split("\n").forEach(function(line, i) {
+      if (i > 0) bubble.appendChild(document.createElement("br"));
+      bubble.appendChild(document.createTextNode(line));
+    });
+    div.appendChild(bubble);
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
   }
