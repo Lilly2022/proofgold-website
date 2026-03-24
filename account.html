@@ -40,7 +40,7 @@ a{color:var(--gold);text-decoration:none;}
 .field label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);margin-bottom:6px;}
 .field input{width:100%;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color 0.2s;}
 .field input:focus{border-color:var(--gold);}
-.field input::placeholder{color:#555;}
+.field input::placeholder{color:#888;}
 .btn{display:inline-block;padding:12px 28px;border-radius:8px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;border:none;transition:all 0.2s;}
 .btn-gold{background:var(--gold);color:#0a0a0f;width:100%;}
 .btn-gold:hover{background:var(--gold2);}
@@ -152,6 +152,7 @@ a{color:var(--gold);text-decoration:none;}
   .upgrade-bar{flex-direction:column;gap:12px;text-align:center;}
   .act-table{font-size:12px;}
 }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 </style>
 </head>
 <body>
@@ -181,7 +182,7 @@ a{color:var(--gold);text-decoration:none;}
   </div>
   <p class="sub">Your purchase was successful. Your license key and setup instructions are being sent to your email right now.</p>
   <p class="sub" style="margin-top:12px;">Before we get you set up, let us know a little about your setup so we can give you <strong style="color:var(--text);">personalized guidance</strong> instead of generic instructions.</p>
-  <button class="btn btn-gold" style="width:100%;margin-top:24px;" onclick="showOnboarding()">Let's Get Started →</button>
+  <button type="button" class="btn btn-gold" style="width:100%;margin-top:24px;" onclick="showOnboarding()">Let's Get Started →</button>
   <p class="success-note" style="margin-top:16px;">Takes 30 seconds. Helps us help you.</p>
 </div>
 
@@ -203,7 +204,7 @@ a{color:var(--gold);text-decoration:none;}
       <div class="onboard-opt" onclick="selectOpt(this,'experience','some')"><div class="onboard-dot"></div>I've used a few EAs before</div>
       <div class="onboard-opt" onclick="selectOpt(this,'experience','advanced')"><div class="onboard-dot"></div>I'm experienced — just point me to the file</div>
     </div>
-    <div class="onboard-btns"><button class="btn btn-gold" onclick="nextQ(2)">Next →</button></div>
+    <div class="onboard-btns"><button type="button" class="btn btn-gold" onclick="nextQ(2)">Next →</button></div>
   </div>
 
   <!-- Q2: MT4 -->
@@ -215,7 +216,7 @@ a{color:var(--gold);text-decoration:none;}
       <div class="onboard-opt" onclick="selectOpt(this,'mt4','no')"><div class="onboard-dot"></div>No — I need to install it</div>
       <div class="onboard-opt" onclick="selectOpt(this,'mt4','unsure')"><div class="onboard-dot"></div>I'm not sure what MT4 is</div>
     </div>
-    <div class="onboard-btns"><button class="btn btn-outline" onclick="prevQ(1)">← Back</button><button class="btn btn-gold" onclick="nextQ(3)">Next →</button></div>
+    <div class="onboard-btns"><button type="button" class="btn btn-outline" onclick="prevQ(1)">← Back</button><button type="button" class="btn btn-gold" onclick="nextQ(3)">Next →</button></div>
   </div>
 
   <!-- Q3: Broker -->
@@ -227,7 +228,7 @@ a{color:var(--gold);text-decoration:none;}
       <div class="onboard-opt" onclick="selectOpt(this,'broker','no')"><div class="onboard-dot"></div>No — I need help choosing a broker</div>
       <div class="onboard-opt" onclick="selectOpt(this,'broker','unsure')"><div class="onboard-dot"></div>I have a broker but not sure about gold</div>
     </div>
-    <div class="onboard-btns"><button class="btn btn-outline" onclick="prevQ(2)">← Back</button><button class="btn btn-gold" onclick="nextQ(4)">Next →</button></div>
+    <div class="onboard-btns"><button type="button" class="btn btn-outline" onclick="prevQ(2)">← Back</button><button type="button" class="btn btn-gold" onclick="nextQ(4)">Next →</button></div>
   </div>
 
   <!-- Q4: VPS -->
@@ -239,7 +240,7 @@ a{color:var(--gold);text-decoration:none;}
       <div class="onboard-opt" onclick="selectOpt(this,'vps','no')"><div class="onboard-dot"></div>No — I'll run it on my own computer for now</div>
       <div class="onboard-opt" onclick="selectOpt(this,'vps','want')"><div class="onboard-dot"></div>No — but I'd like to get one</div>
     </div>
-    <div class="onboard-btns"><button class="btn btn-outline" onclick="prevQ(3)">← Back</button><button class="btn btn-gold" onclick="submitOnboarding()">See My Personalized Guide →</button></div>
+    <div class="onboard-btns"><button type="button" class="btn btn-outline" onclick="prevQ(3)">← Back</button><button type="button" class="btn btn-gold" onclick="submitOnboarding()">See My Personalized Guide →</button></div>
   </div>
 </div>
 
@@ -253,7 +254,7 @@ a{color:var(--gold);text-decoration:none;}
 
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
     <a href="setup.html" id="resultsMainBtn" class="btn btn-gold" style="padding:14px 32px;font-size:15px;border-radius:8px;text-decoration:none;">📖 Start Setup Guide</a>
-    <button class="btn-outline" style="padding:14px 32px;font-size:15px;border-radius:8px;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--text);font-family:inherit;" onclick="document.getElementById('successContainer').style.display='none';document.getElementById('loginContainer').style.display='block';">View My License</button>
+    <button type="button" class="btn-outline" style="padding:14px 32px;font-size:15px;border-radius:8px;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--text);font-family:inherit;" onclick="document.getElementById('successContainer').style.display='none';document.getElementById('loginContainer').style.display='block';">View My License</button>
   </div>
   <p class="success-note">Check your email for your license key. Need help? <a href="mailto:support@proof.trading">support@proof.trading</a></p>
 </div>
@@ -265,14 +266,14 @@ a{color:var(--gold);text-decoration:none;}
   <h1>My Account</h1>
   <p>Enter your purchase email and license key to manage your EA.</p>
   <div class="field">
-    <label>Email</label>
-    <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email">
+    <label for="loginEmail">Email</label>
+    <input type="email" id="loginEmail" name="email" required placeholder="you@example.com" autocomplete="email">
   </div>
   <div class="field">
-    <label>License Key</label>
-    <input type="text" id="loginKey" placeholder="PG-XXXX-XXXX-XXXX-XXXX" autocomplete="off" style="font-family:'SF Mono',monospace;letter-spacing:1px;">
+    <label for="loginKey">License Key</label>
+    <input type="text" id="loginKey" name="licenseKey" required placeholder="PG-XXXX-XXXX-XXXX-XXXX" autocomplete="off" style="font-family:'SF Mono',monospace;letter-spacing:1px;">
   </div>
-  <button class="btn btn-gold" id="loginBtn" onclick="login()">View My Account</button>
+  <button type="button" class="btn btn-gold" id="loginBtn" onclick="login()">View My Account</button>
   <div class="error-msg" id="loginError"></div>
 </div>
 
@@ -283,7 +284,7 @@ a{color:var(--gold);text-decoration:none;}
       <h1>My Account</h1>
       <div class="dash-email" id="dashEmail"></div>
     </div>
-    <button class="logout-btn" onclick="logout()">Sign Out</button>
+    <button type="button" class="logout-btn" onclick="logout()">Sign Out</button>
   </div>
 
   <!-- UPGRADE BAR (shown for starter/professional) -->
@@ -530,7 +531,7 @@ function renderDashboard(data) {
           <td class="act-account">${esc(a.account_number)}</td>
           <td>${esc(a.broker)}</td>
           <td>${esc(lastSeen)}</td>
-          <td><button class="btn btn-sm btn-outline" onclick="deactivate('${esc(lic.license_key)}','${esc(a.account_number)}')">Remove</button></td>
+          <td><button type="button" class="btn btn-sm btn-outline" onclick="deactivate('${esc(lic.license_key)}','${esc(a.account_number)}')">Remove</button></td>
         </tr>`;
       });
     }

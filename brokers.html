@@ -52,12 +52,13 @@ nav a.back{font-size:15px;color:var(--text-secondary);}
 .broker-btn{display:inline-block;padding:16px 40px;border-radius:980px;font-weight:700;font-size:16px;text-decoration:none;transition:all 0.3s;}
 .broker-btn-gold{background:var(--gold);color:#000;}
 .broker-btn-gold:hover{background:var(--gold-bright);}
-.broker-btn-outline{background:transparent;border:1.5px solid rgba(240,237,230,0.15);color:var(--text);}
+.broker-btn-outline{background:transparent;border:1.5px solid rgba(240,237,230,0.3);color:var(--text);}
 .broker-btn-outline:hover{border-color:rgba(240,237,230,0.4);}
 
 .note{max-width:800px;margin:40px auto 80px;padding:0 clamp(24px,5vw,64px);text-align:center;font-size:15px;color:var(--text-muted);line-height:1.7;}
 
 footer{padding:32px clamp(24px,5vw,64px);text-align:center;font-size:14px;color:var(--text-muted);border-top:1px solid var(--border);}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
 @media(max-width:600px){.broker-stats{grid-template-columns:1fr;}}
 </style>
 </head>

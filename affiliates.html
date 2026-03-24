@@ -122,6 +122,8 @@ body { background: #000; color: #f5f5f7; font-family: 'Outfit', -apple-system, s
 /* FOOTER */
 footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,255,0.04); font-size:12px; color:rgba(245,245,247,0.2); text-align:center; }
 
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
 @media(max-width:640px) {
   .tiers { grid-template-columns:repeat(2,1fr); }
   .link-box-row { flex-direction:column; }
@@ -167,12 +169,12 @@ footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,25
     <!-- Signup Form -->
     <div id="signup-section" class="link-box">
       <div style="display:flex;flex-direction:column;gap:12px;max-width:440px;margin:0 auto;">
-        <input class="link-box-input" id="signup-name" placeholder="Your name" style="color:var(--txt);" />
-        <input class="link-box-input" id="signup-email" type="email" placeholder="Your email" style="color:var(--txt);" />
-        <input class="link-box-input" id="signup-paypal" placeholder="PayPal email (for payouts)" style="color:var(--txt);" />
-        <input class="link-box-input" id="signup-website" placeholder="Website or social link (optional)" style="color:var(--txt);" />
+        <input class="link-box-input" id="signup-name" placeholder="Your name" aria-label="Your name" style="color:var(--txt);" />
+        <input class="link-box-input" id="signup-email" type="email" placeholder="Your email" aria-label="Your email" style="color:var(--txt);" />
+        <input class="link-box-input" id="signup-paypal" placeholder="PayPal email (for payouts)" aria-label="PayPal email for payouts" style="color:var(--txt);" />
+        <input class="link-box-input" id="signup-website" placeholder="Website or social link (optional)" aria-label="Website or social link" style="color:var(--txt);" />
         <button class="btn-rewardful" style="font-size:16px;padding:14px 0;width:100%;border-radius:8px;" onclick="affiliateSignup()">Join — It's Free</button>
-        <p id="signup-error" style="font-size:12px;color:var(--red);text-align:center;display:none;"></p>
+        <p id="signup-error" role="alert" style="font-size:12px;color:var(--red);text-align:center;display:none;"></p>
       </div>
       <p style="font-size:12px;color:var(--txt-mute);margin-top:14px;text-align:center;">Already have an account? <a href="#dashboard" onclick="document.getElementById('login-email').focus()" style="color:var(--gold);text-decoration:none;">Log in below</a> to see your stats.</p>
     </div>
@@ -200,11 +202,11 @@ footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,25
     <div class="link-box">
       <div class="link-box-label">Log in with your email and affiliate ID</div>
       <div style="display:flex;flex-direction:column;gap:10px;max-width:440px;">
-        <input class="link-box-input" id="login-email" type="email" placeholder="your@email.com" style="color:var(--txt);" />
-        <input class="link-box-input" id="login-affid" placeholder="aff_xxxxxxxxxxxx" style="color:var(--txt);font-family:monospace;" />
+        <input class="link-box-input" id="login-email" type="email" placeholder="your@email.com" aria-label="Your email" style="color:var(--txt);" />
+        <input class="link-box-input" id="login-affid" placeholder="aff_xxxxxxxxxxxx" aria-label="Affiliate ID" style="color:var(--txt);font-family:monospace;" />
         <button class="btn-rewardful" onclick="affiliateLogin()" style="border-radius:8px;">View Stats</button>
       </div>
-      <p id="login-error" style="font-size:12px;color:var(--red);margin-top:8px;display:none;"></p>
+      <p id="login-error" role="alert" style="font-size:12px;color:var(--red);margin-top:8px;display:none;"></p>
     </div>
 
     <!-- Stats (hidden until login) -->
@@ -249,7 +251,7 @@ footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,25
       <div class="link-box">
         <div class="link-box-label">Your referral link</div>
         <div class="link-box-row">
-          <input class="link-box-input" id="ref-link" value="" readonly />
+          <input class="link-box-input" id="ref-link" value="" readonly aria-label="Referral link" />
           <button class="btn-copy" id="btn-copy-link" onclick="copyLink()">Copy Link</button>
         </div>
       </div>
@@ -360,7 +362,7 @@ footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,25
     <p class="sec-label">Competitor Comparison</p>
     <h2 class="sec-title">Use this in your content.</h2>
     <p class="sec-body">Copy this table directly into your reviews, emails, or posts. These are verified facts.</p>
-    <div class="compare">
+    <div class="compare"><div style="overflow-x:auto;">
       <table>
         <thead>
           <tr><th>Feature</th><th>Proof Gold (from $499)</th><th>Gold Trade Pro ($539)</th><th>Gold Reaper ($599)</th><th>EA Gold Stuff ($149)</th></tr>
@@ -376,7 +378,7 @@ footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,25
           <tr><td>Myfxbook</td><td>Verified live</td><td>Verified live</td><td>Verified live</td><td>Backtest only</td></tr>
         </tbody>
       </table>
-    </div>
+    </div></div>
   </div>
 
   <!-- ═══ SWIPE FILES ═══ -->
@@ -386,7 +388,7 @@ footer { padding:20px clamp(16px,4vw,48px); border-top:1px solid rgba(255,255,25
     <p class="sec-body">Ready-to-send emails for your list. Replace [YOUR AFFILIATE LINK] with your referral URL.</p>
     <div class="swipe-grid">
 
-      <div class="swipe-card" onclick="this.classList.toggle('open')">
+      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open')">
         <div class="swipe-header">
           <span class="swipe-title">Email 1: Introduction (Cold Audience)</span>
           <span class="swipe-tag">Best opener</span>
@@ -410,7 +412,7 @@ Check it out: [YOUR AFFILIATE LINK]</div>
         </div>
       </div>
 
-      <div class="swipe-card" onclick="this.classList.toggle('open')">
+      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open')">
         <div class="swipe-header">
           <span class="swipe-title">Email 2: Prop Firm Angle</span>
           <span class="swipe-tag">High converting</span>
@@ -432,7 +434,7 @@ See the verified results: [YOUR AFFILIATE LINK]</div>
         </div>
       </div>
 
-      <div class="swipe-card" onclick="this.classList.toggle('open')">
+      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open')">
         <div class="swipe-header">
           <span class="swipe-title">Email 3: Comparison Angle</span>
           <span class="swipe-tag">For researchers</span>
@@ -455,7 +457,7 @@ My pick: [YOUR AFFILIATE LINK]</div>
         </div>
       </div>
 
-      <div class="swipe-card" onclick="this.classList.toggle('open')">
+      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open')">
         <div class="swipe-header">
           <span class="swipe-title">Email 4: Results-Focused</span>
           <span class="swipe-tag">Data-driven</span>
@@ -731,6 +733,12 @@ function copySwipe(btn) {
     btn.style.borderColor = '';
   }, 2000);
 }
+
+document.querySelectorAll('.swipe-card').forEach(function(card) {
+  card.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.classList.toggle('open'); }
+  });
+});
 </script>
 
 </body>
