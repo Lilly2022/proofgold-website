@@ -13,7 +13,7 @@
     #pg-chat-toggle { position:fixed; bottom:24px; right:24px; width:56px; height:56px; border-radius:50%; background:#D4AF37; border:none; cursor:pointer; z-index:9999; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(0,0,0,0.3); transition:transform 0.2s; }
     #pg-chat-toggle:hover { transform:scale(1.08); }
     #pg-chat-toggle svg { width:24px; height:24px; fill:#000; }
-    #pg-chat-box { position:fixed; bottom:92px; right:24px; width:380px; max-height:520px; background:#0A1628; border:1px solid rgba(42,107,204,0.15); border-radius:16px; z-index:9999; display:none; flex-direction:column; overflow:hidden; box-shadow:0 8px 40px rgba(0,0,0,0.5); font-family:'Outfit',sans-serif; }
+    #pg-chat-box { position:fixed; bottom:92px; right:24px; width:min(380px, calc(100vw - 32px)); max-height:520px; background:#0A1628; border:1px solid rgba(42,107,204,0.15); border-radius:16px; z-index:9999; display:none; flex-direction:column; overflow:hidden; box-shadow:0 8px 40px rgba(0,0,0,0.5); font-family:'Outfit',sans-serif; }
     #pg-chat-box.open { display:flex; }
     .pg-header { padding:16px 20px; background:#0F1D32; border-bottom:1px solid rgba(42,107,204,0.1); display:flex; align-items:center; gap:10px; }
     .pg-header-dot { width:8px; height:8px; border-radius:50%; background:#34C759; }
@@ -32,7 +32,8 @@
     .pg-send { background:#D4AF37; border:none; border-radius:8px; padding:10px 16px; cursor:pointer; color:#000; font-weight:600; font-size:13px; font-family:inherit; }
     .pg-send:hover { background:#F0D060; }
     .pg-send:disabled { opacity:0.5; cursor:not-allowed; }
-    .pg-typing { color:rgba(245,245,247,0.3); font-size:12px; padding:4px 0; }
+    .pg-typing { color:rgba(245,245,247,0.3); font-size:12px; padding:4px 0; animation:pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
   `;
 
   const style = document.createElement("style");
@@ -41,7 +42,7 @@
 
   const container = document.getElementById("pg-chat-widget");
   container.innerHTML = `
-    <button id="pg-chat-toggle">
+    <button id="pg-chat-toggle" aria-label="Open support chat">
       <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
     </button>
     <div id="pg-chat-box">
@@ -58,7 +59,7 @@
         </div>
       </div>
       <div class="pg-input-area">
-        <input class="pg-input" id="pg-input" placeholder="Type your question..." />
+        <input class="pg-input" id="pg-input" placeholder="Type your question..." aria-label="Type your message" />
         <button class="pg-send" id="pg-send">Send</button>
       </div>
     </div>
