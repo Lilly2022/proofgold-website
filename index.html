@@ -759,6 +759,16 @@ setInterval(() => {
 }, 5000);
 tickerEl.style.transition = 'opacity 0.4s';
 
+// ── FETCH WITH TIMEOUT ───────────────────────────────────
+function fetchWithTimeout(url, opts, ms) {
+  ms = ms || 15000;
+  var ctrl = new AbortController();
+  opts = opts || {};
+  opts.signal = ctrl.signal;
+  var timer = setTimeout(function() { ctrl.abort(); }, ms);
+  return fetch(url, opts).finally(function() { clearTimeout(timer); });
+}
+
 // ── STRIPE CHECKOUT ────────────────────────────────────────
 async function checkout(tier, btn) {
   const originalText = btn.textContent;
@@ -773,7 +783,7 @@ async function checkout(tier, btn) {
     const body = { tier };
     if (affiliate) body.affiliate = affiliate;
 
-    const res = await fetch('https://api.proof.trading/v1/checkout', {
+    const res = await fetchWithTimeout('https://api.proof.trading/v1/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -788,7 +798,8 @@ async function checkout(tier, btn) {
       btn.style.pointerEvents = 'auto';
     }
   } catch (err) {
-    alert('Connection error. Please try again.');
+    var msg = err.name === 'AbortError' ? 'Request timed out. Please try again.' : 'Connection error. Please try again.';
+    alert(msg);
     btn.textContent = originalText;
     btn.style.pointerEvents = 'auto';
   }

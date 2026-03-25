@@ -317,6 +317,16 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
 <script>
 const API = "https://api.proof.trading";
 
+// Fetch with timeout (15s default)
+function fetchWithTimeout(url, opts, ms) {
+  ms = ms || 15000;
+  var ctrl = new AbortController();
+  opts = opts || {};
+  opts.signal = ctrl.signal;
+  var timer = setTimeout(function() { ctrl.abort(); }, ms);
+  return fetch(url, opts).finally(function() { clearTimeout(timer); });
+}
+
 // Detect success redirect from Stripe
 (function() {
   const params = new URLSearchParams(window.location.search);
@@ -330,11 +340,11 @@ const API = "https://api.proof.trading";
       let attempts = 0;
       function fetchLicense() {
         attempts++;
-        fetch(API + '/v1/lookup', {
+        fetchWithTimeout(API + '/v1/lookup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ session_id: sessionId })
-        })
+        }, 10000)
         .then(function(r) { return r.json(); })
         .then(function(data) {
           if (data.licenses && data.licenses.length > 0) {
@@ -467,13 +477,13 @@ async function login() {
   btn.disabled = true;
   
   try {
-    const res = await fetch(API + "/v1/account", {
+    const res = await fetchWithTimeout(API + "/v1/account", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, license_key: key })
     });
     const data = await res.json();
-    
+
     if (!res.ok) {
       errEl.textContent = data.error || "Invalid credentials. Check your email and license key.";
       errEl.style.display = "block";
@@ -488,7 +498,7 @@ async function login() {
     localStorage.setItem('pg_key', key);
     renderDashboard(data);
   } catch (e) {
-    errEl.textContent = "Connection error. Please try again.";
+    errEl.textContent = e.name === 'AbortError' ? "Request timed out. Please try again." : "Connection error. Please try again.";
     errEl.style.display = "block";
     btn.textContent = "View My Account";
     btn.disabled = false;
@@ -616,7 +626,7 @@ async function deactivate(licKey, accountNum) {
   if (!confirm(`Remove MT4 account ${accountNum}?\n\nThis frees up an activation slot. You can re-activate on a different account anytime.`)) return;
   
   try {
-    const res = await fetch(API + "/v1/account", {
+    const res = await fetchWithTimeout(API + "/v1/account", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: currentEmail, license_key: currentKey, action: "deactivate", account_number: accountNum })

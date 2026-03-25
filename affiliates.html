@@ -388,7 +388,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px s
     <p class="sec-body">Ready-to-send emails for your list. Replace [YOUR AFFILIATE LINK] with your referral URL.</p>
     <div class="swipe-grid">
 
-      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open')">
+      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open');this.setAttribute('aria-expanded',this.classList.contains('open'))">
         <div class="swipe-header">
           <span class="swipe-title">Email 1: Introduction (Cold Audience)</span>
           <span class="swipe-tag">Best opener</span>
@@ -412,7 +412,7 @@ Check it out: [YOUR AFFILIATE LINK]</div>
         </div>
       </div>
 
-      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open')">
+      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open');this.setAttribute('aria-expanded',this.classList.contains('open'))">
         <div class="swipe-header">
           <span class="swipe-title">Email 2: Prop Firm Angle</span>
           <span class="swipe-tag">High converting</span>
@@ -434,7 +434,7 @@ See the verified results: [YOUR AFFILIATE LINK]</div>
         </div>
       </div>
 
-      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open')">
+      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open');this.setAttribute('aria-expanded',this.classList.contains('open'))">
         <div class="swipe-header">
           <span class="swipe-title">Email 3: Comparison Angle</span>
           <span class="swipe-tag">For researchers</span>
@@ -457,7 +457,7 @@ My pick: [YOUR AFFILIATE LINK]</div>
         </div>
       </div>
 
-      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open')">
+      <div class="swipe-card" tabindex="0" role="button" aria-expanded="false" onclick="this.classList.toggle('open');this.setAttribute('aria-expanded',this.classList.contains('open'))">
         <div class="swipe-header">
           <span class="swipe-title">Email 4: Results-Focused</span>
           <span class="swipe-tag">Data-driven</span>
@@ -577,6 +577,16 @@ See for yourself: [YOUR AFFILIATE LINK]</div>
 <script>
 const API = 'https://api.proof.trading/v1/affiliate';
 
+// Fetch with timeout (15s default)
+function fetchWithTimeout(url, opts, ms) {
+  ms = ms || 15000;
+  var ctrl = new AbortController();
+  opts = opts || {};
+  opts.signal = ctrl.signal;
+  var timer = setTimeout(function() { ctrl.abort(); }, ms);
+  return fetch(url, opts).finally(function() { clearTimeout(timer); });
+}
+
 // ── Signup ──────────────────────────────────────────────
 async function affiliateSignup() {
   const name = document.getElementById('signup-name').value.trim();
@@ -598,7 +608,7 @@ async function affiliateSignup() {
   }
 
   try {
-    const res = await fetch(API, {
+    const res = await fetchWithTimeout(API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'signup', name, email, paypal_email, website })
@@ -618,7 +628,7 @@ async function affiliateSignup() {
       errEl.style.display = 'block';
     }
   } catch (err) {
-    errEl.textContent = 'Connection error. Please try again.';
+    errEl.textContent = err.name === 'AbortError' ? 'Request timed out. Please try again.' : 'Connection error. Please try again.';
     errEl.style.display = 'block';
   }
 }
@@ -646,7 +656,7 @@ async function affiliateLogin() {
   }
 
   try {
-    const res = await fetch(API, {
+    const res = await fetchWithTimeout(API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'login', email: email, affiliate_id: affId })
