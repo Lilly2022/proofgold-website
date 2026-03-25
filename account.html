@@ -276,6 +276,20 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
   </div>
   <button type="button" class="btn btn-gold" id="loginBtn" onclick="login()">View My Account</button>
   <div class="error-msg" id="loginError"></div>
+  <div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:8px;">Didn't receive your license email?</p>
+    <button type="button" class="btn btn-sm btn-outline" id="resendBtn" onclick="showResendForm()">Resend License Key</button>
+  </div>
+  <div id="resendForm" style="display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+    <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">Enter the email you used to purchase. We'll re-send your license key.</p>
+    <div class="field">
+      <label for="resendEmail">Purchase Email</label>
+      <input type="email" id="resendEmail" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <button type="button" class="btn btn-gold" id="resendSubmitBtn" onclick="resendLicense()">Send My License Key</button>
+    <div class="error-msg" id="resendError"></div>
+    <div id="resendSuccess" style="display:none;color:var(--green);font-size:13px;margin-top:12px;"></div>
+  </div>
 </div>
 
 <!-- DASHBOARD (hidden until login) -->
@@ -664,6 +678,58 @@ function timeAgo(date) {
   if (s < 86400) return Math.floor(s/3600) + "h ago";
   if (s < 604800) return Math.floor(s/86400) + "d ago";
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+// ── RESEND LICENSE KEY ──────────────────────────────────
+function showResendForm() {
+  document.getElementById('resendBtn').style.display = 'none';
+  document.getElementById('resendForm').style.display = 'block';
+}
+
+async function resendLicense() {
+  const email = document.getElementById('resendEmail').value.trim();
+  const errEl = document.getElementById('resendError');
+  const successEl = document.getElementById('resendSuccess');
+  const btn = document.getElementById('resendSubmitBtn');
+
+  errEl.style.display = 'none';
+  successEl.style.display = 'none';
+
+  if (!email) {
+    errEl.textContent = 'Please enter your email address.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetchWithTimeout(API + '/v1/resend-license', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+
+    if (res.status === 429) {
+      errEl.textContent = data.error || 'Please wait a few minutes before requesting again.';
+      errEl.style.display = 'block';
+    } else if (!res.ok) {
+      errEl.textContent = data.error || 'Something went wrong. Please contact support@proof.trading.';
+      errEl.style.display = 'block';
+    } else {
+      successEl.textContent = 'Check your inbox (and spam folder). If you have a license with this email, the key has been sent.';
+      successEl.style.display = 'block';
+      btn.style.display = 'none';
+    }
+  } catch (e) {
+    errEl.textContent = e.name === 'AbortError' ? 'Request timed out. Please try again.' : 'Connection error. Please try again.';
+    errEl.style.display = 'block';
+  }
+
+  btn.textContent = 'Send My License Key';
+  btn.disabled = false;
 }
 
 // Allow Enter key to login
