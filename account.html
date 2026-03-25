@@ -716,7 +716,12 @@ async function resendLicense() {
       errEl.textContent = data.error || 'Please wait a few minutes before requesting again.';
       errEl.style.display = 'block';
     } else if (!res.ok) {
-      errEl.textContent = data.error || 'Something went wrong. Please contact support@proof.trading.';
+      let msg = data.error || 'Something went wrong. Please contact support@proof.trading.';
+      if (data.resend_error) {
+        const detail = data.resend_error.message || data.resend_error.name || JSON.stringify(data.resend_error);
+        msg += ' (Debug: ' + detail + ')';
+      }
+      errEl.textContent = msg;
       errEl.style.display = 'block';
     } else {
       successEl.textContent = 'Check your inbox (and spam folder). If you have a license with this email, the key has been sent.';
