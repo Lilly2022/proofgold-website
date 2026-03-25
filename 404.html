@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none';">
+<meta name="description" content="Page not found — Proof Gold EA">
+<meta property="og:title" content="404 — Page Not Found">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://proof.trading/">
+<meta property="og:image" content="https://proof.trading/og-image.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="404 — Page Not Found">
+<meta name="twitter:image" content="https://proof.trading/og-image.png">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<title>Page Not Found — Proof Gold</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#D4AF37;--gold-bright:#E8C55A;--bg:#08080C;--bg2:#0D0D14;--bg3:#12121C;--text:#F0EDE6;--text-body:rgba(240,237,230,0.80);--text-secondary:rgba(240,237,230,0.55);--text-muted:rgba(240,237,230,0.35);--border:rgba(212,175,55,0.08);--radius:20px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;}
+::selection{background:var(--gold);color:#000;}
+a{color:var(--gold);text-decoration:none;transition:color 0.3s;}
+a:hover{color:var(--gold-bright);}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+nav{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,5vw,64px);background:rgba(8,8,12,0.95);border-bottom:1px solid var(--border);}
+.nav-brand{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:22px;color:var(--gold);text-decoration:none;}
+.nav-brand span{font-weight:400;color:var(--text-secondary);margin-left:6px;font-size:16px;font-family:'DM Sans',sans-serif;}
+
+.error-page{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px clamp(24px,5vw,64px);position:relative;overflow:hidden;}
+.error-page::before{content:'';position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(212,175,55,0.05) 0%,transparent 70%);pointer-events:none;}
+
+.error-code{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:clamp(100px,20vw,180px);line-height:1;color:rgba(212,175,55,0.1);letter-spacing:-0.03em;margin-bottom:8px;}
+.error-page h1{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:clamp(28px,4vw,44px);line-height:1.2;margin-bottom:16px;}
+.error-page p{font-size:18px;color:var(--text-body);max-width:480px;margin-bottom:40px;}
+
+.error-links{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+.btn{display:inline-flex;align-items:center;justify-content:center;font-family:inherit;font-weight:600;font-size:16px;border-radius:980px;padding:14px 36px;border:none;cursor:pointer;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);text-decoration:none;}
+.btn:hover{transform:translateY(-2px);}
+.btn-gold{background:var(--gold);color:#000;}
+.btn-gold:hover{background:var(--gold-bright);box-shadow:0 8px 40px rgba(212,175,55,0.25);color:#000;}
+.btn-outline{background:transparent;color:var(--text);border:1.5px solid rgba(240,237,230,0.2);}
+.btn-outline:hover{border-color:rgba(240,237,230,0.5);background:rgba(255,255,255,0.03);color:var(--text);}
+
+footer{padding:32px clamp(24px,5vw,64px);text-align:center;font-size:14px;color:var(--text-muted);border-top:1px solid var(--border);margin-top:auto;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://proof.trading" class="nav-brand">Proof <span>Gold</span></a>
+</nav>
+
+<main class="error-page">
+  <div class="error-code">404</div>
+  <h1>Page Not Found</h1>
+  <p>The page you're looking for doesn't exist or has been moved. Let's get you back on track.</p>
+  <div class="error-links">
+    <a href="https://proof.trading" class="btn btn-gold">Back to Homepage</a>
+    <a href="https://proof.trading/troubleshooting.html" class="btn btn-outline">Support</a>
+  </div>
+</main>
+
+<footer>&copy; 2026 Proof Trading. All rights reserved.</footer>
+
+</body>
+</html>
