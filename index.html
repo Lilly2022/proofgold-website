@@ -301,27 +301,49 @@ footer a:hover { color: var(--text); }
   z-index: 1;
 }
 
-/* #6: LIVE TRADE TICKER */
-.ticker {
+/* GUARANTEE BADGE */
+.guarantee-badge {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 14px;
-  font-size: var(--text-sm);
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-dim);
+  letter-spacing: 0.02em;
+}
+.guarantee-badge svg { flex-shrink: 0; }
+
+/* BROKER COMPATIBILITY */
+.broker-section { text-align: center; }
+.broker-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 48px;
+}
+.broker-badge {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px 32px;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-body);
+  transition: all 0.3s;
+}
+.broker-badge:hover {
+  border-color: rgba(212,175,55,0.2);
+  color: var(--text);
+}
+.broker-badge.broker-more {
+  font-weight: 400;
+  font-style: italic;
   color: var(--text-secondary);
-  border-bottom: 1px solid var(--border);
-  background: var(--bg2);
+  border-style: dashed;
 }
-.ticker-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--green);
-  animation: pulse 1.5s infinite;
-}
-.ticker-profit { color: var(--green); font-weight: 600; }
-.ticker-time { color: var(--text-muted); }
 
 /* #10: RICHER FOOTER */
 .footer-main {
@@ -387,6 +409,15 @@ footer a:hover { color: var(--text); }
 }
 @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: var(--space-md); } }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.affiliate-banner { max-width: 720px; margin: 0 auto; padding: 32px clamp(24px,5vw,64px); text-align: center; }
+.affiliate-banner-inner { display: inline-flex; align-items: center; gap: 16px; padding: 20px 36px; background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.12); border-radius: 980px; text-decoration: none; transition: all 0.3s; }
+.affiliate-banner-inner:hover { background: rgba(212,175,55,0.1); border-color: rgba(212,175,55,0.25); transform: translateY(-1px); }
+.affiliate-banner-inner span { font-size: 15px; color: var(--text-body); }
+.affiliate-banner-inner strong { color: var(--gold); font-weight: 600; }
+.affiliate-banner-inner .aff-arrow { color: var(--gold); font-size: 18px; transition: transform 0.3s; }
+.affiliate-banner-inner:hover .aff-arrow { transform: translateX(3px); }
+.version-badge { display: inline-block; font-size: 12px; color: var(--text-muted); background: rgba(212,175,55,0.06); border: 1px solid rgba(212,175,55,0.08); border-radius: 980px; padding: 4px 14px; margin-top: 16px; letter-spacing: 0.03em; }
+@media (max-width: 768px) { .affiliate-banner-inner { flex-direction: column; gap: 8px; padding: 20px 28px; border-radius: 16px; } }
 </style>
 </head>
 <body>
@@ -435,11 +466,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
   <div class="trust-item"><div class="trust-dot"></div>Prop Firm Ready</div>
 </div>
 
-<!-- #6: LIVE TRADE TICKER -->
-<div class="ticker" id="ticker">
-  <div class="ticker-dot"></div>
-  <span id="ticker-text">Loading latest trade...</span>
-</div>
 
 <!-- 3 STEPS TO START -->
 <section>
@@ -624,6 +650,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
         <div class="price-note">Asian session (overnight trades)</div>
         <ul class="price-features"><li>Asian session trading strategy</li><li>Up to 3 trades at once</li><li>Use on 2 trading accounts</li><li>Live trading dashboard</li><li>Server crash protection</li><li>Lifetime updates</li></ul>
         <a href="javascript:void(0)" onclick="checkout('starter', this)" class="price-btn price-btn-outline">Get Started</a>
+        <div class="guarantee-badge"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L2 4v4.5c0 3.5 2.5 6 6 7.5 3.5-1.5 6-4 6-7.5V4L8 1z" fill="none" stroke="#C9A84C" stroke-width="1.5"/><path d="M5.5 8l2 2 3.5-3.5" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>7-Day Money-Back Guarantee</div>
       </div>
       <div class="price-card featured reveal reveal-delay-1">
         <div class="price-name">Professional</div>
@@ -631,6 +658,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
         <div class="price-note">London + New York sessions (daytime trades)</div>
         <ul class="price-features"><li>London + New York trading strategies</li><li>Up to 5 trades at once</li><li>Use on 3 trading accounts</li><li>Live trading dashboard</li><li>Server crash protection</li><li>Lifetime updates</li><li>Priority email support</li></ul>
         <a href="javascript:void(0)" onclick="checkout('professional', this)" class="price-btn price-btn-gold">Get Professional</a>
+        <div class="guarantee-badge"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L2 4v4.5c0 3.5 2.5 6 6 7.5 3.5-1.5 6-4 6-7.5V4L8 1z" fill="none" stroke="#C9A84C" stroke-width="1.5"/><path d="M5.5 8l2 2 3.5-3.5" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>7-Day Money-Back Guarantee</div>
       </div>
       <div class="price-card reveal reveal-delay-2">
         <div class="price-name">Institutional</div>
@@ -673,6 +701,12 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
   </div>
 </section>
 
+<div class="affiliate-banner">
+  <a href="affiliates.html" class="affiliate-banner-inner">
+    <span><strong>Earn 30% Commission</strong> — Join our affiliate program</span>
+    <span class="aff-arrow">&rarr;</span>
+  </a>
+</div>
 <p class="disclaimer">Trading foreign exchange on margin carries a high level of risk. Past performance is not indicative of future results. Proof Gold EA does not guarantee profits. Only trade with money you can afford to lose.</p>
 
 <div class="footer-main">
@@ -706,6 +740,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
   <div class="footer-bottom">
     <span>&copy; 2026 Proof Trading. All rights reserved.</span>
     <span>Trading involves risk. Past performance ≠ future results.</span>
+    <span class="version-badge">v3.0 — Last Updated March 2026</span>
   </div>
 </div>
 

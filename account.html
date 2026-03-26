@@ -9,17 +9,20 @@
 <meta property="og:description" content="Manage your Proof Gold EA license, view activations, download the EA, and access your trading dashboard.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://proof.trading/account.html">
-<meta property="og:image" content="https://proof.trading/og-image.png">
+<meta property="og:image" content="https://proof.trading/og-image.svg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="My Account — Proof Gold EA">
 <meta name="twitter:description" content="Manage your Proof Gold EA license, view activations, download the EA, and access your trading dashboard.">
-<meta name="twitter:image" content="https://proof.trading/og-image.png">
+<meta name="twitter:image" content="https://proof.trading/og-image.svg">
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <title>My Account — Proof Gold EA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a25;--border:#252535;--text:#e8e8ed;--text2:#8888a0;--gold:#D4AF37;--gold2:#b8912e;--blue:#5B9CF6;--green:#3DDC84;--red:#FF6B6B;--orange:#d48a3a;}
+:root{--bg:#08080C;--surface:#0D0D14;--surface2:#12121C;--border:rgba(212,175,55,0.08);--text:#F0EDE6;--text2:rgba(240,237,230,0.55);--gold:#D4AF37;--gold2:#C9A84C;--blue:#5B9CF6;--green:#3DDC84;--red:#FF6B6B;--orange:#d48a3a;}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'SF Pro Text',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
+body{font-family:'DM Sans',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;}
 a{color:var(--gold);text-decoration:none;}
 
 /* NAV */
@@ -35,7 +38,7 @@ a{color:var(--gold);text-decoration:none;}
 
 /* LOGIN */
 .login-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:48px 40px;max-width:440px;margin:80px auto;}
-.login-card h1{font-size:22px;font-weight:600;margin-bottom:6px;}
+.login-card h1{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;margin-bottom:6px;}
 .login-card p{color:var(--text2);font-size:14px;margin-bottom:28px;}
 .field{margin-bottom:16px;}
 .field label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text2);margin-bottom:6px;}
@@ -57,7 +60,7 @@ a{color:var(--gold);text-decoration:none;}
 /* DASHBOARD */
 .dash{display:none;}
 .dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;}
-.dash-header h1{font-size:22px;font-weight:600;}
+.dash-header h1{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;}
 .dash-email{color:var(--text2);font-size:13px;}
 .logout-btn{font-size:12px;color:var(--text2);cursor:pointer;border:none;background:none;font-family:inherit;}
 .logout-btn:hover{color:var(--text);}
@@ -111,7 +114,7 @@ a{color:var(--gold);text-decoration:none;}
 .success-card{background:var(--surface);border:1px solid var(--green);border-radius:12px;padding:56px 40px;max-width:520px;margin:60px auto;text-align:center;display:none;}
 .success-card.visible{display:block;}
 .success-icon{font-size:56px;margin-bottom:24px;}
-.success-card h1{font-size:28px;font-weight:700;margin-bottom:8px;color:var(--text);}
+.success-card h1{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;margin-bottom:8px;color:var(--text);}
 .success-card .sub{color:var(--text2);font-size:16px;line-height:1.7;margin-bottom:32px;}
 .success-steps{text-align:left;background:var(--bg);border-radius:10px;padding:24px 28px;margin-bottom:32px;}
 .success-steps h3{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--gold);margin-bottom:16px;}
@@ -123,7 +126,7 @@ a{color:var(--gold);text-decoration:none;}
 /* ONBOARDING QUESTIONNAIRE */
 .onboard-card{background:var(--surface);border:1px solid var(--gold);border-radius:12px;padding:48px 40px;max-width:520px;margin:60px auto;display:none;}
 .onboard-card.visible{display:block;}
-.onboard-card h1{font-size:22px;font-weight:600;margin-bottom:6px;}
+.onboard-card h1{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;margin-bottom:6px;}
 .onboard-card .sub{color:var(--text2);font-size:15px;margin-bottom:28px;line-height:1.6;}
 .onboard-q{margin-bottom:24px;}
 .onboard-q label{display:block;font-size:14px;font-weight:600;color:var(--text);margin-bottom:10px;}

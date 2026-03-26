@@ -1,0 +1,20 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#08080C"/>
+  <!-- Subtle radial glow behind logo -->
+  <radialGradient id="glow" cx="600" cy="260" r="200" gradientUnits="userSpaceOnUse">
+    <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.08"/>
+    <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/>
+  </radialGradient>
+  <circle cx="600" cy="260" r="200" fill="url(#glow)"/>
+  <!-- Gold bars logo (scaled and centered from logo.svg) -->
+  <g transform="translate(510, 170) scale(1.8)">
+    <path d="M8 38 C8 35, 10 33, 13 33 L41 33 C43 33, 44 35, 44 38 L44 60 L50 46 L44 60 L44 92 C44 95, 43 96, 40 96 L12 96 C9 96, 8 95, 8 92 Z" fill="#D4AF37"/>
+    <path d="M56 92 L56 60 L50 46 L56 60 L56 12 C56 9, 58 8, 60 8 L88 8 C91 8, 92 9, 92 12 L92 92 C92 95, 91 96, 88 96 L60 96 C57 96, 56 95, 56 92 Z" fill="#D4AF37"/>
+  </g>
+  <!-- PROOF GOLD text -->
+  <text x="600" y="420" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="64" fill="#D4AF37" letter-spacing="8">PROOF GOLD</text>
+  <!-- Subtitle -->
+  <text x="600" y="475" text-anchor="middle" font-family="-apple-system, system-ui, 'Segoe UI', sans-serif" font-weight="400" font-size="26" fill="#F0EDE6" opacity="0.8">Automated Gold Trading</text>
+  <!-- Thin gold line accent -->
+  <rect x="520" y="500" width="160" height="1" fill="#D4AF37" opacity="0.3"/>
+</svg>
