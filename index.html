@@ -240,7 +240,7 @@ footer a:hover { color: var(--text); }
 .value-actual .big-price { font-family: 'Playfair Display', Georgia, serif; font-size: 64px; font-weight: 700; color: var(--gold); }
 .value-actual .big-price span { font-size: 22px; font-weight: 400; font-family: 'DM Sans', sans-serif; color: var(--text-secondary); }
 
-@media (max-width: 550px) { .hero h1 { font-size: clamp(36px,10vw,56px); } .hero-buttons { flex-direction: column; width: 100%; } .btn { width: 100%; justify-content: center; } .section-title { font-size: clamp(28px,7vw,44px); } .perf-val { font-size: 32px; } footer { flex-direction: column; gap: 24px; text-align: center; } .footer-grid { grid-template-columns: 1fr; text-align: center; } .compare-table { font-size: 15px; } .compare-table th, .compare-table td { padding: 14px 16px; } .counter-bar { flex-direction: column; gap: 12px; } .sticky-cta { display: none !important; } .ticker { font-size: 13px; } }
+@media (max-width: 550px) { .hero h1 { font-size: clamp(36px,10vw,56px); } .hero-buttons { flex-direction: column; width: 100%; } .btn { width: 100%; justify-content: center; } .section-title { font-size: clamp(28px,7vw,44px); } .perf-val { font-size: 32px; } footer { flex-direction: column; gap: 24px; text-align: center; } .footer-grid { grid-template-columns: 1fr; text-align: center; } .compare-table { font-size: 15px; } .compare-table th, .compare-table td { padding: 14px 16px; } .counter-bar { flex-direction: column; gap: 12px; } .sticky-cta { display: none !important; } }
 
 /* #5: STICKY CTA BAR */
 .sticky-cta {
@@ -666,9 +666,27 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-
         <div class="price-note">All 3 sessions — Asian + London + New York</div>
         <ul class="price-features"><li>All 3 sessions — trades around the clock</li><li>Up to 10 trades at once</li><li>Use on 5 trading accounts</li><li>Live trading dashboard</li><li>Server crash protection</li><li>Lifetime updates</li><li>Priority support + personal setup call</li><li>Prop firm account protection</li></ul>
         <a href="javascript:void(0)" onclick="checkout('institutional', this)" class="price-btn price-btn-outline">Get Institutional</a>
+        <div class="guarantee-badge"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L2 4v4.5c0 3.5 2.5 6 6 7.5 3.5-1.5 6-4 6-7.5V4L8 1z" fill="none" stroke="#C9A84C" stroke-width="1.5"/><path d="M5.5 8l2 2 3.5-3.5" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>7-Day Money-Back Guarantee</div>
       </div>
     </div>
     <p class="reveal" style="color:var(--text-secondary);font-size: var(--text-base);margin-top:36px;">All purchases can be canceled within 7 days if the EA has not been activated.</p>
+  </div>
+</section>
+
+<!-- BROKER COMPATIBILITY -->
+<section class="broker-section">
+  <div class="section" style="text-align:center;">
+    <p class="section-label reveal">Compatibility</p>
+    <h2 class="section-title reveal reveal-delay-1" style="margin-left:auto;margin-right:auto;">Works With Your Broker</h2>
+    <p class="section-subtitle reveal reveal-delay-2" style="margin:0 auto;">Proof Gold runs on any MT4 broker that offers gold trading. Here are some of the most popular.</p>
+    <div class="broker-grid reveal reveal-delay-3">
+      <div class="broker-badge">IC Markets</div>
+      <div class="broker-badge">Pepperstone</div>
+      <div class="broker-badge">Exness</div>
+      <div class="broker-badge">GTC Global</div>
+      <div class="broker-badge">FTMO</div>
+      <div class="broker-badge broker-more">And 100+ more MT4 brokers</div>
+    </div>
   </div>
 </section>
 
@@ -800,29 +818,6 @@ window.addEventListener('scroll', () => {
     stickyCta.classList.remove('visible');
   }
 }, { passive: true });
-
-// ── #6: LIVE TRADE TICKER ──────────────────────────────────
-const tickerEl = document.getElementById('ticker-text');
-const trades = [
-  { pair: 'XAUUSD', dir: 'Buy', pips: '+47', profit: '+$94', time: '12 min ago', session: 'London' },
-  { pair: 'XAUUSD', dir: 'Sell', pips: '+31', profit: '+$62', time: '2 hours ago', session: 'Asian' },
-  { pair: 'XAUUSD', dir: 'Buy', pips: '+18', profit: '+$36', time: '4 hours ago', session: 'Asian' },
-  { pair: 'XAUUSD', dir: 'Buy', pips: '+52', profit: '+$104', time: '6 hours ago', session: 'NY' },
-  { pair: 'XAUUSD', dir: 'Sell', pips: '+28', profit: '+$56', time: '8 hours ago', session: 'London' },
-  { pair: 'XAUUSD', dir: 'Buy', pips: '+41', profit: '+$82', time: '11 hours ago', session: 'Asian' },
-];
-let tickerIdx = 0;
-function updateTicker() {
-  const t = trades[tickerIdx];
-  tickerEl.innerHTML = t.session + ' Session · ' + t.pair + ' ' + t.dir + ' · <span class="ticker-profit">' + t.profit + '</span> · <span class="ticker-time">' + t.time + '</span>';
-  tickerIdx = (tickerIdx + 1) % trades.length;
-}
-updateTicker();
-setInterval(() => {
-  tickerEl.style.opacity = '0';
-  setTimeout(() => { updateTicker(); tickerEl.style.opacity = '1'; }, 400);
-}, 5000);
-tickerEl.style.transition = 'opacity 0.4s';
 
 // ── FETCH WITH TIMEOUT ───────────────────────────────────
 function fetchWithTimeout(url, opts, ms) {
